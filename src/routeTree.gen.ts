@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RechtlichesRouteImport } from './routes/rechtliches'
+import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
+import { Route as BehandlungenIndexRouteImport } from './routes/behandlungen.index'
+import { Route as BehandlungenSlugRouteImport } from './routes/behandlungen.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RechtlichesRoute = RechtlichesRouteImport.update({
+  id: '/rechtliches',
+  path: '/rechtliches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcademyIndexRoute = AcademyIndexRouteImport.update({
+  id: '/academy/',
+  path: '/academy/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcademySlugRoute = AcademySlugRouteImport.update({
+  id: '/academy/$slug',
+  path: '/academy/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BehandlungenIndexRoute = BehandlungenIndexRouteImport.update({
+  id: '/behandlungen/',
+  path: '/behandlungen/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BehandlungenSlugRoute = BehandlungenSlugRouteImport.update({
+  id: '/behandlungen/$slug',
+  path: '/behandlungen/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/rechtliches': typeof RechtlichesRoute
+  '/academy/$slug': typeof AcademySlugRoute
+  '/behandlungen/$slug': typeof BehandlungenSlugRoute
+  '/academy/': typeof AcademyIndexRoute
+  '/behandlungen/': typeof BehandlungenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/rechtliches': typeof RechtlichesRoute
+  '/academy/$slug': typeof AcademySlugRoute
+  '/behandlungen/$slug': typeof BehandlungenSlugRoute
+  '/academy': typeof AcademyIndexRoute
+  '/behandlungen': typeof BehandlungenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/rechtliches': typeof RechtlichesRoute
+  '/academy/$slug': typeof AcademySlugRoute
+  '/behandlungen/$slug': typeof BehandlungenSlugRoute
+  '/academy/': typeof AcademyIndexRoute
+  '/behandlungen/': typeof BehandlungenIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/rechtliches'
+    | '/academy/$slug'
+    | '/behandlungen/$slug'
+    | '/academy/'
+    | '/behandlungen/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/rechtliches'
+    | '/academy/$slug'
+    | '/behandlungen/$slug'
+    | '/academy'
+    | '/behandlungen'
+  id:
+    | '__root__'
+    | '/'
+    | '/rechtliches'
+    | '/academy/$slug'
+    | '/behandlungen/$slug'
+    | '/academy/'
+    | '/behandlungen/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RechtlichesRoute: typeof RechtlichesRoute
+  AcademySlugRoute: typeof AcademySlugRoute
+  BehandlungenSlugRoute: typeof BehandlungenSlugRoute
+  AcademyIndexRoute: typeof AcademyIndexRoute
+  BehandlungenIndexRoute: typeof BehandlungenIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rechtliches': {
+      id: '/rechtliches'
+      path: '/rechtliches'
+      fullPath: '/rechtliches'
+      preLoaderRoute: typeof RechtlichesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academy/': {
+      id: '/academy/'
+      path: '/academy'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/academy/$slug': {
+      id: '/academy/$slug'
+      path: '/academy/$slug'
+      fullPath: '/academy/$slug'
+      preLoaderRoute: typeof AcademySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/behandlungen/': {
+      id: '/behandlungen/'
+      path: '/behandlungen'
+      fullPath: '/behandlungen/'
+      preLoaderRoute: typeof BehandlungenIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/behandlungen/$slug': {
+      id: '/behandlungen/$slug'
+      path: '/behandlungen/$slug'
+      fullPath: '/behandlungen/$slug'
+      preLoaderRoute: typeof BehandlungenSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RechtlichesRoute: RechtlichesRoute,
+  AcademySlugRoute: AcademySlugRoute,
+  BehandlungenSlugRoute: BehandlungenSlugRoute,
+  AcademyIndexRoute: AcademyIndexRoute,
+  BehandlungenIndexRoute: BehandlungenIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
