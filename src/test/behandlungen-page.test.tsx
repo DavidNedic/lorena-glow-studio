@@ -29,7 +29,7 @@ describe("Behandlungsseite", () => {
     await renderTreatments();
 
     const cta = screen.getByRole("link", { name: "Jetzt beraten lassen" });
-    const wrapper = cta.parentElement?.parentElement;
+    const wrapper = cta.parentElement;
 
     expect(wrapper?.className).toContain("justify-center");
     expect(wrapper?.className).toContain("flex");
