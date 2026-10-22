@@ -3,6 +3,12 @@ import { CONTACT } from "@/lib/data";
 export const SITE_URL = "https://thegoldencosmetics.com";
 export const OG = { behandlungen: "/images/og-behandlungen.jpg", academy: "/images/og-academy.jpg", lorena: "/images/og-lorena.jpg" };
 
+export const OG_ALT: Record<string, string> = {
+  [OG.behandlungen]: "Behandlungsliege im Kosmetikstudio The Golden Cosmetics in Brackenheim",
+  [OG.academy]: "Strahlende Haut nach einer Behandlung – The Golden Academy",
+  [OG.lorena]: "Gepflegte Haut und geliftete Wimpern bei The Golden Cosmetics",
+};
+
 export const abs = (path: string) => SITE_URL + (path === "/" ? "/" : path);
 
 /** Shorten text at a word boundary so descriptions stay within ~155 characters. */
@@ -38,7 +44,7 @@ export function breadcrumbs(items: [string, string][]) {
 type HeadInput = { path: string; title: string; description: string; image: string; type?: string; jsonLd?: object[]; noindex?: boolean };
 
 export function seoHead({ path, title, description, image, type = "website", jsonLd = [], noindex }: HeadInput) {
-  const url = abs(path), img = abs(image), desc = clip(description);
+  const url = abs(path), img = abs(image), desc = clip(description), alt = OG_ALT[image] ?? title;
   return {
     meta: [
       { title },
@@ -47,11 +53,19 @@ export function seoHead({ path, title, description, image, type = "website", jso
       { property: "og:description", content: desc },
       { property: "og:url", content: url },
       { property: "og:type", content: type },
+      { property: "og:site_name", content: "The Golden Cosmetics & Academy" },
+      { property: "og:locale", content: "de_DE" },
       { property: "og:image", content: img },
+      { property: "og:image:secure_url", content: img },
+      { property: "og:image:type", content: "image/jpeg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: alt },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: desc },
       { name: "twitter:image", content: img },
+      { name: "twitter:image:alt", content: alt },
       ...(noindex ? [{ name: "robots", content: "noindex" }] : []),
     ],
     links: noindex ? [] : [{ rel: "canonical", href: url }],
