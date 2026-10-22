@@ -17,13 +17,19 @@ describe("App routing", () => {
   it.each(["aqua", "micro", "micro-cica", "micro-salmon", "glass", "aha-egf", "rein", "aqua-micro", "dermaplaning", "microdermabrasion", "anti-akne", "akne-body", "carboxy", "glow-peel", "refresh-peel", "pure-peel", "glass-skin", "aquafacial", "microneedling", "ausreinigung"])("permanently redirects retired %s to the overview", async (slug) => {
     const router = createRouter({ routeTree, history: createMemoryHistory({ initialEntries: [`/behandlungen/${slug}`] }), context: { queryClient: new QueryClient() }, isServer: true });
     await router.load();
-    expect(router.state.redirect?.options.statusCode).toBe(301);
-    expect(router.state.redirect?.options.to).toBe("/behandlungen");
+    const result = router._serverResult;
+    expect(result?.type).toBe("redirect");
+    if (result?.type !== "redirect") throw new Error("Expected a permanent redirect");
+    expect(result.redirect.options.statusCode).toBe(301);
+    expect(result.redirect.options.to).toBe("/behandlungen");
   });
   it("preserves the lash-brow alias with a permanent redirect to lash", async () => {
     const router = createRouter({ routeTree, history: createMemoryHistory({ initialEntries: ["/behandlungen/lash-brow"] }), context: { queryClient: new QueryClient() }, isServer: true });
     await router.load();
-    expect(router.state.redirect?.options.statusCode).toBe(301);
-    expect(router.state.redirect?.options.params).toEqual({ slug: "lash" });
+    const result = router._serverResult;
+    expect(result?.type).toBe("redirect");
+    if (result?.type !== "redirect") throw new Error("Expected a permanent redirect");
+    expect(result.redirect.options.statusCode).toBe(301);
+    expect(result.redirect.options.params).toEqual({ slug: "lash" });
   });
 });
