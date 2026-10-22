@@ -192,3 +192,26 @@
 .btn-primary { background: var(--primary); color: var(--primary-foreground); }
 .btn-ghost { background: transparent; color: var(--foreground); }
 .footer-cta { background: var(--footer-button); color: var(--chat-user); }
+
+/* Face zoom */
+.zoom-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; max-width: 1000px; margin: 40px auto 0; align-items: center; }
+.zoom-stage { position: relative; aspect-ratio: 1/1; overflow: hidden; transform: none; }
+.zoom-stage[data-zoomed="true"] { border-radius: 28px; }
+.zoom-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; filter: brightness(1.036); transform: none !important; }
+.zoom-base, .zoom-video { --m: linear-gradient(to bottom, transparent 0, #000 6%, #000 64%, transparent 96%), linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+.zoom-stage[data-zoomed="true"] .zoom-video { -webkit-mask-image: none; mask-image: none; }
+.zoom-stage[data-zoomed="true"] .zoom-base { visibility: hidden; }
+.zoom-video { visibility: hidden; }
+.zoom-video[data-show="true"] { visibility: visible; }
+.zoom-4k { opacity: 0; transition: opacity .35s; }
+.zoom-4k[data-show="true"] { opacity: 1; }
+.zoom-dot { position: absolute; width: 30px; height: 30px; transform: translate(-50%,-50%); border-radius: 999px; border: 1.5px solid #fff; background: rgba(255,255,255,.35); padding: 0; cursor: pointer; z-index: 2; }
+.zoom-dot::after { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px; border-radius: 999px; background: #fff; }
+.zoom-ring { position: absolute; inset: -1.5px; border-radius: 999px; border: 1.5px solid #fff; animation: zoom-pulse 2s ease-out infinite; }
+.zoom-label { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #fff; color: var(--foreground); border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.zoom-back { position: absolute; left: 14px; top: 14px; z-index: 3; background: #fff; color: var(--foreground); border-radius: 999px; padding: 8px 14px; font-size: 13.5px; font-weight: 700; border: 0; }
+.zoom-card { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 3; background: rgba(255,255,255,.94); border-radius: 18px; padding: 14px 16px; text-align: left; animation: zoom-card .35s ease-out; }
+.zoom-chip[data-active="true"] { background: #161514; color: #fff; border-color: #161514; }
+@keyframes zoom-pulse { from { transform: scale(1); opacity: .8; } to { transform: scale(1.9); opacity: 0; } }
+@keyframes zoom-card { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (max-width: 819px) { .zoom-grid { grid-template-columns: 1fr; gap: 18px; } }
