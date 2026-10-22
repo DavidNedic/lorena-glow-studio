@@ -25,9 +25,9 @@ describe.each(pages)("head of %s", (path) => {
       expect(() => JSON.parse(b)).not.toThrow();
       expect(b).not.toMatch(/€|"price"|offers/i);
     }
-    const title = html.match(/<title>(.*?)<\/title>/)![1];
+    const title = html.match(/<title>(.*?)<\/title>/)![1].replaceAll("&amp;", "&");
     expect(title.length).toBeLessThanOrEqual(62);
-    const desc = html.match(/<meta name="description" content="(.*?)"/)![1];
+    const desc = html.match(/<meta name="description" content="(.*?)"/)![1].replaceAll("&amp;", "&");
     expect(desc.length).toBeLessThanOrEqual(156);
     expect(html).toContain('property="og:image" content="https://thegoldencosmetics.com/images/og-');
   });
