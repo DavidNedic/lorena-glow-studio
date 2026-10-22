@@ -1,14 +1,12 @@
 export type Stand = "neu" | "kosmetikerin" | "studio";
 export type Goal = "treatments" | "wissen" | "umsatz" | "ausbilden";
-export type Form = "vorort" | "online" | "egal";
-export type Answers = { stand: Stand; goal: Goal; form: Form };
-
-/** Returns a masterclass slug, or "skin-expert" for the package. */
-export function recommend({ stand, goal, form }: Answers): string {
-  if (goal === "ausbilden") return "trainer-mentoring";
+export type Start = "sofort" | "bald" | "info";
+export type Answers = { stand: Stand; goal: Goal; start: Start };
+export function recommend({ stand, goal }: Answers): string {
+  if (goal === "ausbilden") return "train-the-trainer";
   if (goal === "umsatz") return stand === "studio" ? "business-growth-mentoring" : "social-media";
-  if (stand === "neu" || goal === "wissen") return form === "online" ? "hautkunde" : "skin-expert";
-  if (form === "online") return "zahnbleaching";
-  if (stand === "studio") return "lash-browlifting";
-  return "skin-expert";
+  if (goal === "wissen") return "hautkunde";
+  if (stand === "neu") return "aquafacial";
+  if (stand === "studio") return "glass-skin";
+  return "kombi";
 }
