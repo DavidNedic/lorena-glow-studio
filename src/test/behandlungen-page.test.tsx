@@ -1,9 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
-import { createMemoryHistory, createRouter } from "@tanstack/react-router";
+import { createMemoryHistory, createRouter, RouterProvider } from "@tanstack/react-router";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { Route as TreatmentsRoute } from "@/routes/behandlungen.index";
 import { routeTree } from "@/routeTree.gen";
 
 // Render the real page so the check fails if the entry is ever re-added or the
@@ -14,8 +13,8 @@ async function renderTreatments() {
     history: createMemoryHistory({ initialEntries: ["/behandlungen"] }),
     context: { queryClient: new QueryClient() },
   });
-  const { Container } = TreatmentsRoute;
-  return render(<Container router={router} match={router.matchRoutes("/behandlungen").at(-1)!} />);
+  await router.load();
+  return render(<RouterProvider router={router} />);
 }
 
 describe("Behandlungsseite", () => {
