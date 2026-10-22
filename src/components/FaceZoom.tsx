@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CONTACT, TREATMENTS, ZOOM_AREAS, priceLabel, type ZoomArea } from "@/lib/data";
+import { CONTACT, TREATMENTS, ZOOM_AREAS, type ZoomArea } from "@/lib/data";
 
 export function FaceZoom({ onShow }: { onShow: (slug: string) => void }) {
   const [sel, setSel] = useState<ZoomArea | null>(null);
@@ -40,7 +40,7 @@ export function FaceZoom({ onShow }: { onShow: (slug: string) => void }) {
           <p className="text-sm text-muted-foreground">{sel.area} · {sel.problem}</p>
           <h3 className="mt-2 text-2xl">{t.name}</h3>
           <p className="mt-3 text-muted-foreground">{sel.help}</p>
-          <p className="mt-4 text-sm"><strong>{t.name}</strong>{t.duration && ` · ${t.duration}`} · {priceLabel(t)}</p>
+          <p className="mt-4 text-sm"><strong>{t.name}</strong>{t.duration && ` · ${t.duration}`}</p>
           <div className="mt-5 flex flex-wrap gap-3"><a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="btn btn-primary">Termin buchen</a><Button variant="ghost" className="btn btn-ghost" onClick={() => onShow(t.slug)}>Ansehen</Button></div>
         </> : <>
           <p className="text-sm text-muted-foreground">So geht es</p>
