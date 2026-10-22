@@ -41,6 +41,16 @@ export const TREATMENTS: Treatment[] = [
 ];
 export function priceLabel(t: Treatment) { return `${t.from ? "ab " : ""}${t.price} €`; }
 export const LEGACY_TREATMENT_SLUGS: Record<string, string> = { "glass-skin": "glass", aquafacial: "aqua", microneedling: "micro", ausreinigung: "rein", "lash-brow": "lash" };
+export type ZoomArea = { id: string; area: string; problem: string; explain?: string; slug: string; help: string; x?: number; y?: number; video: boolean };
+export const ZOOM_AREAS: ZoomArea[] = [
+  { id: "stirn", area: "Stirn", problem: "Kleine Pickel", explain: "Entstehen oft, wenn Poren durch zu viel Talg verstopfen.", slug: "anti-akne", help: "Wir gehen gezielt an die Ursache, statt nur abzudecken.", x: 50, y: 21.3, video: true },
+  { id: "augen", area: "Augen", problem: "Kurze, gerade Wimpern", explain: "Ohne Schwung wirken sie kürzer, als sie eigentlich sind.", slug: "lash", help: "Geliftet und gefärbt: wacher Blick, ganz ohne Mascara.", x: 40, y: 40.3, video: true },
+  { id: "nase", area: "Nase", problem: "Mitesser und große Poren", explain: "Talg und Schmutz setzen sich in den Poren fest und werden dunkel.", slug: "aqua", help: "Tiefenreinigung mit viel Feuchtigkeit. Die Poren sind danach frei.", x: 50, y: 46.9, video: true },
+  { id: "wangen", area: "Wangen", problem: "Aknenarben und Poren", explain: "Nach Pickeln bleiben oft kleine Vertiefungen in der Haut zurück.", slug: "micro", help: "Microneedling kann die Erneuerung anregen und das Hautbild glätten.", x: 70, y: 56, video: true },
+  { id: "kinn", area: "Kinn", problem: "Unreinheiten", explain: "Kommen oft immer wieder an derselben Stelle.", slug: "rein", help: "Gründliche Ausreinigung von Hand, damit sich nichts mehr festsetzt.", x: 50, y: 67.5, video: true },
+  { id: "glow", area: "Ganzes Gesicht", problem: "Fahle, trockene Haut", explain: "Abgestorbene Hautschüppchen schlucken das Licht, die Haut wirkt müde.", slug: "glass", help: "Mein Signature Treatment für Haut, die wieder strahlt.", video: true },
+  { id: "unsicher", area: "Unsicher?", problem: "Du weißt nicht, was du brauchst", slug: "first", help: "Total normal. Wir starten mit einer Hautanalyse und machen direkt deine erste Behandlung.", video: false },
+];
 export const PROBLEMS = [
   { label: "Unreinheiten, die immer wiederkommen", text: "Du reinigst, pflegst, probierst neue Produkte. Und trotzdem sind sie nach ein paar Tagen wieder da.", slug: "anti-akne" },
   { label: "Verstopfte Poren und ein fahler Teint", text: "Make-up sitzt nicht mehr richtig, die Haut wirkt müde, egal wie viel du schläfst.", slug: "aqua" },
