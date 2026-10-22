@@ -115,6 +115,7 @@
 .intro-bird { opacity: 0; animation: bird-in 1.2s .9s ease-out forwards; }
 .intro-title { opacity: 0; animation: rise .8s 1.9s ease-out forwards; }
 .intro-subtitle { opacity: 0; animation: rise .8s 2.2s ease-out forwards; }
+.intro-screen { height: 100vh; height: 100svh; height: 100dvh; }
 .intro-silhouette { background: var(--logo-light); }
 .start-background { background: url('/images/creme-hintergrund.jpg') center/cover fixed; }
 .choice-stage { perspective: 1400px; --px: 0; --py: 0; }
