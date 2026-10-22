@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { answerChat, GREETING, trimHistory, type ChatMessage } from "@/lib/chat";
+import { answerChat, GREETING, trimHistory, refreshHistory, type ChatMessage } from "@/lib/chat";
 export function ChatAssistant({ academy = false }: { academy?: boolean }) {
  const [open,setOpen]=useState(false), [hint,setHint]=useState(false), [messages,setMessages]=useState<ChatMessage[]>([GREETING]), [input,setInput]=useState(""), [ready,setReady]=useState(false);
  const bottom=useRef<HTMLDivElement>(null), field=useRef<HTMLInputElement>(null);
- useEffect(()=>{ try { const saved=JSON.parse(localStorage.getItem("tg-chat") || "null"); if(Array.isArray(saved)) { const valid=saved.filter((m):m is ChatMessage=>m && (m.role==="bot"||m.role==="user") && typeof m.text==="string" && (!m.href || /^(https:\/\/|\/)/.test(m.href))); if(valid.length) setMessages(trimHistory(valid)); } setHint(!localStorage.getItem("tg-chat-seen")); } catch { setHint(true); } setReady(true); },[]);
+ useEffect(()=>{ try { const saved=JSON.parse(localStorage.getItem("tg-chat") || "null"); if(Array.isArray(saved)) { const valid=saved.filter((m):m is ChatMessage=>m && (m.role==="bot"||m.role==="user") && typeof m.text==="string" && (!m.href || /^(https:\/\/|\/)/.test(m.href))); if(valid.length) setMessages(refreshHistory(valid,academy)); } setHint(!localStorage.getItem("tg-chat-seen")); } catch { setHint(true); } setReady(true); },[academy]);
  useEffect(()=>{ if(ready) localStorage.setItem("tg-chat",JSON.stringify(trimHistory(messages))); },[messages,ready]);
  useEffect(()=>{ if(open) { bottom.current?.scrollIntoView({block:"nearest"}); field.current?.focus(); } },[open,messages]);
  useEffect(()=>{ if(!open) return; const key=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false);}; window.addEventListener("keydown",key); return()=>window.removeEventListener("keydown",key); },[open]);

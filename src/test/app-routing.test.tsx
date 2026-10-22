@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { createRouter, rootRouteId } from "@tanstack/react-router";
+import { createMemoryHistory, createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
 import { routeTree } from "@/routeTree.gen";
@@ -13,5 +13,23 @@ describe("App routing", () => {
     const matches = router.matchRoutes("/");
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  });
+  it.each(["aqua", "micro", "micro-cica", "micro-salmon", "glass", "aha-egf", "rein", "aqua-micro", "dermaplaning", "microdermabrasion", "anti-akne", "akne-body", "carboxy", "glow-peel", "refresh-peel", "pure-peel", "glass-skin", "aquafacial", "microneedling", "ausreinigung"])("permanently redirects retired %s to the overview", async (slug) => {
+    const router = createRouter({ routeTree, history: createMemoryHistory({ initialEntries: [`/behandlungen/${slug}`] }), context: { queryClient: new QueryClient() }, isServer: true });
+    await router.load();
+    const result = router._serverResult;
+    expect(result?.type).toBe("redirect");
+    if (result?.type !== "redirect") throw new Error("Expected a permanent redirect");
+    expect(result.redirect.status).toBe(301);
+    expect(result.redirect.options.to).toBe("/behandlungen");
+  });
+  it("preserves the lash-brow alias with a permanent redirect to lash", async () => {
+    const router = createRouter({ routeTree, history: createMemoryHistory({ initialEntries: ["/behandlungen/lash-brow"] }), context: { queryClient: new QueryClient() }, isServer: true });
+    await router.load();
+    const result = router._serverResult;
+    expect(result?.type).toBe("redirect");
+    if (result?.type !== "redirect") throw new Error("Expected a permanent redirect");
+    expect(result.redirect.status).toBe(301);
+    expect(result.redirect.options.params).toEqual({ slug: "lash" });
   });
 });
