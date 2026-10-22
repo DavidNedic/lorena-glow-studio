@@ -1,0 +1,13 @@
+import { expect, it } from "vitest";
+import { CONTACT, MASTERCLASSES, TREATMENTS } from "@/lib/data";
+import { answerChat, trimHistory, type ChatMessage } from "@/lib/chat";
+it("alle Buchungen gehen zum konkreten Beautinda-Salon",()=>{expect(CONTACT.beautinda).toBe("https://beautinda.de/salon/xUqq2vyQw724bbTtNRDh");for(const t of TREATMENTS)expect(t.bookingUrl).toBe(CONTACT.beautinda);});
+it("Telefon und Öffnungszeiten entsprechen den Vorgaben",()=>{expect(CONTACT.tel).toBe("tel:+491629709213");expect(CONTACT.hours).toBe("Mo bis Sa, 9 bis 20 Uhr");});
+it("alle Instagram-Links nutzen denselben Account",()=>expect(CONTACT.instagramAcademy).toBe("https://www.instagram.com/thegoldencosmetics"));
+it("First Time kostet 99 statt 120 Euro für zwei Stunden",()=>expect(TREATMENTS.find(t=>t.slug==="first")).toMatchObject({price:99,oldPrice:120,duration:"2 Std."}));
+it("Kombi kostet 169 statt 229 Euro",()=>expect(TREATMENTS.find(t=>t.slug==="aqua-micro")).toMatchObject({price:169,oldPrice:229,duration:"2 Std."}));
+it("alle 25 Preise und angegebenen Dauern sind exakt",()=>{expect(TREATMENTS.map(t=>[t.price,t.duration||null])).toEqual([[99,"2 Std."],[120,"1 Std. 10 Min."],[120,"1 Std."],[139,"1 Std."],[139,"1 Std."],[129,"1 Std. 20 Min."],[109,"1 Std."],[99,"1 Std."],[169,"2 Std."],[99,"1 Std."],[119,"1 Std. 10 Min."],[120,"1 Std."],[179,null],[120,"1 Std."],[79,"1 Std. 30 Min."],[69,"1 Std. 20 Min."],[20,"30 Min."],[15,"30 Min."],[99,"2 Std."],[120,"2 Std."],[149,"2 Std."],[65,"1 Std. 20 Min."],[99,"1 Std."],[99,null],[99,null]]);});
+it("11 Academy-Angebote, kein Vor-Ort-Angebot",()=>{expect(MASTERCLASSES).toHaveLength(11);expect(MASTERCLASSES.filter(m=>m.group==="fachlich")).toHaveLength(8);expect(MASTERCLASSES.some(m=>/vor ort/i.test(m.format))).toBe(false);});
+it("Chat speichert höchstens 80 neueste Nachrichten",()=>{const messages:ChatMessage[]=Array.from({length:90},(_,i)=>({role:"user",text:String(i)}));const kept=trimHistory(messages);expect(kept).toHaveLength(80);expect(kept[0]?.text).toBe("10");expect(kept[79]?.text).toBe("89");});
+it("Chat nennt den richtigen First-Time-Preis",()=>expect(answerChat("Welche Behandlung passt zu mir?").text).toContain("99 € statt 120 €"));
+it("Chat bietet für unbekannte Fragen persönlichen Kontakt",()=>expect(answerChat("xyz").href).toContain("https://wa.me/491629709213"));

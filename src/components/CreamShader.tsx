@@ -26,14 +26,18 @@ void main(){
 export function CreamShader() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
-    const cv = ref.current!;
+    const cv = ref.current;
+    if (!cv) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const gl = cv.getContext("webgl", { premultipliedAlpha: false });
     if (!gl) return;
-    const sh = (type: number, src: string) => { const s = gl.createShader(type)!; gl.shaderSource(s, src); gl.compileShader(s); return s; };
-    const pr = gl.createProgram()!;
-    gl.attachShader(pr, sh(gl.VERTEX_SHADER, "attribute vec2 a;void main(){gl_Position=vec4(a,0,1);}"));
-    gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG));
+    const sh = (type: number, src: string) => { const s = gl.createShader(type); if (!s) return null; gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    const pr = gl.createProgram();
+    if (!pr) return;
+    const vertex = sh(gl.VERTEX_SHADER, "attribute vec2 a;void main(){gl_Position=vec4(a,0,1);}");
+    const fragment = sh(gl.FRAGMENT_SHADER, FRAG);
+    if (!vertex || !fragment) return;
+    gl.attachShader(pr, vertex); gl.attachShader(pr, fragment);
     gl.linkProgram(pr); gl.useProgram(pr);
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
