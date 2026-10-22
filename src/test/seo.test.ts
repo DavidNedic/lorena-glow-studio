@@ -19,7 +19,7 @@ describe.each(pages)("head of %s", (path) => {
     const html = await (await fetch(BASE + path)).text();
     expect(html).toContain(`<link rel="canonical" href="https://thegoldencosmetics.com${path}"`);
     expect(html.match(/<h1[\s>]/g)?.length).toBe(1);
-    const blocks = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map((m) => m[1]);
+    const blocks = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map((m) => m[1]!);
     expect(blocks.length).toBeGreaterThan(0);
     for (const b of blocks) {
       expect(() => JSON.parse(b)).not.toThrow();

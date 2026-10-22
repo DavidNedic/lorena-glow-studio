@@ -15,3 +15,4 @@
 - Keep the assistant deterministic and device-local, cap history at 80 messages, and never submit chat data to a server.
 - Callback forms prepare a WhatsApp message and explicitly require the visitor to send it; do not display a false delivery confirmation.
 - Preserve published legacy treatment URLs using permanent redirects to the overview for retired offers and the current offer slug for retained aliases.
+- Pages carry their SEO head (title, description, canonical, share image, JSON-LD) via the shared seoHead helper; the sitemap is built from the shared data module so new offers appear automatically.
