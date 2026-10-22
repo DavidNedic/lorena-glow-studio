@@ -22,8 +22,8 @@ function StatusPage({ title, text, children }: { title: string; text: string; ch
         <p className="mt-4 text-muted-foreground">{text}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           {children}
-          <Link to="/behandlungen" className="btn btn-primary">Behandlungen</Link>
-          <Link to="/academy" className="btn btn-ghost">Academy</Link>
+          <Link to="/behandlungen" className="btn btn-primary inline-flex items-center px-6 py-3 text-sm font-medium">Behandlungen</Link>
+          <Link to="/academy" className="btn btn-ghost inline-flex items-center border px-6 py-3 text-sm font-medium">Academy</Link>
         </div>
         <Link to="/" className="mt-6 inline-block text-sm text-muted-foreground">Zur Startseite</Link>
       </div>
@@ -44,7 +44,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 
   return (
     <StatusPage title="Die Seite konnte nicht geladen werden" text="Da ist etwas schiefgelaufen. Versuch es bitte noch einmal oder wähle einen Bereich.">
-      <button onClick={() => { router.invalidate(); reset(); }} className="btn btn-ghost">Erneut versuchen</button>
+      <button onClick={() => { router.invalidate(); reset(); }} className="btn btn-ghost inline-flex items-center border px-6 py-3 text-sm font-medium">Erneut versuchen</button>
     </StatusPage>
   );
 }
