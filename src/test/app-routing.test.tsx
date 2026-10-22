@@ -20,7 +20,7 @@ describe("App routing", () => {
     const result = router._serverResult;
     expect(result?.type).toBe("redirect");
     if (result?.type !== "redirect") throw new Error("Expected a permanent redirect");
-    expect(result.redirect.options.statusCode).toBe(301);
+    expect(result.redirect.status).toBe(301);
     expect(result.redirect.options.to).toBe("/behandlungen");
   });
   it("preserves the lash-brow alias with a permanent redirect to lash", async () => {
@@ -29,7 +29,7 @@ describe("App routing", () => {
     const result = router._serverResult;
     expect(result?.type).toBe("redirect");
     if (result?.type !== "redirect") throw new Error("Expected a permanent redirect");
-    expect(result.redirect.options.statusCode).toBe(301);
+    expect(result.redirect.status).toBe(301);
     expect(result.redirect.options.params).toEqual({ slug: "lash" });
   });
 });
