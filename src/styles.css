@@ -130,25 +130,54 @@
  .choice-card:hover .choice-image { transform: translate(calc(var(--px) * -16px),calc(var(--py) * -12px)) scale(1.17); }
  .choice-card:hover .choice-arrow { transform: rotate(-45deg); color: var(--rose); border-color: var(--rose); }
 }
-.chat-launcher { width: 66px; height: 66px; border: 3px solid var(--mirror-ring); border-radius: 50%; background: linear-gradient(135deg,var(--logo-light),var(--surface-2)); box-shadow: inset 0 0 0 3px var(--mirror-light),var(--shadow-soft); }
-.chat-launcher img { width: 38px; height: 38px; object-fit: contain; }
+.chat-launcher { width: 64px; height: 64px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; animation: chat-float 5s ease-in-out infinite; &:hover { background: transparent; } }
+.chat-launcher img { width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(70,40,30,.28)); }
 .chat-panel { width: 380px; max-width: calc(100vw - 24px); border-radius: 26px; background: var(--paper); color: var(--chat-user); box-shadow: var(--shadow-soft); --surface-2: oklch(0.925 0.018 41.1); --line: oklch(0.9 0.022 39.3); --foreground: var(--chat-user); --muted-foreground: oklch(0.527 0.028 40.8); }
 .chat-message { max-width: 90%; border-radius: 16px; background: var(--surface-2); padding: 12px 14px; text-align: left; font-size: 14px; overflow-wrap: anywhere; }
 .chat-message-user { margin-left: auto; background: var(--chat-user); color: var(--chat-user-text); }
 .chat-dock { position: fixed; right: 20px; bottom: 20px; z-index: 45; }
-.chat-dot { background: var(--rose); border: 2px solid var(--paper); }
+.chat-dot { width: 11px; height: 11px; background: #B0705F; border: 2px solid #fff; }
 @keyframes draw-ring { to { stroke-dashoffset: 0; } }
 @keyframes bird-in { from { opacity: 0; filter: blur(18px); transform: scale(.9); } to { opacity: 1; filter: blur(0); transform: scale(1); } }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes float-card { from { translate: 0 0; } to { translate: 0 -9px; } }
+@keyframes chat-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @media (min-width: 768px) { .site-section { padding-block: 88px; } .site-hero { padding-top: 64px; padding-bottom: 40px; } }
 @media (max-width: 767px) {
  .site-hero h1 { font-size: 40px; }
  .hero-picture { aspect-ratio: 4/3; }
  .chat-dock { right: 14px; bottom: 84px; }
  .chat-panel { max-height: calc(100dvh - 115px); }
- .nav-brand { max-width: 130px; }
  .choice-float { animation: none; }
+}
+@media (max-width: 699px) {
+ body { font-size: 15px; }
+ p { line-height: 1.6; }
+ .site-section { padding-block: 48px; }
+ .site-hero { padding-top: 48px; padding-bottom: 40px; }
+ .site-hero h1 { font-size: 30.5px; }
+ h2 { font-size: 25px; }
+ .quote-heading { font-size: 21px; }
+ .section-copy { font-size: 15px; }
+ .btn { min-height: 44px; padding: 0 18px; font-size: 15px; }
+ .btn-lipstick { min-height: 44px; padding: 0 18px 0 22px; font-size: 15px; }
+ .chip { min-height: 38px; padding: .4rem .9rem; font-size: 14px; }
+ .site-hero .btn { flex: 1 1 auto; }
+ .hero-picture { aspect-ratio: 16/10; border-radius: 20px; }
+ .accordion-list button[aria-controls] { padding: 14px 16px; }
+ .accordion-list button[aria-controls] .min-w-0 > span:first-child { font-size: 15.5px; }
+ .accordion-list button[aria-controls] .min-w-0 > span:not(:first-child) { font-size: 13.5px; }
+ .accordion-list > button { padding-top: 14px; padding-bottom: 14px; }
+ .accordion-list > button .text-xl { font-size: 15.5px; }
+ .accordion-list > button .text-base { font-size: 13.5px; }
+ .site-footer h2 { font-size: 26px; }
+ .site-footer > div { padding-top: 40px; padding-bottom: 96px; }
+ .start-background header { min-height: 64px; padding-block: 0; }
+ .start-background header img { width: 24px; height: 24px; }
+ .start-background header .btn-lipstick { min-height: 36px; padding: 0 14px 0 18px; font-size: 13px; }
+ .nav-brand { max-width: none; white-space: nowrap; font-size: 12.5px; }
+ .nav-brand br { display: none; }
+ .chat-launcher, .chat-launcher img { width: 54px; height: 54px; }
 }
 @media (prefers-reduced-motion: reduce) {
  html { scroll-behavior: auto; }
