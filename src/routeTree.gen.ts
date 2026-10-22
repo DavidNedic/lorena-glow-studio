@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RechtlichesRouteImport } from './routes/rechtliches'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as BehandlungenIndexRouteImport } from './routes/behandlungen.index'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const RechtlichesRoute = RechtlichesRouteImport.update({
   id: '/rechtliches',
   path: '/rechtliches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcademyIndexRoute = AcademyIndexRouteImport.update({
@@ -50,6 +56,7 @@ const BehandlungenSlugRoute = BehandlungenSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/rechtliches': typeof RechtlichesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
   '/academy/': typeof AcademyIndexRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/rechtliches': typeof RechtlichesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
   '/academy': typeof AcademyIndexRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/rechtliches': typeof RechtlichesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
   '/academy/': typeof AcademyIndexRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/rechtliches'
+    | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
     | '/academy/'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/rechtliches'
+    | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
     | '/academy'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/rechtliches'
+    | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
     | '/academy/'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RechtlichesRoute: typeof RechtlichesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AcademySlugRoute: typeof AcademySlugRoute
   BehandlungenSlugRoute: typeof BehandlungenSlugRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/rechtliches'
       fullPath: '/rechtliches'
       preLoaderRoute: typeof RechtlichesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/academy/': {
@@ -158,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RechtlichesRoute: RechtlichesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   AcademySlugRoute: AcademySlugRoute,
   BehandlungenSlugRoute: BehandlungenSlugRoute,
   AcademyIndexRoute: AcademyIndexRoute,

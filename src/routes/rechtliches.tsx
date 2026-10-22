@@ -1,18 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Footer, FloatingNav, Section } from "@/components/site";
 import { CONTACT } from "@/lib/data";
+import { OG, breadcrumbs, seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/rechtliches")({
-  head: () => ({
-    meta: [
-      { title: "Impressum & Datenschutz · The Golden Cosmetics" },
-      { name: "description", content: "Impressum und Datenschutzerklärung von The Golden Cosmetics & Academy, Brackenheim." },
-      { property: "og:title", content: "Impressum & Datenschutz · The Golden Cosmetics" },
-      { property: "og:description", content: "Rechtliche Angaben von The Golden Cosmetics & Academy." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
+  head: () => seoHead({ path: "/rechtliches", title: "Impressum & Datenschutz · The Golden Cosmetics", description: "Impressum und Datenschutzerklärung von The Golden Cosmetics & Academy, Kosmetikstudio von Lorena Kovacevic in Brackenheim bei Heilbronn.", image: OG.behandlungen, jsonLd: [breadcrumbs([["Start", "/"], ["Impressum & Datenschutz", "/rechtliches"]])] }),
   component: Legal,
 });
 

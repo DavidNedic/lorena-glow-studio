@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { CallbackForm } from "@/components/CallbackForm";
 import { ChatAssistant } from "@/components/ChatAssistant";
 import { CONTACT, MASTERCLASSES } from "@/lib/data";
+import { ACADEMY_ORG, OG, abs, breadcrumbs, seoHead } from "@/lib/seo";
 import { recommend, type Stand, type Goal, type Start } from "@/lib/check";
-export const Route=createFileRoute("/academy/")({head:()=>({meta:[{title:"Online-Masterclasses und Mentoring · The Golden Academy"},{name:"description",content:"Online-Masterclasses für Kosmetikerinnen und persönlich begleitetes Mentoring mit Lorena Kovacevic. Finde deinen nächsten Schritt im Karriere-Check."},{property:"og:title",content:"The Golden Academy · You were made for more."},{property:"og:description",content:"Dein Können. Deine Expertise. Deine Zukunft. Online-Masterclasses und Mentoring mit Lorena."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:Academy});
+export const Route=createFileRoute("/academy/")({head:()=>seoHead({path:"/academy",title:"Masterclasses für Kosmetikerinnen · The Golden Academy",description:"Online-Masterclasses und Mentoring für Kosmetikerinnen mit Lorena Kovacevic aus Brackenheim bei Heilbronn. Finde im Karriere-Check deinen nächsten Schritt.",image:OG.academy,jsonLd:[{"@context":"https://schema.org","@type":"ItemList",itemListElement:MASTERCLASSES.map((m,i)=>({"@type":"ListItem",position:i+1,item:{"@type":"Course",name:m.name,description:m.lead,url:abs(`/academy/${m.slug}`),inLanguage:"de",provider:ACADEMY_ORG}}))},breadcrumbs([["Start","/"],["Academy","/academy"]])]}),component:Academy});
 const CALL={label:"Kennenlerngespräch anfragen",href:"#rueckruf"};
 function Academy(){const [tab,setTab]=useState<"fachlich"|"business">("fachlich"),[open,setOpen]=useState<string|null>(null);useScrollToHash();
 return <div className="theme-academy min-h-screen bg-background text-foreground"><FloatingNav back="/" links={[{label:"Masterclasses",href:"#masterclasses"},{label:"Karriere-Check",href:"#check"},{label:"Kontakt",href:"#rueckruf"}]} cta={{label:"Kennenlernen",href:"#rueckruf"}}/>
