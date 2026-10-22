@@ -28,7 +28,7 @@ export function FloatingNav({ back, links, cta }: NavProps) {
   </nav></div>;
 }
 export function Footer({ headline, cta }: { headline: string; cta: { label: string; href: string; external?: boolean } }) {
-  return <footer className="site-footer text-center"><div className="mx-auto max-w-6xl px-5 pb-28 pt-20 md:pb-10">
+  return <footer className="site-footer text-center"><div className="mx-auto max-w-6xl px-5 pb-10 pt-20">
     <div className="flex flex-col items-center gap-7 border-b pb-14"><h2 className="max-w-3xl text-4xl md:text-5xl">{headline}</h2><ActionLink href={cta.href} external={cta.external ?? false} className="footer-cta">{cta.label}</ActionLink></div>
     <div className="mt-12 flex flex-col items-start gap-3 text-left"><Logo text={false} white /><p className="font-semibold">The Golden Cosmetics & Academy by Lorena Kovacevic</p></div>
     <div className="mx-auto grid max-w-4xl gap-8 py-10 text-left text-sm md:grid-cols-3">
@@ -38,7 +38,6 @@ export function Footer({ headline, cta }: { headline: string; cta: { label: stri
     </div><div className="flex flex-wrap justify-start gap-5 border-t pt-6 text-left text-xs text-muted-foreground"><span>© 2026 The Golden Cosmetics</span><Link to="/rechtliches" hash="impressum">Impressum</Link><Link to="/rechtliches" hash="datenschutz">Datenschutz</Link></div>
   </div></footer>;
 }
-export function MobileBar({ label, href, external }: { label: string; href: string; external?: boolean }) { return <div className="fixed inset-x-3 bottom-3 z-40 flex gap-2 rounded-full bg-nav p-1.5 shadow-warm md:hidden"><ActionLink href={href} external={external ?? false} className="min-w-0 flex-1 px-3 py-3 text-sm">{label}</ActionLink><ActionLink href={CONTACT.whatsapp} external secondary className="px-3 py-3 text-sm">WhatsApp</ActionLink></div>; }
 export function AccordionItem({ open, onToggle, head, children, id }: { open: boolean; onToggle: () => void; head: ReactNode; children: ReactNode; id?: string }) {
  const panelId = useId();
  return <div id={id} className="scroll-mt-28 border-b last:border-b-0"><Button variant="ghost" onClick={onToggle} aria-expanded={open} aria-controls={panelId} className="h-auto w-full justify-start gap-3 whitespace-normal rounded-none px-5 py-5 text-left md:px-7"><span className="min-w-0 flex-1">{head}</span><span className={`grid size-8 shrink-0 place-items-center rounded-full border transition-transform ${open ? "rotate-45 text-primary" : ""}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></span></Button><div id={panelId} hidden={!open} className="px-5 pb-6 text-left md:px-7">{children}</div></div>;
