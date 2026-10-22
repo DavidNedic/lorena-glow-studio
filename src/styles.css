@@ -147,8 +147,8 @@
 @media (max-width: 767px) {
  .site-hero h1 { font-size: 40px; }
  .hero-picture { aspect-ratio: 4/3; }
- .chat-dock { right: 14px; bottom: 84px; }
- .chat-panel { max-height: calc(100dvh - 115px); }
+ .chat-dock { right: 14px; bottom: 16px; }
+ .chat-panel { max-height: calc(100dvh - 48px); }
  .choice-float { animation: none; }
 }
 @media (max-width: 699px) {
@@ -172,7 +172,7 @@
  .accordion-list > button .text-xl { font-size: 15.5px; }
  .accordion-list > button .text-base { font-size: 13.5px; }
  .site-footer h2 { font-size: 26px; }
- .site-footer > div { padding-top: 40px; padding-bottom: 96px; }
+ .site-footer > div { padding-top: 40px; padding-bottom: 40px; }
  .start-background header { min-height: 64px; padding-block: 0; }
  .start-background header img { width: 24px; height: 24px; }
  .start-background header .btn-lipstick { min-height: 36px; padding: 0 14px 0 18px; font-size: 13px; }

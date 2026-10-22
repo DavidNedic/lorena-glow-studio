@@ -16,3 +16,8 @@ it("Chat nennt keine Behandlungspreise und verweist Preisfragen auf Beautinda",(
 it("Chat empfiehlt für Hautprobleme nur noch first",()=>{for(const q of ["Akne","Poren","Narben","Glow","Microneedling","Aquafacial","Peels","Ausreinigung"])expect(answerChat(q).href).toBe("/behandlungen/first");expect(answerChat("Wimpern").href).toBe("/behandlungen/lash");expect(answerChat("Brauen").href).toBe("/behandlungen#t-brow");});
 it("gespeicherte automatische Antworten erhalten keine alten Preise oder Links",()=>{const messages:ChatMessage[]=[{role:"user",text:"Microneedling"},{role:"bot",text:"Microneedling: 120 €",href:"/behandlungen/micro"}];expect(refreshHistory(messages)[1]?.href).toBe("/behandlungen/first");expect(refreshHistory(messages)[1]?.text).not.toContain("120 €");expect(refreshHistory(messages)[0]).toEqual(messages[0]);});
 it("Chat bietet für unbekannte Fragen persönlichen Kontakt",()=>expect(answerChat("xyz").href).toContain("https://wa.me/491629709213"));
+
+import { readFileSync as rfMB } from "node:fs";
+test("mobile bottom bar is removed everywhere", () => {
+  for (const f of ["src/components/site.tsx","src/routes/behandlungen.index.tsx","src/routes/behandlungen.$slug.tsx","src/routes/academy.index.tsx","src/routes/academy.$slug.tsx"]) expect(rfMB(f,"utf8")).not.toContain("MobileBar");
+});
