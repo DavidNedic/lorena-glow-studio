@@ -30,39 +30,39 @@
   --color-destructive-foreground: oklch(1 0 0);
 }
 :root {
-  --background: oklch(0.961 0.011 43.6); /* #F8F0EC */
-  --surface: oklch(1 0 0);
-  --surface-2: oklch(0.925 0.018 41.1);
-  --foreground: oklch(0.245 0.021 39.5);
-  --muted-foreground: oklch(0.527 0.028 40.8);
-  --line: oklch(0.9 0.022 39.3);
+  --background: oklch(0.9602567 0.0101837 48.62194); /* #F8F0EC */
+  --surface: oklch(1.0000000 0.0000000 89.87556);
+  --surface-2: oklch(0.9261386 0.0183759 43.21977);
+  --foreground: oklch(0.2454914 0.0219522 37.79336);
+  --muted-foreground: oklch(0.5272450 0.0286124 42.98932);
+  --line: oklch(0.9001674 0.0211296 43.84094);
   --primary: var(--foreground);
   --primary-foreground: oklch(1 0 0);
   --nav: var(--paper);
-  --paper: oklch(0.992 0.005 54.9);
+  --paper: oklch(0.9925308 0.0051068 67.76535);
   --rose: oklch(0.676 0.08 35.5);
   --lipstick: oklch(0.696 0.075 36.1);
   --lipstick-end: oklch(0.605 0.086 36.8);
   --lipstick-text: oklch(1 0 0);
-  --choice-academy: oklch(0.868 0.025 36.6);
-  --choice-academy-text: oklch(0.235 0.026 33.4);
-  --footer-bg: oklch(0.177 0.009 50.6);
+  --choice-academy: oklch(0.8670572 0.0250191 36.50547);
+  --choice-academy-text: oklch(0.2378533 0.0260894 27.11463);
+  --footer-bg: oklch(0.1768756 0.0090263 59.01422);
   --footer-text: oklch(0.961 0.011 43.6);
   --footer-muted: oklch(0.768 0.025 39.5);
   --footer-line: oklch(0.35 0.02 35);
-  --footer-button: oklch(0.865 0.048 37.8);
-  --intro-center: oklch(0.973 0.01 43);
-  --intro-mid: oklch(0.922 0.022 40);
-  --intro-edge: oklch(0.86 0.034 31);
-  --intro-text: oklch(0.249 0.027 22.7);
-  --intro-ring: oklch(0.632 0.082 36.3);
+  --footer-button: oklch(0.8682924 0.0492055 35.45700);
+  --intro-center: oklch(0.9722522 0.0101515 48.62388);
+  --intro-mid: oklch(0.9222897 0.0220009 42.56908);
+  --intro-edge: oklch(0.8625180 0.0324897 37.13327);
+  --intro-text: oklch(0.2520948 0.0270370 22.91732);
+  --intro-ring: oklch(0.6408255 0.0830729 34.90478);
   --logo-light: oklch(1 0 0);
   --logo-shadow: 0 2px 6px color-mix(in oklab, oklch(0.453 0.067 31) 35%, transparent);
   --shadow-soft: 0 24px 60px -28px color-mix(in oklab, var(--foreground) 22%, transparent);
   --mirror-ring: oklch(0.709 0.108 81.3);
   --mirror-light: oklch(0.98 0.009 42);
   --chat-bot: var(--surface-2);
-  --chat-user: oklch(0.245 0.021 39.5);
+  --chat-user: oklch(0.2454914 0.0219522 37.79336);
   --chat-user-text: oklch(1 0 0);
   --insta-yellow: oklch(0.898 0.164 93.6);
   --insta-orange: oklch(0.699 0.194 40.2);
@@ -70,17 +70,17 @@
   --insta-purple: oklch(0.495 0.217 286);
 }
 .theme-academy {
-  --background: oklch(0.881 0.024 37.1);
-  --surface: oklch(0.934 0.017 40.2);
-  --surface-2: oklch(0.834 0.031 35.1);
-  --foreground: oklch(0.249 0.027 22.7);
-  --muted-foreground: oklch(0.475 0.035 29.9);
-  --line: oklch(0.805 0.033 31.4);
-  --primary: oklch(0.521 0.069 25.6);
+  --background: oklch(0.8807101 0.0227771 38.32646);
+  --surface: oklch(0.9330437 0.0147643 44.17480);
+  --surface-2: oklch(0.8329116 0.0306140 38.54336);
+  --foreground: oklch(0.2520948 0.0270370 22.91732);
+  --muted-foreground: oklch(0.4737493 0.0344355 31.36596);
+  --line: oklch(0.8026037 0.0320292 37.80917);
+  --primary: oklch(0.5236587 0.0696813 25.69426);
   --primary-foreground: var(--background);
   --nav: var(--surface);
-  --footer-bg: oklch(0.293 0.031 9.6);
-  --footer-button: oklch(0.824 0.057 35.8);
+  --footer-bg: oklch(0.2941069 0.0306425 9.20769);
+  --footer-button: oklch(0.8333053 0.0608740 35.00159);
 }
 @layer base {
   * { border-color: var(--line); letter-spacing: 0; }
@@ -156,3 +156,10 @@
  .choice-card, .choice-card:hover, .choice-card-academy:hover, .choice-image, .choice-card:hover .choice-image { transform: none; }
  .intro-bird, .intro-title, .intro-subtitle { opacity: 1; }
 }
+
+/* Site controls keep their pill shape independently of the base UI defaults. */
+.btn { border-radius: 999px; height: auto; white-space: normal; }
+.btn-lipstick { border-radius: 0 999px 999px 0; height: auto; }
+.btn-primary { background: var(--primary); color: var(--primary-foreground); }
+.btn-ghost { background: transparent; color: var(--foreground); }
+.footer-cta { background: var(--footer-button); color: var(--chat-user); }
