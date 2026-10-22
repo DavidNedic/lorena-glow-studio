@@ -59,6 +59,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "The Golden Cosmetics" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "google-site-verification", content: "H-2C-DJfg6caRHGwh1c3Ldo1MjNSKFQrYrO-XmiSDag" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
