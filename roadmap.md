@@ -5,3 +5,6 @@
 - [x] Karriere-Check und echte WhatsApp-Anfragen
 - [x] Regelbasierter Chat mit lokalem Verlauf
 - [x] Tests und Desktop-/Mobilprüfung
+- [ ] Angebot auf neun Behandlungen reduzieren und Preise entfernen
+- [ ] Zoom, Chat und alte URLs anpassen, Academy unverändert lassen
+- [ ] Aktualisierte Regeln testen und Seiten auf Mobil/Desktop prüfen
