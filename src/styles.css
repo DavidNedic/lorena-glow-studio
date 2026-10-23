@@ -134,6 +134,7 @@
 .chat-launcher { width: 64px; height: 64px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; animation: chat-float 5s ease-in-out infinite; &:hover { background: transparent; } }
 .chat-launcher img { width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(70,40,30,.28)); }
 .chat-panel { width: 380px; max-width: calc(100vw - 24px); border-radius: 26px; background: var(--paper); color: var(--chat-user); box-shadow: var(--shadow-soft); --surface-2: oklch(0.925 0.018 41.1); --line: oklch(0.9 0.022 39.3); --foreground: var(--chat-user); --muted-foreground: oklch(0.527 0.028 40.8); }
+.chat-panel input { font-size: 16px; }
 .chat-message { max-width: 90%; border-radius: 16px; background: var(--surface-2); padding: 12px 14px; text-align: left; font-size: 14px; overflow-wrap: anywhere; }
 .chat-message-user { margin-left: auto; background: var(--chat-user); color: var(--chat-user-text); }
 .chat-dock { position: fixed; right: 20px; bottom: 20px; z-index: 45; }
