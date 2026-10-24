@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createMemoryHistory, createRouter, RouterProvider } from "@tanstack/react-router";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { act } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -31,10 +31,9 @@ describe("Member-Pop-up auf der Behandlungsseite", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
 
     act(() => { vi.advanceTimersByTime(1); });
-    expect(screen.getByRole("dialog", { name: "Jetzt Member werden" })).toBeTruthy();
-    expect(
-      screen.getByText("Melde dich zum Newsletter an und bekomm einmalig 10 % auf eine Behandlung im Studio."),
-    ).toBeTruthy();
+    const dialog = screen.getByRole("dialog", { name: "Jetzt Member werden" });
+    expect(within(dialog).getByText("Melde dich zum Newsletter an und bekomm einmalig 10 % auf eine Behandlung im Studio.")).toBeTruthy();
+    expect(within(dialog).getByRole("link", { name: "Jetzt Member werden" })).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Pop-up schließen" }));
     expect(screen.queryByRole("dialog")).toBeNull();

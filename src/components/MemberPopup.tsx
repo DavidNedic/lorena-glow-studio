@@ -28,6 +28,7 @@ export function MemberPopup() {
       const items = cardRef.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled])");
       if (!items.length) return;
       const first = items[0], last = items[items.length - 1];
+      if (!first || !last) return;
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     };
