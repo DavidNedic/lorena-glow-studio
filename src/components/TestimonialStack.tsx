@@ -28,24 +28,21 @@ export function TestimonialStack() {
         onPointerUp={() => { const d = dx; drag.current = null; setDx(0); if (Math.abs(d) > 70) next(d < 0 ? 1 : -1); }}
         onPointerCancel={() => { drag.current = null; setDx(0); }}
       >
-        {order.map((src, i) => {
-          const peek = PEEK[i - 1];
-          const dragging = i === 0 && dx !== 0 && !leaving;
-          const style = i === 0
-            ? leaving
+        <div
+          key={current}
+          className={`stack-card stack-card-top${dx !== 0 && !leaving ? " stack-card-drag" : ""}`}
+          style={
+            leaving
               ? { transform: `translate(${leaving.dir * -140}%, -10px) rotate(${leaving.dir * -14}deg)`, opacity: 0 }
-              : dragging
+              : dx !== 0
                 ? { transform: `translateX(${dx}px) rotate(${dx / 24}deg)` }
                 : undefined
-            : { transform: `translate(${peek!.x}px, ${peek!.y}px) rotate(${peek!.r}deg) scale(${peek!.s})` };
-          return (
-            <div key={src} className={`stack-card${i === 0 ? " stack-card-top" : ""}${dragging ? " stack-card-drag" : ""}`} style={{ ...style, zIndex: i === 0 ? 20 : 10 - i }} aria-hidden={i !== 0}>
-              <div className="stack-card-scroll">
-                <img src={src} alt={i === 0 ? `Nachricht einer Absolventin (${top + 1} von ${SCHUELERINNEN.length})` : ""} loading={i === 0 ? "eager" : "lazy"} draggable={false} className="w-full select-none rounded-[20px]" />
-              </div>
-            </div>
-          );
-        })}
+          }
+        >
+          <div className="stack-card-scroll">
+            <img src={current} alt={`Nachricht einer Absolventin (${top + 1} von ${SCHUELERINNEN.length})`} loading="eager" draggable={false} className="w-full select-none" />
+          </div>
+        </div>
       </div>
       <div className="mt-6 flex items-center justify-center gap-4">
         <Button variant="outline" size="icon" onClick={() => next(-1)} aria-label="Vorherige Nachricht" className="size-11 rounded-full"><Arrow dir="left" /></Button>
