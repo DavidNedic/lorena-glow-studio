@@ -17,7 +17,7 @@ function StatusPage({ title, text, children }: { title: string; text: string; ch
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-5 text-foreground">
       <div className="max-w-md text-center">
-        <img src="/images/logo.png" alt="The Golden Cosmetics Logo, ein Kolibri" className="mx-auto size-14 object-contain" />
+        <img src="/images/kolibri-clean.png" alt="The Golden Cosmetics Logo, ein Kolibri" className="mx-auto size-14 object-contain" />
         <h1 className="mt-6 text-3xl md:text-4xl">{title}</h1>
         <p className="mt-4 text-muted-foreground">{text}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

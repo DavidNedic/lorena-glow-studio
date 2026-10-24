@@ -4,7 +4,7 @@ import { CONTACT } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 
 export function Logo({ text = true, white = false }: { text?: boolean; white?: boolean }) {
-  return <span className="flex items-center justify-center gap-2"><img src="/images/logo.png" alt="The Golden Cosmetics Logo, ein Kolibri" className={`size-9 shrink-0 object-contain ${white ? "brand-bird-white" : "brand-bird-black"}`} />{text && <span className="nav-brand text-left text-sm font-semibold leading-tight">The Golden Cosmetics<br /> & Academy</span>}</span>;
+  return <span className="flex items-center justify-center gap-2"><img src="/images/kolibri-clean.png" alt="The Golden Cosmetics Logo, ein Kolibri" className={`size-9 shrink-0 object-contain ${white ? "brand-bird-white" : "brand-bird-black"}`} />{text && <span className="nav-brand text-left text-sm font-semibold leading-tight">The Golden Cosmetics<br /> & Academy</span>}</span>;
 }
 export function Arrow({ dir = "right" }: { dir?: "right" | "left" }) { return <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">{dir === "right" ? <path d="M5 12h14M13 6l6 6-6 6" /> : <path d="M19 12H5M11 6l-6 6 6 6" />}</svg>; }
 export function InstagramLogo() {

@@ -211,10 +211,10 @@
 .zoom-video[data-show="true"] { visibility: visible; }
 .zoom-4k { opacity: 0; transition: opacity .35s; }
 .zoom-4k[data-show="true"] { opacity: 1; }
-.zoom-dot { position: absolute; width: 30px; height: 30px; transform: translate(-50%,-50%); border-radius: 999px; border: 1.5px solid #fff; background: rgba(255,255,255,.35); padding: 0; cursor: pointer; z-index: 2; }
-.zoom-dot::after { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px; border-radius: 999px; background: #fff; }
-.zoom-ring { position: absolute; inset: -1.5px; border-radius: 999px; border: 1.5px solid #fff; animation: zoom-pulse 2s ease-out infinite; }
-.zoom-label { position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #fff; color: var(--foreground); border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.zoom-dot { position: absolute; width: 44px; height: 44px; transform: translate(-50%,-50%); border: 0; border-radius: 999px; background: transparent; padding: 0; cursor: pointer; z-index: 2; }
+.zoom-dot::after { content: ""; position: absolute; inset: 18px; border-radius: 999px; background: var(--surface); outline: 1px solid color-mix(in oklab, var(--foreground) 25%, transparent); }
+.zoom-ring { position: absolute; inset: 13px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--surface) 70%, transparent); background: color-mix(in oklab, var(--surface) 12%, transparent); }
+.zoom-label { position: absolute; top: calc(100% - 6px); left: 50%; transform: translateX(-50%); background: color-mix(in oklab, var(--surface) 85%, transparent); color: var(--foreground); border-radius: 999px; padding: 1px 6px; font-size: 10px; font-weight: 500; white-space: nowrap; }
 .zoom-back { position: absolute; left: 14px; top: 14px; z-index: 3; background: #fff; color: var(--foreground); border-radius: 999px; padding: 8px 14px; font-size: 13.5px; font-weight: 700; border: 0; }
 .zoom-card { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 3; background: rgba(255,255,255,.94); border-radius: 18px; padding: 14px 16px; text-align: left; animation: zoom-card .35s ease-out; }
 .zoom-chip[data-active="true"] { background: #161514; color: #fff; border-color: #161514; }
@@ -225,7 +225,8 @@
 .zoom-stage .zoom-media.zoom-fallback[data-held="true"] { animation: none !important; scale: var(--fb-scale); }
 @keyframes zoom-fb { from { scale: 1; } to { scale: var(--fb-scale); } }
 
-.zoom-dot:hover { background: color-mix(in oklab, var(--surface) 35%, transparent); }
+.zoom-dot:hover { background: transparent; }
+.zoom-dot:hover .zoom-ring, .zoom-dot:focus-visible .zoom-ring { background: color-mix(in oklab, var(--surface) 40%, transparent); }
 .zoom-back { height: auto; }
 .zoom-stage .zoom-media.zoom-fallback[data-returning="true"] { animation: zoom-fb-return var(--fb-dur) ease-in-out forwards !important; }
 @keyframes zoom-fb-return { from { scale: var(--fb-return-scale, 2.6); } to { scale: 1; } }
@@ -280,23 +281,11 @@
 @keyframes member-pop-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
 @media (max-width: 699px) { .member-pop-card { padding: 26px 20px 20px; } }
 
-.story { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; position: relative; }
-.story li { display: flex; gap: 12px; align-items: flex-start; position: relative; }
-.story li:not(:last-child)::after { content: ""; position: absolute; left: 13px; top: 30px; bottom: -12px; width: 1px; background: var(--line); }
-.story-dot { flex: none; width: 27px; height: 27px; border-radius: 999px; display: grid; place-items: center; font-size: 12px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--line); }
-.story-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.story-chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; font-size: 13px; background: transparent; color: inherit; scroll-margin-top: 120px; transition: background .3s, border-color .3s; cursor: pointer; }
-.story-chip.treat-row-hit { background: #F2E3DD; border-color: transparent; }
-.story-pick { margin-top: 14px; border-radius: 16px; padding: 14px 16px; background: var(--surface-2); }
-.club { display: grid; gap: 32px; align-items: center; }
-@media (min-width: 760px) { .club { grid-template-columns: 0.9fr 1.1fr; gap: 48px; } }
-.club-ticket { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 34px 24px; border-radius: 26px; background: linear-gradient(135deg, var(--surface-2), var(--surface)); border: 1px dashed color-mix(in oklab, var(--primary) 45%, transparent); box-shadow: 0 24px 50px -30px color-mix(in oklab, var(--foreground) 40%, transparent); transform: rotate(-3deg); }
-.club-ticket::before, .club-ticket::after { content: ""; position: absolute; top: 50%; width: 26px; height: 26px; border-radius: 999px; background: var(--background); transform: translateY(-50%); }
-.club-ticket::before { left: -13px; } .club-ticket::after { right: -13px; }
-.club-ticket-label { font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--muted-foreground); }
-.club-ticket-value { font-size: 64px; line-height: 1; font-weight: 600; }
-.club-ticket-sub { font-size: 14px; color: var(--muted-foreground); }
-.club-ticket-code { margin-top: 10px; font-family: ui-monospace, monospace; letter-spacing: .15em; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); }
-.club-perks { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
-.club-perks li { display: flex; flex-direction: column; padding-left: 14px; border-left: 2px solid var(--line); }
-.club-perks b { font-size: 14px; } .club-perks span { font-size: 13px; color: var(--muted-foreground); }
+.skin-options > div { border-bottom: 1px solid var(--line); scroll-margin-top: 120px; }
+.skin-options > div:last-child { border-bottom: 0; }
+.skin-options button[aria-controls] { padding: 12px 0; }
+.skin-options button[aria-controls] > span:last-child { width: 22px; height: 22px; border: 0; }
+.skin-options button[aria-controls] > span:last-child svg { width: 14px; height: 14px; }
+.skin-options [hidden] { display: none; }
+.skin-options button[aria-controls] + div { padding: 0 0 14px; }
+.skin-options .treat-row-hit { background: var(--surface-2); }
