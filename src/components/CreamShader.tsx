@@ -20,7 +20,7 @@ void main(){
  vec3 c=mix(ivory,nude,smoothstep(.3,.85,f));
  float spec=smoothstep(.6,.9,fbm(p*1.3+q*3.+off*10.));
  c=mix(c,hi,spec*.55+off*2.);
- gl_FragColor=vec4(c,.78);
+ gl_FragColor=vec4(c,.55);
 }`;
 
 export function CreamShader() {
