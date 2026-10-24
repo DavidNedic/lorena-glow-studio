@@ -232,8 +232,7 @@
 
 /* Behandlungen: neues Listenkonzept */
 .first-box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 28px; padding: 30px 26px; text-align: left; }
-.analysis-grid { display: grid; gap: 10px; grid-template-columns: 1fr; margin-top: 16px; }
-@media (min-width: 640px) { .analysis-grid { grid-template-columns: 1fr 1fr; } }
+.analysis-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 16px; }
 .analysis-item { border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; scroll-margin-top: 120px; transition: background .3s, border-color .3s; }
 .analysis-item:target, .analysis-item.treat-row-hit { background: #F2E3DD; border-color: transparent; }
 .treat-cards { display: grid; gap: 20px; grid-template-columns: 1fr; margin-top: 20px; }
