@@ -54,7 +54,7 @@ function Behandlungen(){
  <Section id="kontakt"><h2 className="mb-6 text-4xl">Gut zu wissen</h2><SimpleAccordion items={FAQ}/><p className="mt-5 text-muted-foreground">Deine Frage ist nicht dabei? Schreib mir einfach, ich antworte persönlich.</p><ActionLink href={CONTACT.whatsapp} external secondary className="mt-4">Per WhatsApp fragen</ActionLink></Section>
  <Section id="member"><div className="club mx-auto max-w-4xl">
   <div className="club-ticket"><span className="club-ticket-label">Golden Ticket</span><span className="club-ticket-value">10 %</span><span className="club-ticket-sub">auf deine nächste Behandlung</span><span className="club-ticket-code">GOLDEN-••••</span></div>
-  <div className="text-left"><Label>Nur für meine Kundinnen</Label><h2 className="mt-3 text-3xl md:text-4xl">The Golden Member Club</h2><p className="mt-3 text-muted-foreground">Dein Ticket in meinen inneren Kreis. Einmal eintragen, dein persönlicher Code kommt sofort per Mail.</p>
+  <div className="text-left"><Label>Nur für meine Kundinnen</Label><h2 className="mt-3 text-3xl md:text-4xl">The Golden Member Club</h2><p className="mt-3 text-muted-foreground">Dein Ticket in meinen inneren Kreis. Einmal eintragen und bestätigen, dann kommt dein persönlicher Code per Mail.</p>
    <ul className="club-perks"><li><b>Dein Willkommenscode</b><span>10 % einmalig im Studio</span></li><li><b>Zuerst Bescheid wissen</b><span>Neue Treatments und freie Termine</span></li><li><b>Hauttipps von mir</b><span>Kurz, ehrlich, ohne Spam</span></li></ul>
    <Button asChild variant="ghost" className="btn btn-primary mt-6"><Link to="/member-club">Ticket sichern →</Link></Button></div>
  </div></Section><Footer headline="Bereit für deinen Glow?" cta={BOOK}/><ChatAssistant/><MemberPopup/></div>;

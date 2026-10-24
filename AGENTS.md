@@ -23,4 +23,4 @@
 
 - Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.
 - Member Club event emails use registered React Email templates and the managed Lovable sender inside server handlers with stable event idempotency keys; Lovable owns delivery and unsubscribe footers, and confirmation retries reuse existing vouchers to recover failed sends without duplicate codes.
-- Member signup rejects existing normalized emails except the designated test address, which reuses its member and confirmation token; unsubscribe and managed suppression remain enforced, and database unique indexes prevent duplicate members and vouchers.
+- Member signup is double opt-in: signup only sends the member-confirm email with the confirmation link; the voucher is created and sent in confirmMember after the link is opened. Pending signups get the confirmation resent; confirmed or unsubscribed emails are rejected except the designated test address (not when unsubscribed); managed suppression remains enforced, and database unique indexes prevent duplicate members and vouchers.
