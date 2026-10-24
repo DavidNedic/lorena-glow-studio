@@ -309,7 +309,7 @@
 .shop-treatment-info h4 { margin-top: 7px; margin-bottom: 12px; font-size: 17px; line-height: 1.4; font-weight: 600; }
 .shop-price { margin-bottom: 14px; font-size: 18px; font-weight: 600; }
 .shop-cta { width: 100%; min-height: 48px; margin-top: auto; white-space: normal; }
-.shop-dialog { background: var(--surface); border-radius: 8px; }
+.shop-dialog { width: calc(100% - 32px); background: var(--surface); border-radius: 8px; }
 @media (max-width: 699px) {
  .booking-intro { max-width: none; }
  .booking-tabs { gap: 20px; }
