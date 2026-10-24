@@ -9,12 +9,24 @@ export const CONTACT = {
   disputeResolution: "Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
   street: "Austraße 26", city: "74336 Brackenheim", phone: "0162 9709213", tel: "tel:+491629709213",
   email: "info@thegoldencosmetics.com", hours: "Mo bis Sa, 9 bis 20 Uhr",
+  websiteCreator: { name: "Promet.digital", url: "https://promet.digital" },
   beautinda: "https://beautinda.de/salon/xUqq2vyQw724bbTtNRDh",
   whatsapp: "https://wa.me/491629709213?text=" + encodeURIComponent("Hi Lorena, ich habe eine Frage zu einer Behandlung."),
   calendly: "https://calendly.com/thegoldencosmetics",
   instagram: "https://www.instagram.com/thegoldencosmetics", instagramAcademy: "https://www.instagram.com/thegoldencosmetics",
 };
 export function whatsappUrl(text: string) { return `https://wa.me/491629709213?text=${encodeURIComponent(text)}`; }
+
+export const LEGAL_TERMS = {
+  paymentMethods: ["Barzahlung", "EC-/Debitkarte", "Kreditkarte"],
+  treatmentCancellationHours: 24,
+  cancellationFeePercent: 50,
+  courseCancellationDays: 14,
+  lateArrivalMinutes: 15,
+  voucherValidityYears: 3,
+  accountingRetentionYears: 8,
+  businessLetterRetentionYears: 6,
+} as const;
 
 // Prices come from the Beautinda catalogue and are shown only for directly bookable treatments; free slots live in Beautinda.
 export type TreatmentGroup = "first" | "direct" | "analysis";

@@ -1,4 +1,5 @@
 # Member-Club-Mailversand
+- [x] Bestätigte Geschäftsbedingungen und Promet.digital ergänzen; Datenschutz an den tatsächlichen Ablauf anpassen und prüfen (genauer Cloud-Speicherort nicht verifiziert)
 - [x] Neue Vorher-Nachher-Collagen trennen, deckungsgleich ausrichten und ziehbare Vergleiche prüfen
 - [x] Bestätigungslink zeigt eigene Erfolgsseite statt erneutem Anmeldeformular
 - [x] Neue Gutscheincodes auf sechs Zeichen verkürzen; vorhandene Codes bleiben gültig
