@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ActionLink, Footer, FloatingNav, InstagramLink, Label, Section, SimpleAccordion, Slider, useScrollToHash } from "@/components/site";
+import { AccordionItem, ActionLink, Footer, FloatingNav, InstagramLink, Label, Section, SimpleAccordion, Slider, useScrollToHash } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { ChatAssistant } from "@/components/ChatAssistant";
 import { FaceZoom } from "@/components/FaceZoom";
@@ -22,8 +22,9 @@ function Row({t,hit,bookable}:{t:Treatment;hit:boolean;bookable:boolean}){
 }
 function Behandlungen(){
  const [hit,setHit]=useState<string|null>(null);const [sel,setSel]=useState<string|null>(null);useScrollToHash();
- const first=TREATMENTS.find(t=>t.group==="first")!;
- const pick=(slug:string)=>{setHit(slug);setTimeout(()=>document.getElementById(`t-${slug}`)?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}),50);setTimeout(()=>setHit(null),2600);};
+ const first=TREATMENTS.find(t=>t.group==="first");
+ if (!first) return null;
+ const pick=(slug:string)=>{setHit(slug);setSel(slug);setTimeout(()=>document.getElementById(`t-${slug}`)?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}),50);setTimeout(()=>setHit(null),2600);};
  return <div className="min-h-screen bg-background text-foreground"><FloatingNav back="/" links={[{label:"Behandlungen",href:"#behandlungen"},{label:"Über Lorena",href:"#lorena"},{label:"Kontakt",href:"#kontakt"}]} cta={BOOK}/>
  <Section className="site-hero"><h1>Schöne Haut beginnt damit, sie zu verstehen.</h1><p className="section-copy mt-6 text-lg text-muted-foreground">Hautästhetik mit Anspruch. Individuelle Behandlungen, moderne Skin-Konzepte und fundiertes Fachwissen, abgestimmt auf die Bedürfnisse deiner Haut.</p><div className="mt-7 flex flex-wrap justify-center gap-3"><ActionLink href={CONTACT.beautinda} external>Termin buchen</ActionLink><ActionLink href="#behandlungen" secondary>Behandlungen ansehen</ActionLink></div><a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-muted-foreground">5,0 von 5 · Bewertungen auf Beautinda</a><img src="/img/einblick-5.jpg" alt="Behandlungsraum von The Golden Cosmetics in Brackenheim mit beleuchtetem Logo" className="hero-picture" style={{objectPosition:"50% 12%"}}/></Section>
  <Section id="zoom"><h2 className="section-copy text-3xl md:text-5xl">Wo möchtest du etwas verändern?</h2><p className="section-copy mt-4 text-muted-foreground">Tipp auf eine Stelle. Wir zoomen ganz nah heran und zeigen dir, was dahintersteckt.</p><FaceZoom onShow={pick}/></Section>
@@ -36,14 +37,8 @@ function Behandlungen(){
   </div>
   <div className="treat-cards mx-auto max-w-5xl">
    <div className="treat-card"><h3 className="text-xl">Direkt online buchen</h3><p className="mt-1 text-sm text-muted-foreground">Ohne Vorgespräch, wähl einfach deinen Termin.</p><div className="mt-4">{TREATMENTS.filter(t=>t.group==="direct").map(t=><Row key={t.slug} t={t} hit={hit===t.slug} bookable/>)}</div></div>
-   <div className="treat-card"><h3 className="text-xl">Dein Weg zu deiner Haut</h3><p className="mt-1 text-sm text-muted-foreground">Kein Muss, kein Paket. Nur das, was deine Haut wirklich braucht.</p>
-    <ol className="story">
-     <li><span className="story-dot">1</span><span><span className="block text-sm font-semibold">Du kommst zu First Time</span><span className="block text-xs text-muted-foreground">Ich lerne deine Haut kennen und du gehst schon mit dem ersten Glow nach Hause.</span></span></li>
-     <li><span className="story-dot">2</span><span><span className="block text-sm font-semibold">Wir sprechen über deine Wünsche</span><span className="block text-xs text-muted-foreground">Ehrlich und ohne Verkaufsdruck. Vielleicht reicht schon gute Pflege zu Hause.</span></span></li>
-     <li><span className="story-dot">3</span><span><span className="block text-sm font-semibold">Wenn du magst, gehen wir weiter</span><span className="block text-xs text-muted-foreground">Tipp an, was dich interessiert. Das sind Möglichkeiten, keine Pflicht.</span></span></li>
-    </ol>
-    <div className="story-chips">{TREATMENTS.filter(t=>t.group==="analysis").map(t=><button type="button" key={t.slug} id={`t-${t.slug}`} aria-pressed={sel===t.slug} onClick={()=>setSel(sel===t.slug?null:t.slug)} className={`story-chip${hit===t.slug||sel===t.slug?" treat-row-hit":""}`}>{t.name}</button>)}</div>
-    {sel&&(()=>{const t=TREATMENTS.find(x=>x.slug===sel)!;return <div className="story-pick"><p className="text-sm font-semibold">{t.name}</p><p className="mt-1 text-sm text-muted-foreground">{t.sentence||"Wir schauen bei deinem First-Time-Termin, ob das zu deiner Haut passt."}</p>{t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="mt-2 inline-block text-sm underline underline-offset-4">Mehr erfahren</Link>}</div>;})()}
+   <div className="treat-card"><h3 className="text-xl">Was passt zu deiner Haut?</h3><p className="mt-2 text-sm text-muted-foreground">Einzelne Möglichkeiten, kein Behandlungsplan. Bei First Time schauen wir gemeinsam, was zu dir passt. Du entscheidest, ob du weitermachen möchtest.</p>
+    <div className="skin-options mt-5">{TREATMENTS.filter(t=>t.group==="analysis").map(t=><div key={t.slug} id={`t-${t.slug}`} className={hit===t.slug?"treat-row-hit":""}><AccordionItem open={sel===t.slug} onToggle={()=>setSel(sel===t.slug?null:t.slug)} head={<span className="text-sm font-medium">{t.name}</span>}><p className="text-sm text-muted-foreground">{t.sentence}</p><p className="mt-2 text-xs text-muted-foreground">{t.duration}</p>{t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="mt-3 inline-block text-sm underline underline-offset-4">Mehr erfahren</Link>}</AccordionItem></div>)}</div>
    </div>
   </div>
   <div className="cal-bar mx-auto max-w-5xl"><span><span className="block font-semibold">Freie Termine und aktuelle Preise</span><span className="block text-sm text-muted-foreground">Immer tagesaktuell in meinem Buchungskalender.</span></span><ActionLink href={CONTACT.beautinda} external secondary>Kalender öffnen</ActionLink></div>
@@ -52,10 +47,10 @@ function Behandlungen(){
  <Section id="ergebnisse"><h2 className="text-4xl md:text-5xl">Echte Haut. Echter Glow.</h2><p className="mb-5 mt-3 text-muted-foreground">Direkt nach der Behandlung</p><Slider images={RESULT_PHOTOS} alt={()=>"Ergebnis direkt nach der Behandlung bei The Golden Cosmetics"}/><InstagramLink results/></Section>
  <Section id="lorena"><div className="mx-auto max-w-[620px] text-left"><img src="/images/lorena-portrait-1.jpg" alt="Lorena Kovacevic, anerkannte Fachkosmetikerin" loading="lazy" className="mx-auto aspect-[4/5] w-full max-w-[420px] rounded-3xl object-cover max-[699px]:w-[78%]"/><p className="mt-5 text-center text-xl font-bold">Lorena Kovacevic</p><p className="text-center text-sm text-muted-foreground">Fachkosmetikerin</p><h2 className="quote-heading mt-6 text-3xl md:text-5xl">Skin is my expertise. Your next level is my mission.</h2><p className="mt-5 text-muted-foreground">Als anerkannte Fachkosmetikerin schaue ich mir deine Haut genau an und sage dir ehrlich, was sie braucht. So gibst du kein Geld mehr für Produkte und Behandlungen aus, die nicht zu dir passen.</p><p className="mt-4 text-sm text-muted-foreground">Dein Einstieg: Hautanalyse und erste Behandlung in einem Termin.</p><div className="mt-5 flex justify-center"><ActionLink href={CONTACT.whatsapp} external>Jetzt beraten lassen</ActionLink></div></div></Section>
  <Section id="kontakt"><h2 className="mb-6 text-4xl">Gut zu wissen</h2><SimpleAccordion items={FAQ}/><p className="mt-5 text-muted-foreground">Deine Frage ist nicht dabei? Schreib mir einfach, ich antworte persönlich.</p><ActionLink href={CONTACT.whatsapp} external secondary className="mt-4">Per WhatsApp fragen</ActionLink></Section>
- <Section id="member"><div className="club mx-auto max-w-4xl">
-  <div className="club-ticket"><span className="club-ticket-label">Golden Ticket</span><span className="club-ticket-value">10 %</span><span className="club-ticket-sub">auf deine nächste Behandlung</span><span className="club-ticket-code">GOLDEN-••••</span></div>
-  <div className="text-left"><Label>Nur für meine Kundinnen</Label><h2 className="mt-3 text-3xl md:text-4xl">The Golden Member Club</h2><p className="mt-3 text-muted-foreground">Dein Ticket in meinen inneren Kreis. Einmal eintragen, dein persönlicher Code kommt sofort per Mail.</p>
-   <ul className="club-perks"><li><b>Dein Willkommenscode</b><span>10 % einmalig im Studio</span></li><li><b>Zuerst Bescheid wissen</b><span>Neue Treatments und freie Termine</span></li><li><b>Hauttipps von mir</b><span>Kurz, ehrlich, ohne Spam</span></li></ul>
-   <Button asChild variant="ghost" className="btn btn-primary mt-6"><Link to="/member-club">Ticket sichern →</Link></Button></div>
+ <Section id="member"><div className="mx-auto max-w-2xl border-t border-border pt-8">
+  <Label>Für meine Kundinnen</Label><h2 className="text-3xl md:text-4xl">The Golden Member Club</h2>
+  <p className="mt-4 text-muted-foreground">Einmalig 10 % auf deine nächste Behandlung. Dazu Hauttipps von mir und Neuigkeiten aus dem Studio.</p>
+  <Button asChild variant="ghost" className="btn btn-primary mt-6"><Link to="/member-club">Jetzt Member werden</Link></Button>
+  <p className="mt-3 text-xs text-muted-foreground">Dein persönlicher Code kommt per E-Mail.</p>
  </div></Section><Footer headline="Bereit für deinen Glow?" cta={BOOK}/><ChatAssistant/><MemberPopup/></div>;
 }
