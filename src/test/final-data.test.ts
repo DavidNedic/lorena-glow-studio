@@ -41,7 +41,6 @@ test("AGB enthalten die 24-Stunden-Regel mit 50 Prozent", () => {
   expect(legal).toContain("bis 24 Stunden vor Beginn kostenlos");
   expect(legal).toContain("50 % des Preises der gebuchten Behandlung");
   expect(legal).toContain("nicht erstattbar");
-  expect(legal).toContain("DE319849001".slice(0,0)); // USt steht im Impressum über CONTACT
 });
 test("Rechtstexte haben alle vier Anker", () => {
   const legal = rfMB("src/routes/rechtliches.tsx","utf8");
