@@ -1,53 +1,58 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { ActionLink, Footer, FloatingNav, InstagramLink, Label, Section, SimpleAccordion, Slider, useScrollToHash } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { ChatAssistant } from "@/components/ChatAssistant";
 import { FaceZoom } from "@/components/FaceZoom";
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { MemberPopup } from "@/components/MemberPopup";
-import { CONTACT, RESULT_PHOTOS, TREATMENTS, type Treatment } from "@/lib/data";
+import { CONTACT, RESULT_PHOTOS, TREATMENTS } from "@/lib/data";
 import { BEAUTY_SALON, OG, breadcrumbs, seoHead } from "@/lib/seo";
 export const FAQ=[{q:"Wie läuft mein erster Termin ab?",a:"Wir starten mit einer Hautanalyse und wählen die passende erste Behandlung. Am einfachsten buchst du First Time: Hautanalyse + erste Behandlung."},{q:"Welche Behandlung passt zu mir?",a:"Tipp oben im Gesicht an, wo du etwas verändern möchtest, oder frag den Assistenten unten rechts. Final entscheiden wir gemeinsam bei deiner Hautanalyse."},{q:"Wie bereite ich mich vor?",a:"Komm am besten ungeschminkt. So kann ich deine Haut direkt beurteilen."},{q:"Kann ich meinen Termin verschieben oder absagen?",a:<>Ja, bis 24 Stunden vor deinem Termin kostenlos. Bei einer späteren Absage oder wenn du nicht erscheinst, werden 50 % des Behandlungspreises fällig, diese sind nicht erstattbar. Alles Weitere steht in den <Link to="/rechtliches" hash="agb" className="underline">AGB</Link>.</>},{q:"Gibt es Gutscheine?",a:"Ja, schreib mir per WhatsApp, dann besprechen wir deinen Gutschein."},{q:"Behandelst du auch Männer?",a:"Ja, auch für Männer starten wir mit First Time: Hautanalyse + erste Behandlung."}];
 export const Route=createFileRoute("/behandlungen/")({head:()=>seoHead({path:"/behandlungen",title:"Kosmetik & Wimpern in Brackenheim · The Golden Cosmetics",description:"Hautanalyse, Lashlifting, Browlifting und Wimpernverlängerung bei Fachkosmetikerin Lorena Kovacevic in Brackenheim bei Heilbronn. Jetzt Termin buchen.",image:OG.behandlungen,jsonLd:[BEAUTY_SALON,{"@context":"https://schema.org","@type":"FAQPage",mainEntity:FAQ.map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:typeof f.a==="string"?f.a:"Ja, bis 24 Stunden vor deinem Termin kostenlos. Bei einer späteren Absage oder wenn du nicht erscheinst, werden 50 % des Behandlungspreises fällig, diese sind nicht erstattbar. Alles Weitere steht in den AGB."}}))},breadcrumbs([["Start","/"],["Behandlungen","/behandlungen"]])]}),component:Behandlungen});
 const BOOK={label:"Termin buchen",href:CONTACT.beautinda,external:true};
-function Row({t,hit,bookable}:{t:Treatment;hit:boolean;bookable:boolean}){
- return <div id={`t-${t.slug}`} className={`treat-row${hit?" treat-row-hit":""}`}>
-  <span className="min-w-0"><span className="block font-semibold">{t.name}</span><span className="mt-0.5 block text-sm text-muted-foreground">{t.duration}{t.price?` · ${t.price}`:""}</span></span>
-  <span className="flex shrink-0 items-center gap-3">
-   {t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="text-sm underline underline-offset-4">Ablauf</Link>}
-   {bookable&&<a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="treat-book">Buchen</a>}
-  </span>
- </div>;
-}
+const BOOKING_CATEGORIES = [
+ {id:"skin",name:"Haut & Glow",slugs:["klassische-ausreinigung","dermaplaning","glow-peel","refresh-peel","pure-peel"]},
+ {id:"lashes",name:"Wimpern",slugs:["lash","natural","refill"]},
+ {id:"brows",name:"Augenbrauen",slugs:["brow","brow-color","brow-shape"]},
+];
 function Behandlungen(){
- const [hit,setHit]=useState<string|null>(null);const [sel,setSel]=useState<string|null>(null);useScrollToHash();
- const first=TREATMENTS.find(t=>t.group==="first")!;
- const pick=(slug:string)=>{setHit(slug);setTimeout(()=>document.getElementById(`t-${slug}`)?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}),50);setTimeout(()=>setHit(null),2600);};
+ const [hit,setHit]=useState<string|null>(null);const [sel,setSel]=useState("aquafacial-ausreinigung");const [category,setCategory]=useState("skin");useScrollToHash();
+ const first=TREATMENTS.find(t=>t.group==="first");
+ const analysis=TREATMENTS.filter(t=>t.group==="analysis");
+ const selected=analysis.find(t=>t.slug===sel)??analysis[0];
+ const activeCategory=BOOKING_CATEGORIES.find(c=>c.id===category)??BOOKING_CATEGORIES[0];
+ const pick=(slug:string)=>{const group=BOOKING_CATEGORIES.find(c=>c.slugs.includes(slug));if(group)setCategory(group.id);if(analysis.some(t=>t.slug===slug))setSel(slug);setHit(slug);setTimeout(()=>document.getElementById(`t-${slug}`)?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}),50);setTimeout(()=>setHit(null),2600);};
+ if(!first||!selected||!activeCategory)return null;
  return <div className="min-h-screen bg-background text-foreground"><FloatingNav back="/" links={[{label:"Behandlungen",href:"#behandlungen"},{label:"Über Lorena",href:"#lorena"},{label:"Kontakt",href:"#kontakt"}]} cta={BOOK}/>
  <Section className="site-hero"><h1>Schöne Haut beginnt damit, sie zu verstehen.</h1><p className="section-copy mt-6 text-lg text-muted-foreground">Hautästhetik mit Anspruch. Individuelle Behandlungen, moderne Skin-Konzepte und fundiertes Fachwissen, abgestimmt auf die Bedürfnisse deiner Haut.</p><div className="mt-7 flex flex-wrap justify-center gap-3"><ActionLink href={CONTACT.beautinda} external>Termin buchen</ActionLink><ActionLink href="#behandlungen" secondary>Behandlungen ansehen</ActionLink></div><a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-muted-foreground">5,0 von 5 · Bewertungen auf Beautinda</a><img src="/img/einblick-5.jpg" alt="Behandlungsraum von The Golden Cosmetics in Brackenheim mit beleuchtetem Logo" className="hero-picture" style={{objectPosition:"50% 12%"}}/></Section>
  <Section id="zoom"><h2 className="section-copy text-3xl md:text-5xl">Wo möchtest du etwas verändern?</h2><p className="section-copy mt-4 text-muted-foreground">Tipp auf eine Stelle. Wir zoomen ganz nah heran und zeigen dir, was dahintersteckt.</p><FaceZoom onShow={pick}/></Section>
  <Section id="behandlungen"><h2 className="text-4xl md:text-5xl">Behandlungen</h2>
-  <div className="first-box mx-auto mt-6 max-w-4xl">
+  <div id={`t-${first.slug}`} className="first-box mx-auto mt-6 max-w-4xl">
    <p className="text-sm text-muted-foreground">Neu bei mir? Hier startest du.</p>
    <h3 className="mt-2 text-2xl md:text-3xl">{first.name}</h3>
    <p className="mt-3 text-muted-foreground">{first.duration} · Lorena schaut sich deine Haut genau an und behandelt direkt passend.</p>
    <div className="mt-6 flex flex-wrap gap-3"><ActionLink href={CONTACT.beautinda} external>Direkt buchen</ActionLink><Button asChild variant="ghost" className="btn btn-ghost"><Link to="/behandlungen/$slug" params={{slug:first.slug}}>Ablauf ansehen</Link></Button></div>
   </div>
-  <div className="mx-auto mt-10 max-w-5xl text-left">
-   <div className="flex items-end justify-between gap-4"><div><p className="text-sm text-muted-foreground">Sofort buchbar</p><h3 className="mt-1 text-2xl">Direkt online buchen</h3></div><span className="hidden text-sm text-muted-foreground md:block">Wisch zur Seite →</span></div>
-   <div className="book-rail">{TREATMENTS.filter(t=>t.group==="direct").map(t=><div key={t.slug} id={`t-${t.slug}`} className={`book-tile${hit===t.slug?" treat-row-hit":""}`}>
-    <span className="text-sm text-muted-foreground">{t.duration}</span>
-    <span className="mt-2 block text-lg font-semibold leading-snug">{t.name}</span>
-    <span className="mt-auto flex items-center justify-between gap-2 pt-5"><span className="text-xl">{t.price||""}</span><a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="treat-book">Buchen</a></span>
-    {t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="mt-3 text-xs text-muted-foreground underline underline-offset-4">Ablauf ansehen</Link>}
-   </div>)}</div>
+  <div className="booking-edit mx-auto mt-10 max-w-5xl">
+   <div className="booking-intro"><p className="text-sm text-muted-foreground">Dein Termin, deine Wahl</p><h3 className="mt-2 text-3xl">Direkt online buchen</h3><p className="mt-3 text-sm text-muted-foreground">Für deinen Glow, deinen Wimpernlook oder schön geformte Brauen.</p></div>
+   <div className="min-w-0">
+    <div className="booking-tabs" role="tablist" aria-label="Behandlungskategorie">{BOOKING_CATEGORIES.map(c=><Button key={c.id} variant="ghost" role="tab" id={`tab-${c.id}`} aria-selected={category===c.id} aria-controls="booking-options" className="booking-tab" onClick={()=>setCategory(c.id)}>{c.name}</Button>)}</div>
+    <div id="booking-options" role="tabpanel" aria-labelledby={`tab-${category}`} className="booking-options">{TREATMENTS.filter(t=>t.group==="direct"&&activeCategory.slugs.includes(t.slug)).map(t=><div key={t.slug} id={`t-${t.slug}`} className={`booking-line${hit===t.slug?" booking-line-hit":""}`}>
+     <div className="min-w-0"><h4 className="font-semibold leading-snug">{t.name}</h4><p className="mt-1 text-xs text-muted-foreground">{t.duration}{t.price?` · ${t.price}`:""}</p>{t.detail&&<Button asChild variant="link" className="h-auto p-0 text-xs text-muted-foreground"><Link to="/behandlungen/$slug" params={{slug:t.slug}}>Ablauf ansehen</Link></Button>}</div>
+     <Button asChild variant="ghost" size="icon" className="booking-arrow"><a href={t.bookingUrl} target="_blank" rel="noreferrer" aria-label={`${t.name} buchen`} title={`${t.name} buchen`}><ArrowUpRight aria-hidden="true"/></a></Button>
+    </div>)}</div>
+   </div>
   </div>
-  <div className="analysis-panel mx-auto mt-10 max-w-5xl">
-   <p className="text-sm text-muted-foreground">Gemeinsam abgestimmt</p><h3 className="mt-1 text-2xl">Nach deiner Hautanalyse</h3>
-   <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">Kein Muss, kein Paket. Tipp an, was dich interessiert.</p>
-   <div className="chip-cloud">{TREATMENTS.filter(t=>t.group==="analysis").map(t=>{const open=sel===t.slug;return <button key={t.slug} id={`t-${t.slug}`} type="button" aria-pressed={open} onClick={()=>setSel(open?null:t.slug)} className={`skin-chip${open||hit===t.slug?" skin-chip-on":""}`}>{t.name}</button>;})}</div>
-   {(()=>{const t=TREATMENTS.find(x=>x.slug===sel&&x.group==="analysis");return t?<div className="chip-note" aria-live="polite"><p className="font-semibold">{t.name}<span className="font-normal text-muted-foreground"> · {t.duration}</span></p><p className="mt-1 text-sm text-muted-foreground">{t.sentence||"Wir schauen bei deinem First-Time-Termin, ob das zu deiner Haut passt."}</p>{t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="mt-2 inline-block text-sm underline underline-offset-4">Mehr erfahren</Link>}</div>:<p className="mt-5 text-xs text-muted-foreground">Start immer mit <Link to="/behandlungen/$slug" params={{slug:first.slug}} className="underline underline-offset-4">First Time</Link>.</p>;})()}
+  <div className="skin-explorer mx-auto mt-10 max-w-5xl">
+   <img src="/images/kachel-behandlung.jpg" alt="Einblick in eine kosmetische Gesichtsbehandlung bei Lorena" loading="lazy" className="skin-explorer-image"/>
+   <div className="skin-explorer-content"><p className="text-sm text-muted-foreground">Individuell statt von der Stange</p><h3 className="mt-2 text-3xl">Nach deiner Hautanalyse</h3><p className="mt-3 text-sm text-muted-foreground">Ich schaue, was deine Haut braucht. Gemeinsam entscheiden wir, welche Behandlung zu dir passt. Du musst dich jetzt noch nicht festlegen.</p>
+    <label htmlFor="skin-treatment" className="mt-6 block text-xs font-semibold">Deine Möglichkeiten</label>
+    <select id="skin-treatment" value={sel} onChange={e=>setSel(e.target.value)} className="skin-select">{analysis.map(t=><option key={t.slug} value={t.slug}>{t.name}</option>)}</select>
+    <div id={`t-${selected.slug}`} className="skin-treatment-detail" aria-live="polite"><span className="text-xs text-muted-foreground">{selected.duration}</span><h4 className="mt-2 text-xl font-semibold leading-snug">{selected.name}</h4><p className="mt-2 text-sm text-muted-foreground">{selected.sentence}</p></div>
+    <Button asChild variant="link" className="mt-4 h-auto p-0"><Link to="/behandlungen/$slug" params={{slug:first.slug}}>Mit Hautanalyse starten <ArrowUpRight aria-hidden="true"/></Link></Button>
+   </div>
   </div>
   <div className="cal-bar mx-auto max-w-5xl"><span><span className="block font-semibold">Freie Termine und aktuelle Preise</span><span className="block text-sm text-muted-foreground">Immer tagesaktuell in meinem Buchungskalender.</span></span><ActionLink href={CONTACT.beautinda} external secondary>Kalender öffnen</ActionLink></div>
  </Section>

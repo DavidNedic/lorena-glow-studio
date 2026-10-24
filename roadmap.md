@@ -1,4 +1,6 @@
 # Member-Club-Mailversand
+- [ ] Direktbuchung mit Kategorien statt Swipe-Karten gestalten
+- [ ] Hautanalyse als ruhige Einzelansicht statt Button-Wolke gestalten und beide Bereiche prüfen
 - [x] Bisherige Website-Anpassungen (siehe Gesprächsarchiv)
 - [x] Member-Club-Bestätigung und Gutschein von Resend auf Lovable umstellen
 - [x] Vorlagen, Absender und stabile Versand-IDs testen
