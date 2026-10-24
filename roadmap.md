@@ -11,3 +11,6 @@
 - [x] Header/Footer, schwarze Icons und Startseiten-Academy-Bild aktualisieren
 - [x] Kontakt, Impressum, Footerlinks und Member-Club-Platzhalter ergänzen
 - [x] Schrift lokal laden und Änderungen auf Mobil/Desktop testen
+- [ ] Hotspot-Inhalte und fünf verknüpfte Hautbehandlungen ergänzen
+- [ ] Augenbrauen/Pickel mit Foto-Zoom und Rückwärtsanimation ergänzen
+- [ ] Verknüpfungen, mobile Labels und Zoom-Wege testen
