@@ -299,17 +299,20 @@
 .booking-tab[aria-selected="true"] { border-bottom-color: var(--foreground); color: var(--foreground); }
 .booking-line { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 84px; padding: 16px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 120px; }
 .booking-line-hit { background: var(--surface-2); }
-.booking-arrow { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); }
-.skin-explorer { display: grid; grid-template-columns: .8fr 1.2fr; align-items: stretch; text-align: left; border-top: 1px solid var(--line); padding-top: 32px; gap: 40px; }
-.skin-explorer-image { width: 100%; height: 100%; max-height: 480px; min-height: 320px; object-fit: cover; border-radius: 8px; }
-.skin-explorer-content { min-width: 0; padding-block: 8px; }
-.skin-select { width: 100%; min-height: 48px; margin-top: 8px; padding: 10px 30px 10px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--foreground); font: inherit; font-size: 16px; text-overflow: ellipsis; }
-.skin-select:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
-.skin-treatment-detail { min-height: 150px; margin-top: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; scroll-margin-top: 120px; }
+.booking-cta { flex-shrink: 0; min-width: 120px; min-height: 48px; }
+.skin-options { border-top: 1px solid var(--line); padding-top: 32px; }
+.skin-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; text-align: left; margin-top: 26px; }
+.skin-option { scroll-margin-top: 120px; }
+.skin-option-trigger { gap: 18px; min-height: 64px; font-size: 15px; line-height: 1.4; padding: 16px 0; }
+.skin-option-trigger span { min-width: 0; }
+.skin-option-trigger:hover { text-decoration: none; color: var(--muted-foreground); }
+.skin-option-content { padding-right: 28px; }
 @media (max-width: 699px) {
- .booking-edit, .skin-explorer { grid-template-columns: 1fr; gap: 20px; }
+ .booking-edit { grid-template-columns: 1fr; gap: 20px; }
  .booking-intro { max-width: none; }
  .booking-tabs { gap: 20px; }
- .skin-explorer-image { height: 180px; min-height: 0; object-position: center 45%; }
- .skin-treatment-detail { min-height: 164px; }
+ .booking-line { flex-wrap: wrap; gap: 14px; padding-block: 18px; }
+ .booking-line > div { width: 100%; }
+ .booking-cta { width: 100%; min-height: 48px; }
+ .skin-options-grid { grid-template-columns: 1fr; }
 }

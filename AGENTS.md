@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Application rules
-- Treatment booking uses category tabs and compact rows; the analysis explorer displays one shared-catalogue treatment at a time, keeping all offers accessible without duplicating catalogue content.
+- Treatment booking uses category tabs and labelled booking actions; analysis offers use a single-open accordion from the shared catalogue, keeping details optional without duplicating catalogue content.
 - Keep all contact information, the price-free treatment catalogue and Academy offerings in the shared data module so every page and assistant uses the same source.
 - Use scoped semantic CSS tokens for the treatment, Academy and footer palettes to preserve consistent theming.
 - Keep the assistant deterministic and device-local, cap history at 80 messages, and never submit chat data to a server.
