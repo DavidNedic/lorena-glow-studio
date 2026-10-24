@@ -8,6 +8,13 @@
       "when": 1792833656208,
       "tag": "0000_member_club",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792837223158,
+      "tag": "0001_member_club_open_signup",
+      "breakpoints": true
     }
   ]
 }

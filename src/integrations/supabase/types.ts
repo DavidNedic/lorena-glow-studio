@@ -70,6 +70,7 @@ export type Database = {
       }
       members: {
         Row: {
+          confirm_token: string
           created_at: string
           email: string
           id: string
@@ -82,11 +83,12 @@ export type Database = {
           vorname: string
         }
         Insert: {
+          confirm_token?: string
           created_at?: string
           email: string
           id?: string
-          invite_code: string
-          member_code: string
+          invite_code?: string
+          member_code?: string
           newsletter?: boolean
           newsletter_confirmed_at?: string | null
           newsletter_token?: string
@@ -94,6 +96,7 @@ export type Database = {
           vorname: string
         }
         Update: {
+          confirm_token?: string
           created_at?: string
           email?: string
           id?: string
@@ -104,6 +107,24 @@ export type Database = {
           newsletter_token?: string
           unsubscribed_at?: string | null
           vorname?: string
+        }
+        Relationships: []
+      }
+      signup_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          ip_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_hash?: string
         }
         Relationships: []
       }
@@ -124,6 +145,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      vouchers: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          member_id: string
+          rabatt_prozent: number
+          redeemed_at: string | null
+          redeemed_note: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          member_id: string
+          rabatt_prozent?: number
+          redeemed_at?: string | null
+          redeemed_note?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          member_id?: string
+          rabatt_prozent?: number
+          redeemed_at?: string | null
+          redeemed_note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vouchers_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: true
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
