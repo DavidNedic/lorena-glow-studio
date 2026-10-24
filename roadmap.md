@@ -2,4 +2,7 @@
 - [x] Bisherige Website-Anpassungen (siehe Gesprächsarchiv)
 - [x] Member-Club-Bestätigung und Gutschein von Resend auf Lovable umstellen
 - [x] Vorlagen, Absender und stabile Versand-IDs testen
-- [ ] Echten Mailversand und Bestätigungsablauf prüfen: wartet auf DNS-Verifizierung von info.thegoldencosmetics.com
+- [x] Gutscheinmail im Website-Design gestalten und gerendert prüfen
+- [x] Weitere Anmeldungen derselben E-Mail verhindern und testen
+- [x] Lorenas Verwaltungszugang und Mitgliederübersicht mit ihrer Sitzung prüfen
+- [ ] Echten Mailversand und Bestätigungsablauf prüfen: benötigt eine neue echte Anmeldung mit Bestätigung; Domain ist verifiziert, es wurde keine zusätzliche Testmail verschickt

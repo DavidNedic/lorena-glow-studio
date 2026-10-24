@@ -34,10 +34,11 @@ export const signupMember = createServerFn({ method: "POST" })
     const email = normalizeEmail(data.email);
     const { data: existing } = await db.from("members").select("id, vorname, confirm_token, newsletter_token, newsletter_confirmed_at, unsubscribed_at").ilike("email", email).maybeSingle();
     let member = existing;
-    if (existing && (existing.newsletter_confirmed_at || existing.unsubscribed_at)) return { status: "exists" as const };
+    if (existing) return { status: "exists" as const };
     if (!member) {
       const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_token, newsletter_confirmed_at, unsubscribed_at").single();
-      if (error || !created) { console.error(error); throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal."); }
+      if (error?.code === '23505') return { status: 'exists' as const };
+      if (error || !created) throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal.");
       member = created;
     }
     const o = origin();
@@ -47,7 +48,7 @@ export const signupMember = createServerFn({ method: "POST" })
       idempotencyKey: `member-confirmation-${member.id}-${member.confirm_token}`,
     });
     if (!delivery.sent) throw new Error('An diese Adresse können derzeit keine Member-Club-Mails gesendet werden.');
-    return { status: existing ? ("resent" as const) : ("sent" as const) };
+    return { status: "sent" as const };
   });
 
 export const confirmMember = createServerFn({ method: "POST" })
@@ -60,7 +61,10 @@ export const confirmMember = createServerFn({ method: "POST" })
     const { data: m } = await db.from("members").select("id, vorname, email, newsletter_token, newsletter_confirmed_at, unsubscribed_at").eq("confirm_token", data.token).maybeSingle();
     if (!m || m.unsubscribed_at) return { ok: false as const };
     const { data: v } = await db.from("vouchers").select("id, code").eq("member_id", m.id).maybeSingle();
-    if (!m.newsletter_confirmed_at) await db.from("members").update({ newsletter_confirmed_at: new Date().toISOString() }).eq("id", m.id);
+    if (!m.newsletter_confirmed_at) {
+      const { error } = await db.from("members").update({ newsletter_confirmed_at: new Date().toISOString() }).eq("id", m.id);
+      if (error) throw new Error('Deine Anmeldung konnte nicht bestätigt werden. Bitte öffne den Link erneut.');
+    }
     let code = v?.code ?? "";
     for (let i = 0; i < 8 && !code; i++) {
       const c = makeVoucherCode();
@@ -103,8 +107,9 @@ export const adminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { data: members } = await context.supabase.from("members").select("id, vorname, email, created_at, newsletter_confirmed_at, unsubscribed_at").order("created_at", { ascending: false });
-    const { data: vouchers } = await context.supabase.from("vouchers").select("member_id, code, redeemed_at, redeemed_note");
+    const { data: members, error: memberError } = await context.supabase.from("members").select("id, vorname, email, created_at, newsletter_confirmed_at, unsubscribed_at").order("created_at", { ascending: false });
+    const { data: vouchers, error: voucherError } = await context.supabase.from("vouchers").select("member_id, code, redeemed_at, redeemed_note");
+    if (memberError || voucherError) throw new Error('Die Mitglieder konnten nicht geladen werden. Bitte versuch es erneut.');
     const byMember = new Map((vouchers ?? []).map((v: any) => [v.member_id, v]));
     return (members ?? []).map((m: any): AdminRow => {
       const v: any = byMember.get(m.id);
