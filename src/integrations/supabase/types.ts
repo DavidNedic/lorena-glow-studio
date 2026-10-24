@@ -14,16 +14,166 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      invite_codes: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          id: string
+          used_at: string | null
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          id?: string
+          used_at?: string | null
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          id?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
+      member_offers: {
+        Row: {
+          active: boolean
+          code: string
+          condition: string
+          created_at: string
+          id: string
+          title: string
+          valid_until: string | null
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          condition?: string
+          created_at?: string
+          id?: string
+          title: string
+          valid_until?: string | null
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          condition?: string
+          created_at?: string
+          id?: string
+          title?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      members: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          invite_code: string
+          member_code: string
+          newsletter: boolean
+          newsletter_confirmed_at: string | null
+          newsletter_token: string
+          unsubscribed_at: string | null
+          vorname: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          invite_code: string
+          member_code: string
+          newsletter?: boolean
+          newsletter_confirmed_at?: string | null
+          newsletter_token?: string
+          unsubscribed_at?: string | null
+          vorname: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          invite_code?: string
+          member_code?: string
+          newsletter?: boolean
+          newsletter_confirmed_at?: string | null
+          newsletter_token?: string
+          unsubscribed_at?: string | null
+          vorname?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      member_offers_public: {
+        Row: {
+          condition: string | null
+          id: string | null
+          title: string | null
+          valid_until: string | null
+        }
+        Insert: {
+          condition?: string | null
+          id?: string | null
+          title?: string | null
+          valid_until?: string | null
+        }
+        Update: {
+          condition?: string | null
+          id?: string | null
+          title?: string | null
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      redeem_invite: {
+        Args: {
+          _code: string
+          _email: string
+          _newsletter: boolean
+          _vorname: string
+        }
+        Returns: string
+      }
+      reveal_offer_code: {
+        Args: { _member_code: string; _offer_id: string }
+        Returns: string
+      }
+      unsubscribe_newsletter: { Args: { _token: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +300,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
