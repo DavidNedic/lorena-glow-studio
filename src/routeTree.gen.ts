@@ -19,9 +19,9 @@ import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as BehandlungenIndexRouteImport } from './routes/behandlungen.index'
 import { Route as BehandlungenSlugRouteImport } from './routes/behandlungen.$slug'
-import { Route as MemberClubAbmeldenRouteImport } from './routes/member-club.abmelden'
 import { Route as MemberClubAdminRouteImport } from './routes/member-club.admin'
-import { Route as MemberClubBestaetigenRouteImport } from './routes/member-club.bestaetigen'
+import { Route as MemberClubAbmeldenRouteImport } from './routes/member-club_.abmelden'
+import { Route as MemberClubBestaetigenRouteImport } from './routes/member-club_.bestaetigen'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -74,20 +74,20 @@ const BehandlungenSlugRoute = BehandlungenSlugRouteImport.update({
   path: '/behandlungen/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MemberClubAbmeldenRoute = MemberClubAbmeldenRouteImport.update({
-  id: '/abmelden',
-  path: '/abmelden',
-  getParentRoute: () => MemberClubRoute,
-} as any)
 const MemberClubAdminRoute = MemberClubAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => MemberClubRoute,
 } as any)
+const MemberClubAbmeldenRoute = MemberClubAbmeldenRouteImport.update({
+  id: '/member-club_/abmelden',
+  path: '/member-club/abmelden',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MemberClubBestaetigenRoute = MemberClubBestaetigenRouteImport.update({
-  id: '/bestaetigen',
-  path: '/bestaetigen',
-  getParentRoute: () => MemberClubRoute,
+  id: '/member-club_/bestaetigen',
+  path: '/member-club/bestaetigen',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
@@ -105,8 +105,8 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
-  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/admin': typeof MemberClubAdminRoute
+  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
@@ -121,8 +121,8 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
-  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/admin': typeof MemberClubAdminRoute
+  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy': typeof AcademyIndexRoute
   '/behandlungen': typeof BehandlungenIndexRoute
@@ -138,9 +138,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
-  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/admin': typeof MemberClubAdminRoute
-  '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
+  '/member-club_/abmelden': typeof MemberClubAbmeldenRoute
+  '/member-club_/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -156,8 +156,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
-    | '/member-club/abmelden'
     | '/member-club/admin'
+    | '/member-club/abmelden'
     | '/member-club/bestaetigen'
     | '/academy/'
     | '/behandlungen/'
@@ -172,8 +172,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
-    | '/member-club/abmelden'
     | '/member-club/admin'
+    | '/member-club/abmelden'
     | '/member-club/bestaetigen'
     | '/academy'
     | '/behandlungen'
@@ -188,9 +188,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
-    | '/member-club/abmelden'
     | '/member-club/admin'
-    | '/member-club/bestaetigen'
+    | '/member-club_/abmelden'
+    | '/member-club_/bestaetigen'
     | '/academy/'
     | '/behandlungen/'
     | '/lovable/email/transactional/preview'
@@ -205,6 +205,8 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AcademySlugRoute: typeof AcademySlugRoute
   BehandlungenSlugRoute: typeof BehandlungenSlugRoute
+  MemberClubAbmeldenRoute: typeof MemberClubAbmeldenRoute
+  MemberClubBestaetigenRoute: typeof MemberClubBestaetigenRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
   BehandlungenIndexRoute: typeof BehandlungenIndexRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -282,13 +284,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BehandlungenSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/member-club/abmelden': {
-      id: '/member-club/abmelden'
-      path: '/abmelden'
-      fullPath: '/member-club/abmelden'
-      preLoaderRoute: typeof MemberClubAbmeldenRouteImport
-      parentRoute: typeof MemberClubRoute
-    }
     '/member-club/admin': {
       id: '/member-club/admin'
       path: '/admin'
@@ -296,12 +291,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemberClubAdminRouteImport
       parentRoute: typeof MemberClubRoute
     }
-    '/member-club/bestaetigen': {
-      id: '/member-club/bestaetigen'
-      path: '/bestaetigen'
+    '/member-club_/abmelden': {
+      id: '/member-club_/abmelden'
+      path: '/member-club/abmelden'
+      fullPath: '/member-club/abmelden'
+      preLoaderRoute: typeof MemberClubAbmeldenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/member-club_/bestaetigen': {
+      id: '/member-club_/bestaetigen'
+      path: '/member-club/bestaetigen'
       fullPath: '/member-club/bestaetigen'
       preLoaderRoute: typeof MemberClubBestaetigenRouteImport
-      parentRoute: typeof MemberClubRoute
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
@@ -314,15 +316,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface MemberClubRouteChildren {
-  MemberClubAbmeldenRoute: typeof MemberClubAbmeldenRoute
   MemberClubAdminRoute: typeof MemberClubAdminRoute
-  MemberClubBestaetigenRoute: typeof MemberClubBestaetigenRoute
 }
 
 const MemberClubRouteChildren: MemberClubRouteChildren = {
-  MemberClubAbmeldenRoute: MemberClubAbmeldenRoute,
   MemberClubAdminRoute: MemberClubAdminRoute,
-  MemberClubBestaetigenRoute: MemberClubBestaetigenRoute,
 }
 
 const MemberClubRouteWithChildren = MemberClubRoute._addFileChildren(
@@ -338,6 +336,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AcademySlugRoute: AcademySlugRoute,
   BehandlungenSlugRoute: BehandlungenSlugRoute,
+  MemberClubAbmeldenRoute: MemberClubAbmeldenRoute,
+  MemberClubBestaetigenRoute: MemberClubBestaetigenRoute,
   AcademyIndexRoute: AcademyIndexRoute,
   BehandlungenIndexRoute: BehandlungenIndexRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,

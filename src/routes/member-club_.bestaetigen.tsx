@@ -6,7 +6,7 @@ import { CONTACT } from "@/lib/data";
 import { OG, seoHead } from "@/lib/seo";
 import { confirmMember } from "@/lib/member.functions";
 
-export const Route = createFileRoute("/member-club/bestaetigen")({
+export const Route = createFileRoute("/member-club_/bestaetigen")({
   validateSearch: (s: Record<string, unknown>) => ({ token: typeof s["token"] === "string" ? s["token"] : "" }),
   head: () => seoHead({ path: "/member-club/bestaetigen", title: "Anmeldung bestätigen · The Golden Cosmetics", description: "Bestätigung der Newsletter-Anmeldung bei The Golden Cosmetics in Brackenheim.", image: OG.behandlungen, noindex: true }),
   component: Confirm,
