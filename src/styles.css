@@ -193,6 +193,7 @@
  *, *::before, *::after { animation: none !important; transition: none !important; }
  .choice-card, .choice-card:hover, .choice-card-academy:hover, .choice-image, .choice-card:hover .choice-image { transform: none; }
  .intro-bird, .intro-title, .intro-subtitle { opacity: 1; }
+ .consent-bird, .consent-title, .consent-body, .consent-actions { opacity: 1; animation: none; }
 }
 
 /* Site controls keep their pill shape independently of the base UI defaults. */
@@ -336,3 +337,11 @@
  .shop-treatment-info > p { font-size: 12px; }
  .shop-cta { font-size: 14px; padding-inline: 8px; }
 }
+
+/* ---- Privatsphäre-Banner (Einflug wie im Intro) ---- */
+.consent-card { animation: consent-in .55s cubic-bezier(.22,.7,.3,1) both; }
+.consent-head { display: flex; align-items: center; gap: 12px; }
+.consent-bird { width: 30px; height: auto; opacity: 0; animation: bird-in .8s .25s ease-out forwards; }
+.consent-title { opacity: 0; animation: rise .5s .6s ease-out forwards; }
+.consent-body, .consent-actions { opacity: 0; animation: rise .5s .75s ease-out forwards; }
+@keyframes consent-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }

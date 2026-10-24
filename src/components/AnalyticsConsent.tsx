@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import birdMark from "@/assets/kolibri-mark.png";
 import { CONSENT_KEY, CONSENT_NOTICE, readConsent, saveConsent, updateAnalytics } from "@/lib/analytics";
 
 export function AnalyticsConsent() {
@@ -39,12 +40,15 @@ export function AnalyticsConsent() {
   }
 
   if (!configured || !open) return null;
-  return <section aria-label="Cookie-Einstellungen" className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-h-[85dvh] max-w-xl overflow-y-auto rounded-lg border border-border bg-background p-5 text-foreground shadow-warm sm:p-6">
-    <h2 className="text-xl font-semibold">Deine Privatsphäre</h2>
-    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{CONSENT_NOTICE}</p>
-    <a href="/rechtliches#datenschutz" className="mt-3 inline-block text-sm underline underline-offset-4">Datenschutz</a>
+  return <section aria-label="Cookie-Einstellungen" className="consent-card fixed inset-x-3 bottom-3 z-[100] mx-auto max-h-[85dvh] max-w-xl overflow-y-auto rounded-lg border border-border bg-background p-5 text-foreground shadow-warm sm:p-6">
+    <div className="consent-head">
+      <img src={birdMark} alt="" aria-hidden="true" className="consent-bird" decoding="async" />
+      <h2 className="consent-title text-xl font-semibold">Deine Privatsphäre</h2>
+    </div>
+    <p className="consent-body mt-3 text-sm leading-relaxed text-muted-foreground">{CONSENT_NOTICE}</p>
+    <a href="/rechtliches#datenschutz" className="consent-body mt-3 inline-block text-sm underline underline-offset-4">Datenschutz</a>
     {storageError && <p role="alert" className="mt-3 text-sm">Deine Auswahl konnte nicht gespeichert werden. Die Statistik bleibt ausgeschaltet.</p>}
-    <div className="mt-5 grid grid-cols-2 gap-3">
+    <div className="consent-actions mt-5 grid grid-cols-2 gap-3">
       <Button variant="outline" className="h-auto min-h-11 whitespace-normal" onClick={() => decide(false)}>Ablehnen</Button>
       <Button variant="outline" className="h-auto min-h-11 whitespace-normal" onClick={() => decide(true)}>Akzeptieren</Button>
     </div>
