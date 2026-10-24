@@ -10,8 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as MemberClubRouteImport } from './routes/member-club'
 import { Route as RechtlichesRouteImport } from './routes/rechtliches'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
@@ -19,10 +21,16 @@ import { Route as BehandlungenIndexRouteImport } from './routes/behandlungen.ind
 import { Route as BehandlungenSlugRouteImport } from './routes/behandlungen.$slug'
 import { Route as MemberClubAbmeldenRouteImport } from './routes/member-club.abmelden'
 import { Route as MemberClubAdminRouteImport } from './routes/member-club.admin'
+import { Route as MemberClubBestaetigenRouteImport } from './routes/member-club.bestaetigen'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MemberClubRoute = MemberClubRouteImport.update({
@@ -33,6 +41,11 @@ const MemberClubRoute = MemberClubRouteImport.update({
 const RechtlichesRoute = RechtlichesRouteImport.update({
   id: '/rechtliches',
   path: '/rechtliches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -70,41 +83,55 @@ const MemberClubAdminRoute = MemberClubAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => MemberClubRoute,
 } as any)
+const MemberClubBestaetigenRoute = MemberClubBestaetigenRouteImport.update({
+  id: '/bestaetigen',
+  path: '/bestaetigen',
+  getParentRoute: () => MemberClubRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/member-club': typeof MemberClubRouteWithChildren
   '/rechtliches': typeof RechtlichesRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
   '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/admin': typeof MemberClubAdminRoute
+  '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/member-club': typeof MemberClubRouteWithChildren
   '/rechtliches': typeof RechtlichesRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
   '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/admin': typeof MemberClubAdminRoute
+  '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy': typeof AcademyIndexRoute
   '/behandlungen': typeof BehandlungenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/member-club': typeof MemberClubRouteWithChildren
   '/rechtliches': typeof RechtlichesRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
   '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/admin': typeof MemberClubAdminRoute
+  '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
 }
@@ -112,45 +139,56 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/member-club'
     | '/rechtliches'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
     | '/member-club/abmelden'
     | '/member-club/admin'
+    | '/member-club/bestaetigen'
     | '/academy/'
     | '/behandlungen/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/member-club'
     | '/rechtliches'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
     | '/member-club/abmelden'
     | '/member-club/admin'
+    | '/member-club/bestaetigen'
     | '/academy'
     | '/behandlungen'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/member-club'
     | '/rechtliches'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
     | '/member-club/abmelden'
     | '/member-club/admin'
+    | '/member-club/bestaetigen'
     | '/academy/'
     | '/behandlungen/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   MemberClubRoute: typeof MemberClubRouteWithChildren
   RechtlichesRoute: typeof RechtlichesRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AcademySlugRoute: typeof AcademySlugRoute
   BehandlungenSlugRoute: typeof BehandlungenSlugRoute
@@ -167,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/member-club': {
       id: '/member-club'
       path: '/member-club'
@@ -179,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/rechtliches'
       fullPath: '/rechtliches'
       preLoaderRoute: typeof RechtlichesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -230,17 +282,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemberClubAdminRouteImport
       parentRoute: typeof MemberClubRoute
     }
+    '/member-club/bestaetigen': {
+      id: '/member-club/bestaetigen'
+      path: '/bestaetigen'
+      fullPath: '/member-club/bestaetigen'
+      preLoaderRoute: typeof MemberClubBestaetigenRouteImport
+      parentRoute: typeof MemberClubRoute
+    }
   }
 }
 
 interface MemberClubRouteChildren {
   MemberClubAbmeldenRoute: typeof MemberClubAbmeldenRoute
   MemberClubAdminRoute: typeof MemberClubAdminRoute
+  MemberClubBestaetigenRoute: typeof MemberClubBestaetigenRoute
 }
 
 const MemberClubRouteChildren: MemberClubRouteChildren = {
   MemberClubAbmeldenRoute: MemberClubAbmeldenRoute,
   MemberClubAdminRoute: MemberClubAdminRoute,
+  MemberClubBestaetigenRoute: MemberClubBestaetigenRoute,
 }
 
 const MemberClubRouteWithChildren = MemberClubRoute._addFileChildren(
@@ -249,8 +310,10 @@ const MemberClubRouteWithChildren = MemberClubRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   MemberClubRoute: MemberClubRouteWithChildren,
   RechtlichesRoute: RechtlichesRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AcademySlugRoute: AcademySlugRoute,
   BehandlungenSlugRoute: BehandlungenSlugRoute,
