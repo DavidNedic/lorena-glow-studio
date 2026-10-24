@@ -1,5 +1,5 @@
 # Member-Club-Mailversand
-- [ ] Behandlungen und Hautanalyse auf eine minimalistische Auswahl reduzieren und prüfen
+- [x] Behandlungen und Hautanalyse auf eine minimalistische Auswahl reduzieren und prüfen
 - [x] Intro-Kolibri ohne Buchstaben und weißen Footer-Kolibri prüfen
 - [x] Behandlungen und Hautanalyse als Shop-Auswahl gestalten und prüfen
 - [x] Große Buchen-Buttons und Hautanalyse ohne Foto/Dropdown umsetzen und prüfen
