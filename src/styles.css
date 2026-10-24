@@ -231,7 +231,7 @@
 @keyframes zoom-fb-return { from { scale: var(--fb-return-scale, 2.6); } to { scale: 1; } }
 
 /* Behandlungen: neues Listenkonzept */
-.first-box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 28px; padding: 30px 26px; text-align: left; }
+.first-box { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 30px 26px; text-align: left; }
 .analysis-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 16px; }
 .analysis-item { min-width: 0; overflow-wrap: break-word; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; scroll-margin-top: 120px; transition: background .3s, border-color .3s; }
 .analysis-item:target, .analysis-item.treat-row-hit { background: #F2E3DD; border-color: transparent; }
@@ -279,3 +279,24 @@
 @keyframes member-pop-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes member-pop-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
 @media (max-width: 699px) { .member-pop-card { padding: 26px 20px 20px; } }
+
+.story { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; position: relative; }
+.story li { display: flex; gap: 12px; align-items: flex-start; position: relative; }
+.story li:not(:last-child)::after { content: ""; position: absolute; left: 13px; top: 30px; bottom: -12px; width: 1px; background: var(--line); }
+.story-dot { flex: none; width: 27px; height: 27px; border-radius: 999px; display: grid; place-items: center; font-size: 12px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--line); }
+.story-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.story-chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; font-size: 13px; background: transparent; color: inherit; scroll-margin-top: 120px; transition: background .3s, border-color .3s; cursor: pointer; }
+.story-chip.treat-row-hit { background: #F2E3DD; border-color: transparent; }
+.story-pick { margin-top: 14px; border-radius: 16px; padding: 14px 16px; background: var(--surface-2); }
+.club { display: grid; gap: 32px; align-items: center; }
+@media (min-width: 760px) { .club { grid-template-columns: 0.9fr 1.1fr; gap: 48px; } }
+.club-ticket { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 34px 24px; border-radius: 26px; background: linear-gradient(135deg, var(--surface-2), var(--surface)); border: 1px dashed color-mix(in oklab, var(--primary) 45%, transparent); box-shadow: 0 24px 50px -30px color-mix(in oklab, var(--foreground) 40%, transparent); transform: rotate(-3deg); }
+.club-ticket::before, .club-ticket::after { content: ""; position: absolute; top: 50%; width: 26px; height: 26px; border-radius: 999px; background: var(--background); transform: translateY(-50%); }
+.club-ticket::before { left: -13px; } .club-ticket::after { right: -13px; }
+.club-ticket-label { font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--muted-foreground); }
+.club-ticket-value { font-size: 64px; line-height: 1; font-weight: 600; }
+.club-ticket-sub { font-size: 14px; color: var(--muted-foreground); }
+.club-ticket-code { margin-top: 10px; font-family: ui-monospace, monospace; letter-spacing: .15em; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); }
+.club-perks { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
+.club-perks li { display: flex; flex-direction: column; padding-left: 14px; border-left: 2px solid var(--line); }
+.club-perks b { font-size: 14px; } .club-perks span { font-size: 13px; color: var(--muted-foreground); }

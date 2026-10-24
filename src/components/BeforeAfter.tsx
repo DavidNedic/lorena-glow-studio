@@ -10,7 +10,7 @@ function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
   );
   return (
     <figure className="text-left">
-      <div className="ba-frame">
+      <div className="ba-frame" style={{ aspectRatio: item.ratio }}>
         <div className="absolute inset-0">
           {item.after ? <img src={item.after} alt={`${item.name} nachher`} loading="lazy" className="h-full w-full object-cover" /> : panel("Nachher-Bild")}
         </div>
@@ -34,7 +34,7 @@ function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
 
 export function BeforeAfter() {
   return (
-    <div className="mt-10 grid gap-8 md:grid-cols-3">
+    <div className="mt-10 grid items-start gap-8 md:grid-cols-3">
       {BEFORE_AFTER.map(item => <Compare key={item.id} item={item} />)}
     </div>
   );
