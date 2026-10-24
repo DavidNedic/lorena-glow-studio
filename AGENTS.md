@@ -11,6 +11,7 @@
 
 ## Application rules
 - Academy feedback uses a fixed-height image stage with navigation outside the animated layer so different message sizes never move the arrows.
+- Decode the shared bird before starting the intro and hand its visible silhouette directly to an identically sized reveal mask without an intermediate fade-out phase, preventing blank frames at the transition.
 - Before/after comparisons use aligned, unretouched photo pairs on full-size layers; the slider clips the foreground without changing either image's dimensions or position.
 - Treatment booking and analysis offers share a shop grid with optional detail dialogs sourced from the shared catalogue; analysis actions book First Time rather than implying every offer is required.
 - Keep all contact information, the price-free treatment catalogue and Academy offerings in the shared data module so every page and assistant uses the same source.
