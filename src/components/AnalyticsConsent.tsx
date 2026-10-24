@@ -8,7 +8,7 @@ export function AnalyticsConsent() {
   const [open, setOpen] = useState(false);
   const [revision, setRevision] = useState(0);
   const [storageError, setStorageError] = useState(false);
-  const id = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_ANALYTICS_API_KEY ?? "";
+  const id = import.meta.env['VITE_LOVABLE_CONNECTOR_GOOGLE_ANALYTICS_API_KEY'] ?? "";
   const configured = /^G-[A-Z0-9]+$/.test(id);
 
   useEffect(() => {

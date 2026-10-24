@@ -26,7 +26,7 @@ describe("voluntary Google Analytics", () => {
     saveConsent(true);
     saveConsent(false);
     expect(readConsent()?.history.map(item => item.accepted)).toEqual([true, false]);
-    expect(readConsent()?.history[0].notice).toBe(CONSENT_NOTICE);
+    expect(readConsent()?.history[0]?.notice).toBe(CONSENT_NOTICE);
     updateAnalytics("G-TEST123", "/");
     expect((window as unknown as Record<string, unknown>)["ga-disable-G-TEST123"]).toBe(true);
   });

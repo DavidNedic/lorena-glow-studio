@@ -32,7 +32,7 @@ export function saveConsent(accepted: boolean): Consent | null {
 
 export function updateAnalytics(id: string, path: string) {
   if (!/^G-[A-Z0-9]+$/.test(id)) return;
-  const win = window as AnalyticsWindow;
+  const win = window as unknown as AnalyticsWindow;
   const safePath = analyticsPath(path);
   const allowed = readConsent()?.accepted === true && safePath !== null;
   win[`ga-disable-${id}`] = !allowed;
@@ -40,7 +40,7 @@ export function updateAnalytics(id: string, path: string) {
     win.gtag?.("consent", "update", { analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
     if (readConsent()?.accepted !== true) {
       for (const cookie of document.cookie.split(";")) {
-        const name = cookie.trim().split("=")[0];
+        const name = cookie.trim().split("=")[0] ?? "";
         if (name === "_ga" || name.startsWith("_ga_")) {
           const parts = location.hostname.split(".");
           document.cookie = `${name}=; Max-Age=0; path=/`;
@@ -56,6 +56,7 @@ export function updateAnalytics(id: string, path: string) {
     win.gtag("consent", "default", { analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
     win.gtag("set", "developer_id.dZjgwMW", true);
     win.gtag("js", new Date());
+    win.gtag("set", { page_location: `${location.origin}${safePath}`, page_referrer: "", page_title: "The Golden Cosmetics & Academy" });
     win.gtag("config", id, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, page_location: `${location.origin}${safePath}`, page_referrer: "" });
     const script = document.createElement("script");
     script.id = "golden-google-analytics";
@@ -63,6 +64,7 @@ export function updateAnalytics(id: string, path: string) {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
     document.head.appendChild(script);
   } else {
+    win.gtag("set", { page_location: `${location.origin}${safePath}`, page_referrer: "", page_title: "The Golden Cosmetics & Academy" });
     win.gtag("consent", "update", { analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
   }
   win.gtag("event", "page_view", { page_location: `${location.origin}${safePath}`, page_path: safePath, page_referrer: "", page_title: safePath === "/academy" ? "The Golden Academy" : "The Golden Cosmetics" });
