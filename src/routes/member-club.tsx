@@ -21,7 +21,7 @@ function JoinPanel() {
   const [website, setWebsite] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [done, setDone] = useState<null | "sent" | "resent" | "exists">(null);
+  const [done, setDone] = useState<null | "sent" | "exists">(null);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +39,7 @@ function JoinPanel() {
     <div className="card w-full p-7 text-left" role="status">
       <h2 className="text-2xl">{done === "exists" ? "Du bist schon dabei" : "Fast geschafft"}</h2>
       <p className="mt-3 text-muted-foreground">{done === "exists"
-        ? "Mit dieser E-Mail-Adresse bist du bereits angemeldet. Deinen Gutschein hast du schon per E-Mail bekommen. Schau gern auch im Spam-Ordner nach."
+        ? "Diese E-Mail-Adresse ist bereits gespeichert. Eine weitere Anmeldung und ein weiterer Gutschein sind nicht möglich. Schau in deinem Postfach auch im Spam-Ordner nach der Bestätigungsmail oder deinem Gutschein. Falls keine Mail angekommen ist, schreib mir bitte an info@thegoldencosmetics.com."
         : "Ich habe dir eine E-Mail geschickt. Bitte bestätige darin kurz deine Anmeldung, danach kommt dein 10 %-Gutschein."}</p>
     </div>
   );

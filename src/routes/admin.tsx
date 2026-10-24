@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { OG, seoHead } from "@/lib/seo";
 import { adminOverview, adminSetRedeemed } from "@/lib/member.functions";
 import { newsletterCsv, normalizeCode, type AdminRow } from "@/lib/member-club";
+import { useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute("/admin")({
   head: () => seoHead({ path: "/admin", title: "Verwaltung · The Golden Cosmetics", description: "Interner Bereich von The Golden Cosmetics.", image: OG.behandlungen, noindex: true }),
@@ -28,21 +29,23 @@ function Login() {
   };
   const forgot = async () => {
     if (!email) { setMsg("Bitte zuerst deine E-Mail eintragen."); return; }
-    await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
+    if (error) { setMsg('Der Link konnte nicht angefordert werden. Bitte versuch es später erneut.'); return; }
     setMsg("Falls ein Konto existiert, ist ein Link zum Passwort-Setzen unterwegs.");
   };
   return <Section className="max-w-md"><h1 className="text-4xl">Verwaltung</h1>
     <form onSubmit={login} className="mt-8 space-y-4 text-left">
-      <label className="block"><span className="mb-2 block text-sm">E-Mail</span><input required type="email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" className={input} /></label>
+      <label className="block"><span className="mb-2 block text-sm">Benutzername (E-Mail)</span><input required type="email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="username" className={input} /></label>
       <label className="block"><span className="mb-2 block text-sm">Passwort</span><input required type="password" value={password} onChange={e => setPassword(e.target.value)} autoComplete="current-password" className={input} /></label>
       {msg && <p role="alert" className="text-sm text-muted-foreground">{msg}</p>}
       <Button type="submit" className="btn btn-primary w-full">Anmelden</Button>
-      <button type="button" onClick={forgot} className="block w-full text-center text-sm underline underline-offset-4">Passwort vergessen</button>
+      <Button type="button" variant="link" onClick={forgot} className="w-full">Passwort festlegen / vergessen</Button>
     </form>
   </Section>;
 }
 
 function Admin() {
+  const queryClient = useQueryClient();
   const [ready, setReady] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
   const [denied, setDenied] = useState(false);
@@ -54,6 +57,12 @@ function Admin() {
   const [flash, setFlash] = useState("");
   const overview = useServerFn(adminOverview);
   const setRedeemed = useServerFn(adminSetRedeemed);
+  const signOut = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    setRows([]);
+    await supabase.auth.signOut();
+  };
 
   const load = async () => {
     try { setRows(await overview()); setDenied(false); } catch { setDenied(true); }
@@ -94,11 +103,11 @@ function Admin() {
 
   if (!ready) return <div className="bg-background"><Section><p className="text-muted-foreground">Laden …</p></Section></div>;
   if (!signedIn) return <div className="bg-background"><Login /></div>;
-  if (denied) return <div className="bg-background"><Section className="max-w-md"><h1 className="text-4xl">Kein Zugriff</h1><p className="mt-4 text-muted-foreground">Dieses Konto hat keine Verwaltungsrechte.</p><Button variant="ghost" className="btn btn-ghost mt-6" onClick={() => supabase.auth.signOut()}>Abmelden</Button></Section></div>;
+  if (denied) return <div className="bg-background"><Section className="max-w-md"><h1 className="text-4xl">Zugriff nicht möglich</h1><p className="mt-4 text-muted-foreground">Prüfe deine Verwaltungsrechte oder versuch es erneut.</p><Button variant="ghost" className="btn btn-ghost mt-6" onClick={load}>Erneut laden</Button><Button variant="ghost" className="btn btn-ghost mt-6" onClick={signOut}>Abmelden</Button></Section></div>;
 
   return <div className="bg-background">
     <Section className="max-w-4xl !pb-4">
-      <div className="flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Member Club</h1><Button variant="ghost" className="btn btn-ghost" onClick={() => supabase.auth.signOut()}>Abmelden</Button></div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Member Club</h1><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div>
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         {[["Mitglieder", stats.members], ["Bestätigt", stats.confirmed], ["Gutscheine offen", stats.open], ["Eingelöst", stats.redeemed]].map(([l, n]) => <div key={l} className="card p-4 text-left"><p className="text-xs text-muted-foreground">{l}</p><p className="mt-1 text-2xl font-semibold">{n}</p></div>)}
       </div>
@@ -111,8 +120,8 @@ function Admin() {
       {match && match.code && <div className="mt-4 space-y-3">
         <p><span className="font-semibold">{match.vorname}</span> <span className="text-sm text-muted-foreground">{match.email}</span></p>
         {match.redeemed_at
-          ? <><p className="rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-semibold text-destructive">Bereits eingelöst am {fmt(match.redeemed_at)}{match.redeemed_note ? ` · ${match.redeemed_note}` : ""}</p><Button variant="ghost" className="btn btn-ghost w-full" onClick={() => toggle(match.code!, false)}>Einlösung rückgängig machen</Button></>
-          : <><p className="rounded-2xl bg-surface-2 px-4 py-3 text-sm font-semibold">Offen · 10 % einmalig</p><input value={note} onChange={e => setNote(e.target.value)} maxLength={200} placeholder="Notiz (optional), z. B. Lashlifting" className={input} /><Button className="btn btn-primary w-full" onClick={() => toggle(match.code!, true)}>Als eingelöst markieren</Button></>}
+          ? <><p className="rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-semibold text-destructive">Bereits eingelöst am {fmt(match.redeemed_at)}{match.redeemed_note ? ` · ${match.redeemed_note}` : ""}</p><Button variant="ghost" className="btn btn-ghost w-full" onClick={() => { if (match.code) void toggle(match.code, false); }}>Einlösung rückgängig machen</Button></>
+          : <><p className="rounded-2xl bg-surface-2 px-4 py-3 text-sm font-semibold">Offen · 10 % einmalig</p><input value={note} onChange={e => setNote(e.target.value)} maxLength={200} placeholder="Notiz (optional), z. B. Lashlifting" className={input} /><Button className="btn btn-primary w-full" onClick={() => { if (match.code) void toggle(match.code, true); }}>Als eingelöst markieren</Button></>}
       </div>}
       {flash && <p role="status" className="mt-3 text-sm">{flash}</p>}
     </div></Section>
@@ -127,7 +136,7 @@ function Admin() {
         {visible.map(r => <div key={r.member_id} className="grid gap-1 py-3 md:grid-cols-[1.4fr_1fr_1fr] md:items-center">
           <span><span className="block font-semibold">{r.vorname}</span><span className="break-all text-muted-foreground">{r.email}</span><span className="block text-xs text-muted-foreground">angemeldet {fmt(r.created_at)} · Newsletter {r.status}</span></span>
           <span className="font-mono tracking-widest">{r.code ?? "–"}</span>
-          <span className="flex items-center gap-2">{r.code ? (r.redeemed_at ? <><span className="font-semibold text-destructive">eingelöst am {fmt(r.redeemed_at)}</span><button className="text-xs underline" onClick={() => toggle(r.code!, false)}>rückgängig</button></> : <><span>offen</span><button className="text-xs underline" onClick={() => toggle(r.code!, true)}>einlösen</button></>) : <span className="text-muted-foreground">kein Gutschein</span>}</span>
+          <span className="flex items-center gap-2">{r.code ? (r.redeemed_at ? <><span className="font-semibold text-destructive">eingelöst am {fmt(r.redeemed_at)}</span><Button variant="link" className="h-auto px-0 text-xs" onClick={() => { if (r.code) void toggle(r.code, false); }}>rückgängig</Button></> : <><span>offen</span><Button variant="link" className="h-auto px-0 text-xs" onClick={() => { if (r.code) void toggle(r.code, true); }}>einlösen</Button></>) : <span className="text-muted-foreground">kein Gutschein</span>}</span>
         </div>)}
         {!visible.length && <p className="py-6 text-center text-muted-foreground">Keine Einträge.</p>}
       </div>

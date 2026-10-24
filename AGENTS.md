@@ -23,3 +23,4 @@
 
 - Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.
 - Member Club event emails use registered React Email templates and the managed Lovable sender inside server handlers with stable event idempotency keys; Lovable owns delivery and unsubscribe footers, and confirmation retries reuse existing vouchers to recover failed sends without duplicate codes.
+- Member signup rejects every existing normalized email, including pending and unsubscribed rows; database unique indexes also prevent concurrent duplicate members and vouchers.
