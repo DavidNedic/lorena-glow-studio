@@ -292,27 +292,30 @@
 .club-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 4px; text-align: left; }
 @media (max-width: 699px) { .club-strip { flex-direction: column; align-items: stretch; } .club-strip .btn { width: 100%; } }
 
-.booking-edit { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; text-align: left; padding-block: 24px; }
-.booking-intro { max-width: 300px; }
-.booking-tabs { display: flex; border-bottom: 1px solid var(--line); gap: 18px; }
+.booking-edit { text-align: center; padding-block: 24px; }
+.booking-intro { max-width: 600px; margin-inline: auto; }
+.booking-tabs { display: flex; justify-content: center; border-bottom: 1px solid var(--line); gap: 24px; margin-top: 24px; }
 .booking-tab { min-width: 0; height: 44px; padding: 0 0 10px; border-radius: 0; border-bottom: 2px solid transparent; color: var(--muted-foreground); font-size: 14px; }
 .booking-tab[aria-selected="true"] { border-bottom-color: var(--foreground); color: var(--foreground); }
-.booking-line { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 84px; padding: 16px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 120px; }
-.booking-line-hit { background: var(--surface-2); }
-.booking-cta { flex-shrink: 0; min-width: 120px; min-height: 48px; }
 .skin-options { border-top: 1px solid var(--line); padding-top: 32px; }
-.skin-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; text-align: left; margin-top: 26px; }
-.skin-option { scroll-margin-top: 120px; }
-.skin-option-trigger { gap: 18px; min-height: 64px; font-size: 15px; line-height: 1.4; padding: 16px 0; }
-.skin-option-trigger span { min-width: 0; }
-.skin-option-trigger:hover { text-decoration: none; color: var(--muted-foreground); }
-.skin-option-content { padding-right: 28px; }
+.treatment-shop-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; margin-top: 24px; text-align: left; }
+.shop-treatment { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); scroll-margin-top: 120px; }
+.shop-treatment-hit { outline: 2px solid var(--rose); outline-offset: 3px; }
+.shop-image-button { position: relative; display: block; height: auto; width: 100%; aspect-ratio: 4/3; padding: 0; overflow: hidden; border-radius: 0; }
+.shop-treatment-image { width: 100%; height: 100%; object-fit: cover; transition: transform .35s; }
+.shop-image-button:hover .shop-treatment-image { transform: scale(1.04); }
+.shop-image-label { position: absolute; bottom: 10px; left: 10px; right: 10px; width: fit-content; background: var(--surface); color: var(--foreground); padding: 5px 9px; border-radius: 4px; font-size: 11px; }
+.shop-treatment-info { display: flex; flex: 1; flex-direction: column; align-items: stretch; padding: 16px; }
+.shop-treatment-info h4 { margin-top: 7px; margin-bottom: 12px; font-size: 17px; line-height: 1.4; font-weight: 600; }
+.shop-price { margin-bottom: 14px; font-size: 18px; font-weight: 600; }
+.shop-cta { width: 100%; min-height: 48px; margin-top: auto; white-space: normal; }
+.shop-dialog { background: var(--surface); border-radius: 8px; }
 @media (max-width: 699px) {
- .booking-edit { grid-template-columns: 1fr; gap: 20px; }
  .booking-intro { max-width: none; }
  .booking-tabs { gap: 20px; }
- .booking-line { flex-wrap: wrap; gap: 14px; padding-block: 18px; }
- .booking-line > div { width: 100%; }
- .booking-cta { width: 100%; min-height: 48px; }
- .skin-options-grid { grid-template-columns: 1fr; }
+ .treatment-shop-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+ .shop-treatment-info { padding: 12px 10px; }
+ .shop-treatment-info h4 { font-size: 14px; overflow-wrap: anywhere; }
+ .shop-image-label { left: 6px; right: 6px; bottom: 6px; padding: 4px 5px; font-size: 10px; }
+ .shop-cta { font-size: 14px; padding-inline: 8px; }
 }

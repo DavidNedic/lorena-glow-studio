@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Application rules
-- Treatment booking uses category tabs and labelled booking actions; analysis offers use a single-open accordion from the shared catalogue, keeping details optional without duplicating catalogue content.
+- Treatment booking and analysis offers share a shop grid with optional detail dialogs sourced from the shared catalogue; analysis actions book First Time rather than implying every offer is required.
 - Keep all contact information, the price-free treatment catalogue and Academy offerings in the shared data module so every page and assistant uses the same source.
 - Use scoped semantic CSS tokens for the treatment, Academy and footer palettes to preserve consistent theming.
 - Keep the assistant deterministic and device-local, cap history at 80 messages, and never submit chat data to a server.
@@ -19,7 +19,7 @@
 - Pages carry their SEO head (title, description, canonical, share image, JSON-LD) via the shared seoHead helper; the sitemap is built from the shared data module so new offers appear automatically.
 
 - Bundle all font weights locally through package CSS imports so typography never requires a third-party font request.
-- Reuse the intro raster hummingbird for header/footer with scoped filters, and render app icons from its traced vector for sharp edges without changing the intro.
+- Use the same letter-free raster hummingbird for the intro, reveal mask, header, footer and app icons; scoped filters set its display color while preserving intro timing.
 - Keep unfinished Member Club and AGB content explicitly marked as placeholders, with Member Club excluded from indexing until real content is supplied.
 
 - Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.

@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
 import { ActionLink, Footer, FloatingNav, InstagramLink, Label, Section, SimpleAccordion, Slider, useScrollToHash } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { TreatmentShop } from "@/components/TreatmentShop";
 import { ChatAssistant } from "@/components/ChatAssistant";
 import { FaceZoom } from "@/components/FaceZoom";
 import { BeforeAfter } from "@/components/BeforeAfter";
@@ -19,11 +18,11 @@ const BOOKING_CATEGORIES = [
  {id:"brows",name:"Augenbrauen",slugs:["brow","brow-color","brow-shape"]},
 ];
 function Behandlungen(){
- const [hit,setHit]=useState<string|null>(null);const [sel,setSel]=useState("");const [category,setCategory]=useState("skin");useScrollToHash();
+ const [hit,setHit]=useState<string|null>(null);const [category,setCategory]=useState("skin");useScrollToHash();
  const first=TREATMENTS.find(t=>t.group==="first");
  const analysis=TREATMENTS.filter(t=>t.group==="analysis");
  const activeCategory=BOOKING_CATEGORIES.find(c=>c.id===category)??BOOKING_CATEGORIES[0];
- const pick=(slug:string)=>{const group=BOOKING_CATEGORIES.find(c=>c.slugs.includes(slug));if(group)setCategory(group.id);if(analysis.some(t=>t.slug===slug))setSel(slug);setHit(slug);setTimeout(()=>document.getElementById(`t-${slug}`)?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}),50);setTimeout(()=>setHit(null),2600);};
+ const pick=(slug:string)=>{const group=BOOKING_CATEGORIES.find(c=>c.slugs.includes(slug));if(group)setCategory(group.id);setHit(slug);setTimeout(()=>document.getElementById(`t-${slug}`)?.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}),50);setTimeout(()=>setHit(null),2600);};
  if(!first||!activeCategory)return null;
  return <div className="min-h-screen bg-background text-foreground"><FloatingNav back="/" links={[{label:"Behandlungen",href:"#behandlungen"},{label:"Über Lorena",href:"#lorena"},{label:"Kontakt",href:"#kontakt"}]} cta={BOOK}/>
  <Section className="site-hero"><h1>Schöne Haut beginnt damit, sie zu verstehen.</h1><p className="section-copy mt-6 text-lg text-muted-foreground">Hautästhetik mit Anspruch. Individuelle Behandlungen, moderne Skin-Konzepte und fundiertes Fachwissen, abgestimmt auf die Bedürfnisse deiner Haut.</p><div className="mt-7 flex flex-wrap justify-center gap-3"><ActionLink href={CONTACT.beautinda} external>Termin buchen</ActionLink><ActionLink href="#behandlungen" secondary>Behandlungen ansehen</ActionLink></div><a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="mt-5 inline-block text-sm text-muted-foreground">5,0 von 5 · Bewertungen auf Beautinda</a><img src="/img/einblick-5.jpg" alt="Behandlungsraum von The Golden Cosmetics in Brackenheim mit beleuchtetem Logo" className="hero-picture" style={{objectPosition:"50% 12%"}}/></Section>
@@ -39,21 +38,12 @@ function Behandlungen(){
    <div className="booking-intro"><p className="text-sm text-muted-foreground">Dein Termin, deine Wahl</p><h3 className="mt-2 text-3xl">Direkt online buchen</h3><p className="mt-3 text-sm text-muted-foreground">Für deinen Glow, deinen Wimpernlook oder schön geformte Brauen.</p></div>
    <div className="min-w-0">
     <div className="booking-tabs" role="tablist" aria-label="Behandlungskategorie">{BOOKING_CATEGORIES.map(c=><Button key={c.id} variant="ghost" role="tab" id={`tab-${c.id}`} aria-selected={category===c.id} aria-controls="booking-options" className="booking-tab" onClick={()=>setCategory(c.id)}>{c.name}</Button>)}</div>
-    <div id="booking-options" role="tabpanel" aria-labelledby={`tab-${category}`} className="booking-options">{TREATMENTS.filter(t=>t.group==="direct"&&activeCategory.slugs.includes(t.slug)).map(t=><div key={t.slug} id={`t-${t.slug}`} className={`booking-line${hit===t.slug?" booking-line-hit":""}`}>
-     <div className="min-w-0"><h4 className="font-semibold leading-snug">{t.name}</h4><p className="mt-1 text-xs text-muted-foreground">{t.duration}{t.price?` · ${t.price}`:""}</p>{t.detail&&<Button asChild variant="link" className="h-auto p-0 text-xs text-muted-foreground"><Link to="/behandlungen/$slug" params={{slug:t.slug}}>Ablauf ansehen</Link></Button>}</div>
-     <Button asChild className="btn btn-primary booking-cta"><a href={t.bookingUrl} target="_blank" rel="noreferrer" aria-label={`${t.name} buchen`}>Buchen <ArrowUpRight aria-hidden="true"/></a></Button>
-    </div>)}</div>
+    <div id="booking-options" role="tabpanel" aria-labelledby={`tab-${category}`} className="booking-options"><TreatmentShop treatments={TREATMENTS.filter(t=>t.group==="direct"&&activeCategory.slugs.includes(t.slug))} hit={hit}/></div>
    </div>
   </div>
   <div className="skin-options mx-auto mt-10 max-w-5xl">
    <p className="text-sm text-muted-foreground">Deine Haut gibt die Richtung vor</p><h3 className="mt-2 text-3xl">Nach deiner Hautanalyse</h3><p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">Nicht alles, sondern das Richtige für dich. Ich wähle mit dir die passende Behandlung. Das sind Möglichkeiten, keine Pflicht.</p>
-   <Accordion type="single" collapsible value={sel} onValueChange={setSel} className="skin-options-grid">
-    {[analysis.slice(0,7),analysis.slice(7)].map((items,i)=><div key={i}>{items.map(t=><AccordionItem key={t.slug} value={t.slug} id={`t-${t.slug}`} className="skin-option">
-     <AccordionTrigger className="skin-option-trigger"><span>{t.name}</span></AccordionTrigger>
-     <AccordionContent className="skin-option-content"><p className="mb-2 text-xs text-muted-foreground">{t.duration}</p><p className="text-sm text-muted-foreground">{t.sentence}</p>{t.detail&&<Button asChild variant="link" className="mt-3 h-auto p-0"><Link to="/behandlungen/$slug" params={{slug:t.slug}}>Mehr erfahren</Link></Button>}</AccordionContent>
-    </AccordionItem>)}</div>)}
-   </Accordion>
-   <ActionLink href={first.bookingUrl} external className="mt-6">Hautanalyse buchen</ActionLink>
+   <TreatmentShop treatments={analysis} analysis hit={hit}/>
   </div>
   <div className="cal-bar mx-auto max-w-5xl"><span><span className="block font-semibold">Freie Termine und aktuelle Preise</span><span className="block text-sm text-muted-foreground">Immer tagesaktuell in meinem Buchungskalender.</span></span><ActionLink href={CONTACT.beautinda} external secondary>Kalender öffnen</ActionLink></div>
  </Section>
