@@ -44,4 +44,16 @@ describe('one signup per saved email', () => {
     expect(await signup(input)).toEqual({ status: 'exists' })
     expect(send).not.toHaveBeenCalled()
   })
+  it('allows Davidnedic@web.de to repeat a test signup without creating another member', async () => {
+    db.from.mockReturnValueOnce(query({ count: 0 })).mockReturnValueOnce(query({})).mockReturnValueOnce(query({ data: { id: 'david-test', vorname: 'David', confirm_token: 'existing-token', unsubscribed_at: null } }))
+    send.mockResolvedValueOnce({ sent: true })
+    expect(await signup({ data: { ...input.data, email: ' Davidnedic@web.de ' } })).toEqual({ status: 'sent' })
+    expect(db.from).toHaveBeenCalledTimes(3)
+    expect(send).toHaveBeenCalledWith('member-confirmation', 'davidnedic@web.de', expect.objectContaining({ idempotencyKey: expect.stringContaining('member-confirmation-david-test-existing-token-test-') }))
+  })
+  it('does not bypass an unsubscribe for the test address', async () => {
+    db.from.mockReturnValueOnce(query({ count: 0 })).mockReturnValueOnce(query({})).mockReturnValueOnce(query({ data: { id: 'david-test', unsubscribed_at: '2026-10-24' } }))
+    expect(await signup({ data: { ...input.data, email: 'Davidnedic@web.de' } })).toEqual({ status: 'exists' })
+    expect(send).not.toHaveBeenCalled()
+  })
 })

@@ -32,9 +32,10 @@ export const signupMember = createServerFn({ method: "POST" })
     await db.from("signup_attempts").insert({ ip_hash: ipHash });
 
     const email = normalizeEmail(data.email);
+    const isTestEmail = email === 'davidnedic@web.de';
     const { data: existing } = await db.from("members").select("id, vorname, confirm_token, newsletter_token, newsletter_confirmed_at, unsubscribed_at").ilike("email", email).maybeSingle();
     let member = existing;
-    if (existing) return { status: "exists" as const };
+    if (existing && (!isTestEmail || existing.unsubscribed_at)) return { status: "exists" as const };
     if (!member) {
       const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_token, newsletter_confirmed_at, unsubscribed_at").single();
       if (error?.code === '23505') return { status: 'exists' as const };
@@ -45,7 +46,7 @@ export const signupMember = createServerFn({ method: "POST" })
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const delivery = await sendTemplateEmail('member-confirmation', email, {
       templateData: { origin: o, vorname: member.vorname, confirmUrl: `${o}/member-club/bestaetigen?token=${member.confirm_token}` },
-      idempotencyKey: `member-confirmation-${member.id}-${member.confirm_token}`,
+      idempotencyKey: `member-confirmation-${member.id}-${member.confirm_token}${isTestEmail ? `-test-${crypto.randomUUID()}` : ''}`,
     });
     if (!delivery.sent) throw new Error('An diese Adresse können derzeit keine Member-Club-Mails gesendet werden.');
     return { status: "sent" as const };
