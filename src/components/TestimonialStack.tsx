@@ -21,6 +21,7 @@ export function TestimonialStack() {
 
   return (
     <div>
+      <div className="stack-viewport">
       <div
         className="stack-stage"
         onPointerDown={e => { if (leaving) return; drag.current = { x: e.clientX }; (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId); }}
@@ -40,9 +41,10 @@ export function TestimonialStack() {
           }
         >
           <div className="stack-card-scroll">
-            <img src={current} alt={`Nachricht einer Absolventin (${top + 1} von ${SCHUELERINNEN.length})`} loading="eager" draggable={false} className="w-full select-none" />
+            <img src={current} alt={`Nachricht einer Absolventin (${top + 1} von ${SCHUELERINNEN.length})`} loading="eager" draggable={false} className="select-none" />
           </div>
         </div>
+      </div>
       </div>
       <div className="mt-6 flex items-center justify-center gap-4">
         <Button variant="outline" size="icon" onClick={() => next(-1)} aria-label="Vorherige Nachricht" className="size-11 rounded-full"><Arrow dir="left" /></Button>

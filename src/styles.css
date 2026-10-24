@@ -261,10 +261,12 @@
 .member-card-city { font-size: 12px; color: color-mix(in oklab, #F8F0EC 65%, transparent); }
 
 /* Schülerinnen-Stapel */
-.stack-stage { position: relative; overflow: hidden; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
-.stack-card { transition: transform .35s ease, opacity .35s ease; }
-.stack-card img { filter: drop-shadow(0 18px 30px rgba(20,16,13,.22)); }
-.stack-card-scroll img { display: block; max-height: 560px; object-fit: contain; }
+.stack-viewport { overflow-x: clip; overflow-y: visible; padding-block: 24px; margin-block: -24px; }
+.stack-stage { position: relative; overflow: visible; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
+.stack-card { transition: transform .35s ease, opacity .35s ease; background: transparent; }
+.stack-card img { filter: drop-shadow(0 8px 14px rgba(20,16,13,.14)); }
+.stack-card-scroll { display: flex; justify-content: center; }
+.stack-card-scroll img { display: block; width: auto; max-width: 100%; height: auto; max-height: 560px; }
 .stack-card-top { will-change: transform; }
 .stack-card-drag { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .stack-card { transition: none; } }
