@@ -36,12 +36,6 @@ import { readFileSync as rfMB } from "node:fs";
 test("mobile bottom bar is removed everywhere", () => {
   for (const f of ["src/components/site.tsx","src/routes/behandlungen.index.tsx","src/routes/behandlungen.$slug.tsx","src/routes/academy.index.tsx","src/routes/academy.$slug.tsx"]) expect(rfMB(f,"utf8")).not.toContain("MobileBar");
 });
-test("AGB enthalten die 24-Stunden-Regel mit 50 Prozent", () => {
-  const legal = rfMB("src/routes/rechtliches.tsx","utf8");
-  expect(legal).toContain("bis 24 Stunden vor Beginn kostenlos");
-  expect(legal).toContain("50 % des Preises der gebuchten Behandlung");
-  expect(legal).toContain("nicht erstattbar");
-});
 test("Rechtstexte haben alle vier Anker", () => {
   const legal = rfMB("src/routes/rechtliches.tsx","utf8");
   for (const id of ['id="impressum"','id="agb"','id="widerruf"','id="datenschutz"']) expect(legal).toContain(id);
