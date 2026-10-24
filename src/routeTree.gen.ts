@@ -17,6 +17,8 @@ import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as BehandlungenIndexRouteImport } from './routes/behandlungen.index'
 import { Route as BehandlungenSlugRouteImport } from './routes/behandlungen.$slug'
+import { Route as MemberClubAbmeldenRouteImport } from './routes/member-club.abmelden'
+import { Route as MemberClubAdminRouteImport } from './routes/member-club.admin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,35 +60,51 @@ const BehandlungenSlugRoute = BehandlungenSlugRouteImport.update({
   path: '/behandlungen/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MemberClubAbmeldenRoute = MemberClubAbmeldenRouteImport.update({
+  id: '/abmelden',
+  path: '/abmelden',
+  getParentRoute: () => MemberClubRoute,
+} as any)
+const MemberClubAdminRoute = MemberClubAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => MemberClubRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/member-club': typeof MemberClubRoute
+  '/member-club': typeof MemberClubRouteWithChildren
   '/rechtliches': typeof RechtlichesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
+  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
+  '/member-club/admin': typeof MemberClubAdminRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/member-club': typeof MemberClubRoute
+  '/member-club': typeof MemberClubRouteWithChildren
   '/rechtliches': typeof RechtlichesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
+  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
+  '/member-club/admin': typeof MemberClubAdminRoute
   '/academy': typeof AcademyIndexRoute
   '/behandlungen': typeof BehandlungenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/member-club': typeof MemberClubRoute
+  '/member-club': typeof MemberClubRouteWithChildren
   '/rechtliches': typeof RechtlichesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/behandlungen/$slug': typeof BehandlungenSlugRoute
+  '/member-club/abmelden': typeof MemberClubAbmeldenRoute
+  '/member-club/admin': typeof MemberClubAdminRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
 }
@@ -99,6 +117,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
+    | '/member-club/abmelden'
+    | '/member-club/admin'
     | '/academy/'
     | '/behandlungen/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +129,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
+    | '/member-club/abmelden'
+    | '/member-club/admin'
     | '/academy'
     | '/behandlungen'
   id:
@@ -119,13 +141,15 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/academy/$slug'
     | '/behandlungen/$slug'
+    | '/member-club/abmelden'
+    | '/member-club/admin'
     | '/academy/'
     | '/behandlungen/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MemberClubRoute: typeof MemberClubRoute
+  MemberClubRoute: typeof MemberClubRouteWithChildren
   RechtlichesRoute: typeof RechtlichesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AcademySlugRoute: typeof AcademySlugRoute
@@ -192,12 +216,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BehandlungenSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/member-club/abmelden': {
+      id: '/member-club/abmelden'
+      path: '/abmelden'
+      fullPath: '/member-club/abmelden'
+      preLoaderRoute: typeof MemberClubAbmeldenRouteImport
+      parentRoute: typeof MemberClubRoute
+    }
+    '/member-club/admin': {
+      id: '/member-club/admin'
+      path: '/admin'
+      fullPath: '/member-club/admin'
+      preLoaderRoute: typeof MemberClubAdminRouteImport
+      parentRoute: typeof MemberClubRoute
+    }
   }
 }
 
+interface MemberClubRouteChildren {
+  MemberClubAbmeldenRoute: typeof MemberClubAbmeldenRoute
+  MemberClubAdminRoute: typeof MemberClubAdminRoute
+}
+
+const MemberClubRouteChildren: MemberClubRouteChildren = {
+  MemberClubAbmeldenRoute: MemberClubAbmeldenRoute,
+  MemberClubAdminRoute: MemberClubAdminRoute,
+}
+
+const MemberClubRouteWithChildren = MemberClubRoute._addFileChildren(
+  MemberClubRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MemberClubRoute: MemberClubRoute,
+  MemberClubRoute: MemberClubRouteWithChildren,
   RechtlichesRoute: RechtlichesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AcademySlugRoute: AcademySlugRoute,
