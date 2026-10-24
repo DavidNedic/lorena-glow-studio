@@ -21,7 +21,7 @@
 
 - Bundle all font weights locally through package CSS imports so typography never requires a third-party font request.
 - Use the same letter-free raster hummingbird for the intro, reveal mask, header, footer and app icons; scoped filters set its display color while preserving intro timing.
-- Keep unfinished Member Club and AGB content explicitly marked as placeholders, with Member Club excluded from indexing until real content is supplied.
+- Keep unfinished Member Club content explicitly marked as placeholders and excluded from indexing until real content is supplied; confirmed legal business terms live in the shared data module so published terms and rule tests stay consistent.
 
 - Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.
 - Member Club event emails use registered React Email templates and the managed Lovable sender inside server handlers with stable event idempotency keys; Lovable owns delivery and unsubscribe footers, and confirmation retries reuse existing vouchers to recover failed sends without duplicate codes.
