@@ -77,7 +77,7 @@ export const BEFORE_AFTER = [
   { id: "lash", name: "Korean Lashlifting", note: "Inklusive Färben", before: "", after: "" },
 ];
 export const ABSOLVENTINNEN = ["01", "05", "08", "10", "12", "13", "02", "03", "04", "06", "07", "09", "11"].map(n => `/img/absolventin-${n}.jpg`);
-export const SCHUELERINNEN = Array.from({ length: 11 }, (_, i) => `/img/schuelerinnen/schuelerin-${String(i + 1).padStart(2, "0")}.jpg`);
+export const SCHUELERINNEN = Array.from({ length: 11 }, (_, i) => `/img/schuelerinnen/schuelerin-${String(i + 1).padStart(2, "0")}.png`);
 export type Masterclass = { slug: string; name: string; format: string; group: "fachlich" | "business"; lead: string; text: string; tags: string[]; image: string };
 const course = (slug: string, name: string, lead: string, text: string, format = "Online", group: "fachlich" | "business" = "fachlich"): Masterclass => ({ slug, name, lead, text, format, group, tags: [format, "Persönlich begleitet", "Nachbetreuung"], image: "/images/lorena-portrait-2.jpg" });
 export const MASTERCLASSES: Masterclass[] = [
