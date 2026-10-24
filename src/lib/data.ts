@@ -82,7 +82,6 @@ export const PROBLEMS = [
 export const BEFORE_AFTER = [
   { id: "poren", name: "Nase & Poren", note: "Vor und nach der Behandlung", before: noseBefore.url, after: noseAfter.url, ratio: "1000/510" },
   { id: "stirn", name: "Haut & Glow", note: "Vor und nach der Behandlung", before: glowBefore.url, after: glowAfter.url, ratio: "1000/510" },
-  { id: "teint", name: "Ebenmäßiger Teint", note: "Ruhigeres Hautbild", before: "/img/vn-06-vorher.jpg", after: "/img/vn-06-nachher.jpg", ratio: "1000/510" },
 ];
 /** Ergebnis-Fotos ohne Vorher-Nachher-Collagen (die laufen im Regler). */
 export const RESULT_PHOTOS = ["01", "03", "05", "07", "08", "09", "10", "12"].map(n => `/img/ergebnis-${n}.jpg`);
