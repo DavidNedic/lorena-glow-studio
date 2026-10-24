@@ -46,7 +46,7 @@ function Behandlungen(){
    </div>
   </div>
   <div className="skin-explorer mx-auto mt-10 max-w-5xl">
-   <img src="/images/kachel-behandlung.jpg" alt="Einblick in eine kosmetische Gesichtsbehandlung bei Lorena" loading="lazy" className="skin-explorer-image"/>
+   <img src="/images/kachel-behandlung.jpg" alt="Goldener Serumtropfen auf einer cremigen Oberfläche" loading="lazy" className="skin-explorer-image"/>
    <div className="skin-explorer-content"><p className="text-sm text-muted-foreground">Individuell statt von der Stange</p><h3 className="mt-2 text-3xl">Nach deiner Hautanalyse</h3><p className="mt-3 text-sm text-muted-foreground">Ich schaue, was deine Haut braucht. Gemeinsam entscheiden wir, welche Behandlung zu dir passt. Du musst dich jetzt noch nicht festlegen.</p>
     <label htmlFor="skin-treatment" className="mt-6 block text-xs font-semibold">Deine Möglichkeiten</label>
     <select id="skin-treatment" value={sel} onChange={e=>setSel(e.target.value)} className="skin-select">{analysis.map(t=><option key={t.slug} value={t.slug}>{t.name}</option>)}</select>
