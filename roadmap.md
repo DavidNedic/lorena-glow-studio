@@ -1,4 +1,5 @@
 # Member-Club-Mailversand
+- [ ] Neue Vorher-Nachher-Collagen trennen, deckungsgleich ausrichten und ziehbare Vergleiche prüfen
 - [x] Bestätigungslink zeigt eigene Erfolgsseite statt erneutem Anmeldeformular
 - [x] Neue Gutscheincodes auf sechs Zeichen verkürzen; vorhandene Codes bleiben gültig
 - [x] Bestätigungsablauf mit Testadresse, Erfolgsseite und protokolliertem Gutscheinversand prüfen
