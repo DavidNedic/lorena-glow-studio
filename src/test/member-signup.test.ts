@@ -44,12 +44,36 @@ describe('one signup per saved email', () => {
     expect(await signup(input)).toEqual({ status: 'exists' })
     expect(send).not.toHaveBeenCalled()
   })
-  it('allows Davidnedic@web.de to repeat a test signup without creating another member', async () => {
-    db.from.mockReturnValueOnce(query({ count: 0 })).mockReturnValueOnce(query({})).mockReturnValueOnce(query({ data: { id: 'david-test', vorname: 'David', confirm_token: 'existing-token', unsubscribed_at: null } }))
+  it('sends the voucher code directly with the first email after signup', async () => {
+    db.from
+      .mockReturnValueOnce(query({ count: 0 })) // rate limit
+      .mockReturnValueOnce(query({})) // signup attempt
+      .mockReturnValueOnce(query({ data: null })) // members lookup
+      .mockReturnValueOnce(query({ data: { id: 'new-member', vorname: 'Anna' } })) // members insert
+      .mockReturnValueOnce(query({ data: null })) // vouchers lookup
+      .mockReturnValueOnce(query({})) // vouchers insert
+    send.mockResolvedValueOnce({ sent: true })
+    expect(await signup(input)).toEqual({ status: 'sent' })
+    expect(send).toHaveBeenCalledTimes(1)
+    const [template, to, opts] = send.mock.calls[0] as [string, string, { templateData: { code: string }; idempotencyKey: string }]
+    expect(template).toBe('member-voucher')
+    expect(to).toBe('anna@example.de')
+    expect(opts.templateData.code).toMatch(/^GOLDEN-[A-HJ-NP-Z2-9]{4}$/)
+    expect(opts.idempotencyKey).toBe(`member-voucher-new-member-${opts.templateData.code}`)
+  })
+  it('allows Davidnedic@web.de to repeat a test signup and reuses the existing voucher', async () => {
+    db.from
+      .mockReturnValueOnce(query({ count: 0 }))
+      .mockReturnValueOnce(query({}))
+      .mockReturnValueOnce(query({ data: { id: 'david-test', vorname: 'David', unsubscribed_at: null } }))
+      .mockReturnValueOnce(query({ data: { code: 'GOLDEN-TEST' } })) // existing voucher
     send.mockResolvedValueOnce({ sent: true })
     expect(await signup({ data: { ...input.data, email: ' Davidnedic@web.de ' } })).toEqual({ status: 'sent' })
-    expect(db.from).toHaveBeenCalledTimes(3)
-    expect(send).toHaveBeenCalledWith('member-confirmation', 'davidnedic@web.de', expect.objectContaining({ idempotencyKey: expect.stringContaining('member-confirmation-david-test-existing-token-test-') }))
+    expect(db.from).toHaveBeenCalledTimes(4) // no new member, no new voucher
+    expect(send).toHaveBeenCalledWith('member-voucher', 'davidnedic@web.de', expect.objectContaining({
+      templateData: expect.objectContaining({ code: 'GOLDEN-TEST' }),
+      idempotencyKey: expect.stringContaining('member-voucher-david-test-GOLDEN-TEST-test-'),
+    }))
   })
   it('does not bypass an unsubscribe for the test address', async () => {
     db.from.mockReturnValueOnce(query({ count: 0 })).mockReturnValueOnce(query({})).mockReturnValueOnce(query({ data: { id: 'david-test', unsubscribed_at: '2026-10-24' } }))

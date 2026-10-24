@@ -33,20 +33,32 @@ export const signupMember = createServerFn({ method: "POST" })
 
     const email = normalizeEmail(data.email);
     const isTestEmail = email === 'davidnedic@web.de';
-    const { data: existing } = await db.from("members").select("id, vorname, confirm_token, newsletter_token, newsletter_confirmed_at, unsubscribed_at").ilike("email", email).maybeSingle();
+    const { data: existing } = await db.from("members").select("id, vorname, unsubscribed_at").ilike("email", email).maybeSingle();
     let member = existing;
     if (existing && (!isTestEmail || existing.unsubscribed_at)) return { status: "exists" as const };
     if (!member) {
-      const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_token, newsletter_confirmed_at, unsubscribed_at").single();
+      const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), email, newsletter: true, newsletter_confirmed_at: new Date().toISOString() }).select("id, vorname, unsubscribed_at").single();
       if (error?.code === '23505') return { status: 'exists' as const };
       if (error || !created) throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal.");
       member = created;
     }
+    const { data: v } = await db.from("vouchers").select("code").eq("member_id", member.id).maybeSingle();
+    let code = v?.code ?? "";
+    for (let i = 0; i < 8 && !code; i++) {
+      const c = makeVoucherCode();
+      const { error } = await db.from("vouchers").insert({ member_id: member.id, code: c, rabatt_prozent: VOUCHER_PERCENT });
+      if (!error) code = c;
+      else if (error.code === "23505") {
+        const { data: existingVoucher } = await db.from('vouchers').select('code').eq('member_id', member.id).maybeSingle();
+        code = existingVoucher?.code ?? '';
+      }
+    }
+    if (!code) throw new Error("Gutschein konnte nicht erstellt werden. Bitte versuch es noch einmal.");
     const o = origin();
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
-    const delivery = await sendTemplateEmail('member-confirmation', email, {
-      templateData: { origin: o, vorname: member.vorname, confirmUrl: `${o}/member-club/bestaetigen?token=${member.confirm_token}` },
-      idempotencyKey: `member-confirmation-${member.id}-${member.confirm_token}${isTestEmail ? `-test-${crypto.randomUUID()}` : ''}`,
+    const delivery = await sendTemplateEmail('member-voucher', email, {
+      templateData: { origin: o, vorname: member.vorname, code },
+      idempotencyKey: `member-voucher-${member.id}-${code}${isTestEmail ? `-test-${crypto.randomUUID()}` : ''}`,
     });
     if (!delivery.sent) throw new Error('An diese Adresse können derzeit keine Member-Club-Mails gesendet werden.');
     return { status: "sent" as const };

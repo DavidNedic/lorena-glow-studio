@@ -14,16 +14,16 @@ describe('Member emails through Lovable', () => {
     send.mockReset().mockResolvedValue({})
   })
   it('uses the brand email and configured delegated domain', async () => {
-    await sendTemplateEmail('member-confirmation', 'anna@example.de', {
-      templateData: { vorname: 'Anna', confirmUrl: 'https://thegoldencosmetics.com/member-club' },
-      idempotencyKey: 'member-confirmation-event-123',
+    await sendTemplateEmail('member-voucher', 'anna@example.de', {
+      templateData: { vorname: 'Anna', code: 'GOLDEN-7K3P' },
+      idempotencyKey: 'member-voucher-event-123',
     })
     expect(send.mock.calls[0]?.[0]).toMatchObject({
       to: 'anna@example.de',
       from: { name: 'The Golden Cosmetics & Academy', address: 'info@thegoldencosmetics.com' },
       sender_domain: 'info.thegoldencosmetics.com',
       reply_to: 'info@thegoldencosmetics.com',
-      idempotency_key: 'member-confirmation-event-123',
+      idempotency_key: 'member-voucher-event-123',
     })
   })
   it('preserves voucher event identity for retries', async () => {
@@ -34,7 +34,7 @@ describe('Member emails through Lovable', () => {
   })
   it('does not retry suppressed recipients', async () => {
     send.mockRejectedValue(new EmailAPIError(403, 'suppressed', null, 'recipient_suppressed'))
-    expect(await sendTemplateEmail('member-confirmation', 'anna@example.de')).toEqual({ sent: false, reason: 'recipient_suppressed' })
+    expect(await sendTemplateEmail('member-voucher', 'anna@example.de')).toEqual({ sent: false, reason: 'recipient_suppressed' })
     expect(send).toHaveBeenCalledTimes(1)
   })
 })
