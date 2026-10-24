@@ -1,7 +1,9 @@
 export const CONTACT = {
   name: "The Golden Cosmetics & Academy", owner: "Lorena Kovacevic",
+  legalForm: "Einzelunternehmen", vatId: "DE319849001", profession: "Fachkosmetikerin",
+  disputeResolution: "Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
   street: "Austraße 26", city: "74336 Brackenheim", phone: "0162 9709213", tel: "tel:+491629709213",
-  email: "info@thegoldencosmetics.de", emailTodo: true, hours: "Mo bis Sa, 9 bis 20 Uhr",
+  email: "info@thegoldencosmetics.com", hours: "Mo bis Sa, 9 bis 20 Uhr",
   beautinda: "https://beautinda.de/salon/xUqq2vyQw724bbTtNRDh",
   whatsapp: "https://wa.me/491629709213?text=" + encodeURIComponent("Hi Lorena, ich habe eine Frage zu einer Behandlung."),
   calendly: "https://calendly.com/thegoldencosmetics",

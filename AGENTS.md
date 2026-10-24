@@ -16,3 +16,7 @@
 - Callback forms prepare a WhatsApp message and explicitly require the visitor to send it; do not display a false delivery confirmation.
 - Preserve published legacy treatment URLs using permanent redirects to the overview for retired offers and the current offer slug for retained aliases.
 - Pages carry their SEO head (title, description, canonical, share image, JSON-LD) via the shared seoHead helper; the sitemap is built from the shared data module so new offers appear automatically.
+
+- Bundle all font weights locally through package CSS imports so typography never requires a third-party font request.
+- Reuse the intro raster hummingbird for header/footer with scoped filters, and render app icons from its traced vector for sharp edges without changing the intro.
+- Keep unfinished Member Club and AGB content explicitly marked as placeholders, with Member Club excluded from indexing until real content is supplied.
