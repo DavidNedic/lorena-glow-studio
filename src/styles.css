@@ -224,3 +224,8 @@
 .zoom-stage .zoom-media.zoom-fallback { visibility: visible; transform-origin: var(--fb-x) var(--fb-y); animation: zoom-fb var(--fb-dur) ease-in-out forwards !important; }
 .zoom-stage .zoom-media.zoom-fallback[data-held="true"] { animation: none !important; scale: var(--fb-scale); }
 @keyframes zoom-fb { from { scale: 1; } to { scale: var(--fb-scale); } }
+
+.zoom-dot:hover { background: color-mix(in oklab, var(--surface) 35%, transparent); }
+.zoom-back { height: auto; }
+.zoom-stage .zoom-media.zoom-fallback[data-returning="true"] { animation: zoom-fb-return var(--fb-dur) ease-in-out forwards !important; }
+@keyframes zoom-fb-return { from { scale: var(--fb-return-scale, 2.6); } to { scale: 1; } }

@@ -10,9 +10,9 @@ export const CONTACT = {
   instagram: "https://www.instagram.com/thegoldencosmetics", instagramAcademy: "https://www.instagram.com/thegoldencosmetics",
 };
 export function whatsappUrl(text: string) { return `https://wa.me/491629709213?text=${encodeURIComponent(text)}`; }
-export const CATEGORIES = ["Erstberatung", "Liftings", "Wimpernbehandlungen"] as const;
+export const CATEGORIES = ["Erstberatung", "Liftings", "Wimpernbehandlungen", "Hautbehandlungen", "Akne"] as const;
 export type Category = typeof CATEGORIES[number];
-export type Treatment = { slug: string; name: string; category: Category; duration?: string; sentence: string; image: string; detail?: boolean; bookingUrl: string };
+export type Treatment = { slug: string; name: string; category: Category; duration?: string; priceNote?: string; sentence: string; image: string; detail?: boolean; bookingUrl: string };
 const treatment = (slug: string, name: string, category: Category, duration: string, extra: Partial<Treatment> = {}): Treatment => ({ slug, name, category, duration, sentence: "", image: "/images/kachel-behandlung.jpg", bookingUrl: CONTACT.beautinda, ...extra });
 export const TREATMENTS: Treatment[] = [
   treatment("first", "First Time: Hautanalyse + erste Behandlung", "Erstberatung", "2 Std.", { detail: true, sentence: "Wir schauen uns deine Haut genau an und verbinden deine Hautanalyse mit der ersten passenden Behandlung." }),
@@ -24,6 +24,11 @@ export const TREATMENTS: Treatment[] = [
   treatment("wispy", "Wispy Neu-Set", "Wimpernbehandlungen", "2 Std."),
   treatment("volumen", "Volumen Neu-Set", "Wimpernbehandlungen", "2 Std."),
   treatment("refill", "Wimpern auffüllen", "Wimpernbehandlungen", "1 Std. 20 Min."),
+  treatment("microneedling-salmon-dna", "Microneedling x Salmon DNA", "Hautbehandlungen", "Dauer auf Anfrage", { sentence: "Microneedling mit Salmon DNA. Anti-Aging-Effekt, wirkt gegen feine Linien und Falten." }),
+  treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "Hautbehandlungen", "Dauer auf Anfrage", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
+  treatment("microneedling", "Microneedling", "Hautbehandlungen", "Dauer auf Anfrage", { sentence: "Microneedling bei Aknenarben. Kann die Erneuerung der Haut anregen und das Hautbild glätten." }),
+  treatment("biorepeel", "BioRePeel", "Akne", "Dauer auf Anfrage", { sentence: "Peeling bei Akne und unreiner Haut.", priceNote: "Preis auf Anfrage" }),
+  treatment("anti-akne-face-reset", "Anti-Akne Face Reset", "Akne", "Dauer auf Anfrage", { sentence: "Gezielt gegen Pickel: Wir gehen an die Ursache, statt nur abzudecken." }),
 ];
 // Empty targets redirect retired offers to the overview; retained aliases resolve to an offer.
 export const LEGACY_TREATMENT_SLUGS: Record<string, string> = {
@@ -32,11 +37,13 @@ export const LEGACY_TREATMENT_SLUGS: Record<string, string> = {
 };
 export type ZoomArea = { id: string; area: string; problem: string; explain?: string; slug: string; help: string; x?: number; y?: number; video: boolean };
 export const ZOOM_AREAS: ZoomArea[] = [
-  { id: "stirn", area: "Stirn", problem: "Kleine Pickel", explain: "Entstehen oft, wenn Poren durch zu viel Talg verstopfen.", slug: "first", help: "Wir analysieren deine Haut und wählen gemeinsam die passende erste Behandlung.", x: 50, y: 21.3, video: true },
-  { id: "augen", area: "Augen", problem: "Kurze, gerade Wimpern", explain: "Ohne Schwung wirken sie kürzer, als sie eigentlich sind.", slug: "lash", help: "Geliftet und gefärbt: wacher Blick, ganz ohne Mascara.", x: 40, y: 40.3, video: true },
-  { id: "nase", area: "Nase", problem: "Mitesser und große Poren", explain: "Talg und Schmutz setzen sich in den Poren fest und werden dunkel.", slug: "first", help: "Bei deiner Hautanalyse schauen wir uns die Poren an und stimmen die erste Behandlung darauf ab.", x: 50, y: 46.9, video: true },
-  { id: "wangen", area: "Wangen", problem: "Aknenarben und Poren", explain: "Nach Pickeln bleiben oft kleine Vertiefungen in der Haut zurück.", slug: "first", help: "Wir beurteilen deine Hautstruktur und wählen die passende erste Behandlung.", x: 62, y: 56, video: true },
-  { id: "kinn", area: "Kinn", problem: "Unreinheiten", explain: "Kommen oft immer wieder an derselben Stelle.", slug: "first", help: "Wir schauen uns deine Unreinheiten bei der Hautanalyse genau an und starten mit der passenden ersten Behandlung.", x: 50, y: 67.5, video: true },
+  { id: "stirn", area: "Stirn", problem: "Feine Linien und Falten", explain: "Mit der Zeit verliert die Haut an Spannkraft, feine Linien graben sich ein.", slug: "microneedling-salmon-dna", help: "Microneedling mit Salmon DNA. Anti-Aging-Effekt, wirkt gegen feine Linien und Falten.", x: 50, y: 21.3, video: true },
+  { id: "augen", area: "Augen", problem: "Kurze, gerade Wimpern", explain: "Ohne Schwung wirken sie kürzer, als sie eigentlich sind.", slug: "lash", help: "Korean Lashlifting inkl. Färben oder eine Wimpernverlängerung. Wacher Blick, ganz ohne Mascara.", x: 40, y: 40.3, video: true },
+  { id: "nase", area: "Nase", problem: "Mitesser und große Poren", explain: "Talg und Schmutz setzen sich in den Poren fest und werden dunkel.", slug: "aquafacial-ausreinigung", help: "Aquafacial: Tiefenausreinigung der Poren mit viel Feuchtigkeit. Die Poren sind danach frei.", x: 50, y: 46.9, video: true },
+  { id: "wangen", area: "Wangen", problem: "Aknenarben", explain: "Nach Pickeln bleiben oft kleine Vertiefungen in der Haut zurück.", slug: "microneedling", help: "Microneedling bei Aknenarben. Kann die Erneuerung der Haut anregen und das Hautbild glätten.", x: 62, y: 56, video: true },
+  { id: "kinn", area: "Kinn", problem: "Akne am Kinn", explain: "Kommt oft immer wieder an derselben Stelle.", slug: "biorepeel", help: "BioRePeel bei Akne am Kinn: ein Peeling, das gezielt an den unreinen Stellen ansetzt.", x: 50, y: 67.5, video: true },
+  { id: "augenbrauen", area: "Augenbrauen", problem: "Ungleichmäßige Brauen", explain: "Die Härchen wachsen in verschiedene Richtungen, die Form geht verloren.", slug: "brow", help: "Brow Lifting inkl. Färben und Formen. Für konstant schöne Augenbrauen, jeden Tag.", x: 61, y: 33, video: false },
+  { id: "pickel", area: "Pickel", problem: "Einzelne Pickel", explain: "Entstehen, wenn Poren durch zu viel Talg verstopfen und sich entzünden.", slug: "anti-akne-face-reset", help: "Gezielt gegen Pickel: Wir gehen an die Ursache, statt nur abzudecken.", x: 30, y: 56, video: false },
   { id: "glow", area: "Ganzes Gesicht", problem: "Fahle, trockene Haut", explain: "Abgestorbene Hautschüppchen schlucken das Licht, die Haut wirkt müde.", slug: "first", help: "Wir klären bei deiner Hautanalyse, was deiner Haut fehlt, und starten mit der passenden ersten Behandlung.", video: true },
   { id: "unsicher", area: "Unsicher?", problem: "Du weißt nicht, was du brauchst", slug: "first", help: "Total normal. Wir starten mit einer Hautanalyse und machen direkt deine erste Behandlung.", video: false },
 ];

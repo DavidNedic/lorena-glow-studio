@@ -20,3 +20,5 @@
 - Bundle all font weights locally through package CSS imports so typography never requires a third-party font request.
 - Reuse the intro raster hummingbird for header/footer with scoped filters, and render app icons from its traced vector for sharp edges without changing the intro.
 - Keep unfinished Member Club and AGB content explicitly marked as placeholders, with Member Club excluded from indexing until real content is supplied.
+
+- Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.
