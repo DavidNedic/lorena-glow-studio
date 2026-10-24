@@ -22,6 +22,7 @@ import { Route as BehandlungenSlugRouteImport } from './routes/behandlungen.$slu
 import { Route as MemberClubAbmeldenRouteImport } from './routes/member-club.abmelden'
 import { Route as MemberClubAdminRouteImport } from './routes/member-club.admin'
 import { Route as MemberClubBestaetigenRouteImport } from './routes/member-club.bestaetigen'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,6 +89,12 @@ const MemberClubBestaetigenRoute = MemberClubBestaetigenRouteImport.update({
   path: '/bestaetigen',
   getParentRoute: () => MemberClubRoute,
 } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +126,7 @@ export interface FileRoutesByTo {
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy': typeof AcademyIndexRoute
   '/behandlungen': typeof BehandlungenIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +143,7 @@ export interface FileRoutesById {
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/member-club/bestaetigen'
     | '/academy/'
     | '/behandlungen/'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/member-club/bestaetigen'
     | '/academy'
     | '/behandlungen'
+    | '/lovable/email/transactional/preview'
   id:
     | '__root__'
     | '/'
@@ -181,6 +193,7 @@ export interface FileRouteTypes {
     | '/member-club/bestaetigen'
     | '/academy/'
     | '/behandlungen/'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -194,6 +207,7 @@ export interface RootRouteChildren {
   BehandlungenSlugRoute: typeof BehandlungenSlugRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
   BehandlungenIndexRoute: typeof BehandlungenIndexRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -289,6 +303,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemberClubBestaetigenRouteImport
       parentRoute: typeof MemberClubRoute
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -319,6 +340,7 @@ const rootRouteChildren: RootRouteChildren = {
   BehandlungenSlugRoute: BehandlungenSlugRoute,
   AcademyIndexRoute: AcademyIndexRoute,
   BehandlungenIndexRoute: BehandlungenIndexRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
