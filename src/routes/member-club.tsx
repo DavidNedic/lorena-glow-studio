@@ -59,7 +59,7 @@ function JoinPanel() {
 }
 
 function MemberClub() {
-  return <div>
+  return <div className="bg-background">
     <FloatingNav back="/" links={[{ label: "Behandlungen", href: "/behandlungen" }, { label: "Academy", href: "/academy" }]} cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
     <Section className="site-hero"><div className="mx-auto grid max-w-5xl items-center gap-10 text-left md:grid-cols-2">
       <div>

@@ -17,11 +17,11 @@ export function InstagramLink({ results = false }: { results?: boolean }) { retu
 export function ActionLink({ href, children, secondary = false, lipstick = false, external = false, className = "" }: { href: string; children: ReactNode; secondary?: boolean; lipstick?: boolean; external?: boolean; className?: string }) {
   return <Button asChild variant="ghost" className={`${lipstick ? "btn-lipstick" : `btn ${secondary ? "btn-ghost" : "btn-primary"}`} ${className}`}><a href={href} {...(external ? { target: "_blank", rel: "noreferrer" } : {})}>{children}</a></Button>;
 }
-type NavProps = { back?: string; links: { label: string; href: string }[]; cta: { label: string; href: string; external?: boolean } };
+type NavProps = { back: string; links: { label: string; href: string }[]; cta: { label: string; href: string; external?: boolean } };
 export function FloatingNav({ back, links, cta }: NavProps) {
   const [menu, setMenu] = useState(false);
   return <div className="sticky top-[14px] z-40 flex justify-center px-3 pt-3"><nav className="relative flex max-w-full items-center gap-2 rounded-full bg-nav p-1.5 shadow-warm md:gap-5">
-    {back && <Button asChild variant="ghost" size="icon" className="size-10 shrink-0 rounded-full bg-surface-2"><a href={back} aria-label="Zurück"><Arrow dir="left" /></a></Button>}
+    <Button asChild variant="ghost" size="icon" className="size-10 shrink-0 rounded-full bg-surface-2"><a href={back} aria-label="Zurück"><Arrow dir="left" /></a></Button>
     <Link to="/" className="hidden md:block"><Logo /></Link><Link to="/" className="md:hidden"><Logo text={false} /></Link>
     <div className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">{links.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}</div>
     <Button variant="ghost" size="icon" aria-label="Navigation öffnen" aria-expanded={menu} onClick={() => setMenu(!menu)} className="rounded-full md:hidden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M5 8h14M5 16h14" /></svg></Button>

@@ -21,7 +21,7 @@ function Unsubscribe() {
     unsubscribe({ data: { token } }).then(r => setState(r.ok ? "ok" : "fail")).catch(() => setState("fail"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
-  return <div>
+  return <div className="bg-background">
     <FloatingNav back="/member-club" links={[]} cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
     <Section className="max-w-xl">
       <h1 className="text-4xl">Newsletter abmelden</h1>

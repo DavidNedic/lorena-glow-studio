@@ -102,11 +102,11 @@ function Admin() {
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "newsletter-empfaenger.csv"; a.click(); URL.revokeObjectURL(a.href);
   };
 
-  if (!ready) return <div><Section><p className="text-muted-foreground">Laden …</p></Section></div>;
-  if (!signedIn) return <div><Login /></div>;
-  if (denied) return <div><Section className="max-w-md"><h1 className="text-4xl">Zugriff nicht möglich</h1><p className="mt-4 text-muted-foreground">Prüfe deine Verwaltungsrechte oder versuch es erneut.</p><Button variant="ghost" className="btn btn-ghost mt-6" onClick={load}>Erneut laden</Button><Button variant="ghost" className="btn btn-ghost mt-6" onClick={signOut}>Abmelden</Button><Link to="/" className="btn btn-ghost mt-6 w-full">Zurück zur Startseite</Link></Section></div>;
+  if (!ready) return <div className="bg-background"><Section><p className="text-muted-foreground">Laden …</p></Section></div>;
+  if (!signedIn) return <div className="bg-background"><Login /></div>;
+  if (denied) return <div className="bg-background"><Section className="max-w-md"><h1 className="text-4xl">Zugriff nicht möglich</h1><p className="mt-4 text-muted-foreground">Prüfe deine Verwaltungsrechte oder versuch es erneut.</p><Button variant="ghost" className="btn btn-ghost mt-6" onClick={load}>Erneut laden</Button><Button variant="ghost" className="btn btn-ghost mt-6" onClick={signOut}>Abmelden</Button><Link to="/" className="btn btn-ghost mt-6 w-full">Zurück zur Startseite</Link></Section></div>;
 
-  return <div>
+  return <div className="bg-background">
     <Section className="max-w-4xl !pb-4">
       <div className="flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Member Club</h1><div className="flex items-center gap-2"><Link to="/" className="btn btn-ghost">Zurück zur Startseite</Link><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div></div>
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">

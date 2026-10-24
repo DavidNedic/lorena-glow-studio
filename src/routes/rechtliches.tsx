@@ -150,7 +150,7 @@ Für alle Anfragen genügt eine kurze Nachricht an info@thegoldencosmetics.com.`
 
 function Legal() {
   return (
-    <div>
+    <div className="bg-background">
       <FloatingNav back="/" links={[{ label: "Impressum", href: "#impressum" }, { label: "AGB", href: "#agb" }, { label: "Datenschutz", href: "#datenschutz" }]} cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
       <Section id="impressum" className="max-w-3xl">
         <h1 className="text-5xl">Impressum</h1>
