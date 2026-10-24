@@ -37,10 +37,10 @@ function JoinPanel() {
 
   if (done) return (
     <div className="card w-full p-7 text-left" role="status">
-      <h2 className="text-2xl">{done === "exists" ? "Du bist schon dabei" : "Fast geschafft"}</h2>
+      <h2 className="text-2xl">{done === "exists" ? "Du bist schon dabei" : "Dein Gutschein ist unterwegs"}</h2>
       <p className="mt-3 text-muted-foreground">{done === "exists"
-        ? "Diese E-Mail-Adresse ist bereits gespeichert. Eine weitere Anmeldung und ein weiterer Gutschein sind nicht möglich. Schau in deinem Postfach auch im Spam-Ordner nach der Bestätigungsmail oder deinem Gutschein. Falls keine Mail angekommen ist, schreib mir bitte an info@thegoldencosmetics.com."
-        : "Ich habe dir eine E-Mail geschickt. Bitte bestätige darin kurz deine Anmeldung, danach kommt dein 10 %-Gutschein."}</p>
+        ? "Diese E-Mail-Adresse ist bereits gespeichert. Eine weitere Anmeldung und ein weiterer Gutschein sind nicht möglich. Schau in deinem Postfach auch im Spam-Ordner nach deinem Gutschein. Falls keine Mail angekommen ist, schreib mir bitte an info@thegoldencosmetics.com."
+        : "Ich habe dir deinen persönlichen 10 %-Gutschein per E-Mail geschickt. Schau auch im Spam-Ordner nach."}</p>
     </div>
   );
 
@@ -70,7 +70,7 @@ function MemberClub() {
       <JoinPanel />
     </div></Section>
     <Section><div className="mx-auto grid max-w-4xl gap-6 text-left md:grid-cols-3">
-      {[["01", "Anmelden", "Vorname und E-Mail eintragen, Haken setzen."], ["02", "Bestätigen", "Kurz den Link in meiner E-Mail anklicken."], ["03", "Gutschein zeigen", "Deinen Code bei der nächsten Behandlung im Studio zeigen."]].map(([n, t, d]) => <div key={n} className="border-t pt-4"><p className="text-sm text-muted-foreground">{n}</p><p className="mt-2 font-semibold">{t}</p><p className="mt-2 text-sm text-muted-foreground">{d}</p></div>)}
+      {[["01", "Anmelden", "Vorname und E-Mail eintragen, Haken setzen."], ["02", "Code per E-Mail", "Dein persönlicher Gutscheincode kommt direkt in dein Postfach."], ["03", "Gutschein zeigen", "Deinen Code bei der nächsten Behandlung im Studio zeigen."]].map(([n, t, d]) => <div key={n} className="border-t pt-4"><p className="text-sm text-muted-foreground">{n}</p><p className="mt-2 font-semibold">{t}</p><p className="mt-2 text-sm text-muted-foreground">{d}</p></div>)}
     </div></Section>
     <Footer headline="Bereit für deinen Glow?" cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
   </div>;
