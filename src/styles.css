@@ -264,8 +264,6 @@
 .stack-stage { position: relative; overflow: hidden; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
 .stack-card { transition: transform .35s ease, opacity .35s ease; }
 .stack-card img { filter: drop-shadow(0 18px 30px rgba(20,16,13,.22)); }
-.stack-card:not(.stack-card-top) { position: absolute; inset: 0; pointer-events: none; }
-.stack-card:not(.stack-card-top) img { height: 100%; object-fit: contain; object-position: 50% 0; }
 .stack-card-scroll img { display: block; max-height: 560px; object-fit: contain; }
 .stack-card-top { will-change: transform; }
 .stack-card-drag { transition: none !important; }
