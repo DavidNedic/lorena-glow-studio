@@ -3,6 +3,11 @@ import { CATEGORIES, CONTACT, LEGACY_TREATMENT_SLUGS, MASTERCLASSES, PROBLEMS, T
 import { answerChat, refreshHistory, trimHistory, type ChatMessage } from "@/lib/chat";
 it("alle Buchungen gehen zum konkreten Beautinda-Salon",()=>{expect(CONTACT.beautinda).toBe("https://beautinda.de/salon/xUqq2vyQw724bbTtNRDh");for(const t of TREATMENTS)expect(t.bookingUrl).toBe(CONTACT.beautinda);});
 it("Telefon und Öffnungszeiten entsprechen den Vorgaben",()=>{expect(CONTACT.tel).toBe("tel:+491629709213");expect(CONTACT.hours).toBe("Mo bis Sa, 9 bis 20 Uhr");});
+it("bestätigter E-Mail-Kontakt",()=>expect(CONTACT.email).toBe("info@thegoldencosmetics.com"));
+it("Rechtsform ist Einzelunternehmen",()=>expect(CONTACT.legalForm).toBe("Einzelunternehmen"));
+it("Umsatzsteuer-ID entspricht der Inhaberin",()=>expect(CONTACT.vatId).toBe("DE319849001"));
+it("Berufsbezeichnung ist Fachkosmetikerin",()=>expect(CONTACT.profession).toBe("Fachkosmetikerin"));
+it("keine Teilnahme an Verbraucherschlichtung",()=>expect(CONTACT.disputeResolution).toBe("Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."));
 it("alle Instagram-Links nutzen denselben Account",()=>expect(CONTACT.instagramAcademy).toBe("https://www.instagram.com/thegoldencosmetics"));
 it("nur die neun verbleibenden Angebote und drei Kategorien bleiben",()=>{expect(CATEGORIES).toEqual(["Erstberatung","Liftings","Wimpernbehandlungen"]);expect(TREATMENTS.map(t=>[t.slug,t.category,t.duration])).toEqual([["first","Erstberatung","2 Std."],["lash","Liftings","1 Std. 30 Min."],["brow","Liftings","1 Std. 20 Min."],["brow-color","Liftings","30 Min."],["brow-shape","Liftings","30 Min."],["natural","Wimpernbehandlungen","2 Std."],["wispy","Wimpernbehandlungen","2 Std."],["volumen","Wimpernbehandlungen","2 Std."],["refill","Wimpernbehandlungen","1 Std. 20 Min."]]);});
 it("Behandlungsdaten enthalten keine Preise",()=>{for(const t of TREATMENTS){expect(t).not.toHaveProperty("price");expect(t).not.toHaveProperty("oldPrice");expect(t).not.toHaveProperty("from");}});
