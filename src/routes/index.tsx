@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, type PointerEvent } from "react";
+import { useRef, type PointerEvent } from "react";
 import { IntroGate } from "@/components/Intro";
 import { CreamShader } from "@/components/CreamShader";
+import { CardMotion } from "@/components/CardMotion";
 import { ActionLink, Arrow, Logo } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/data";
@@ -9,38 +10,8 @@ import { BEAUTY_SALON, OG, seoHead } from "@/lib/seo";
 export const Route = createFileRoute("/")({ head: () => seoHead({ path: "/", title: "The Golden Cosmetics & Academy · Kosmetik Brackenheim", description: "Kosmetikstudio und Online-Academy von Lorena Kovacevic in Brackenheim bei Heilbronn: Hautanalyse, Liftings, Wimpern und Masterclasses für Kosmetikerinnen.", image: OG.behandlungen, jsonLd: [BEAUTY_SALON] }), component: Index });
 function ChoiceCard({ to, academy, img, label, title, text }: { to: "/behandlungen" | "/academy"; academy?: boolean; img: string; label: string; title: string; text: string }) {
  const navigate = useNavigate();
- const slug = academy ? "academy" : "behandlung";
- const vid = useRef<HTMLVideoElement>(null);
  const card = useRef<HTMLButtonElement>(null);
- useEffect(() => {
-  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const hoverable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  let io: IntersectionObserver | null = null;
-  let onEnter: (() => void) | null = null;
-  let onLeave: (() => void) | null = null;
-  const apply = () => {
-   const v = vid.current;
-   if (!v) return;
-   if (mq.matches) { v.pause(); v.currentTime = 0; return; }
-   if (hoverable) {
-    if (!onEnter) {
-     onEnter = () => vid.current?.play().catch(() => {});
-     onLeave = () => { const x = vid.current; if (x) { x.pause(); x.currentTime = 0; } };
-     card.current?.addEventListener("mouseenter", onEnter);
-     card.current?.addEventListener("mouseleave", onLeave);
-    }
-   } else if (!io) {
-    io = new IntersectionObserver((entries) => {
-     for (const e of entries) { const x = vid.current; if (!x) continue; if (e.isIntersecting) x.play().catch(() => {}); else x.pause(); }
-    }, { threshold: 0.35 });
-    io.observe(v);
-   }
-  };
-  apply();
-  mq.addEventListener("change", apply);
-  return () => { mq.removeEventListener("change", apply); io?.disconnect(); if (onEnter) card.current?.removeEventListener("mouseenter", onEnter); if (onLeave) card.current?.removeEventListener("mouseleave", onLeave); };
- }, []);
- return <div className="choice-float"><Button ref={card} variant="ghost" aria-label={title === "Behandlung" ? "Einblick in die Hautbehandlungen bei The Golden Cosmetics" : "Absolventinnen der Golden Academy vor dem Studio-Logo"} onClick={() => { localStorage.setItem("tg-choice",to); navigate({ to }); }} className={`choice-card whitespace-normal ${academy ? "choice-card-academy" : ""}`}><span className="block aspect-[16/10] w-full overflow-hidden rounded-[18px] max-[699px]:aspect-video"><video ref={vid} muted loop playsInline preload="metadata" poster={`/video/kachel-${slug}.jpg`} aria-hidden="true" className="choice-image size-full object-cover"><source src={`/video/kachel-${slug}.webm`} type="video/webm" /><source src={`/video/kachel-${slug}.mp4`} type="video/mp4" /></video></span><span className="flex flex-1 flex-col items-center px-4 pb-4 pt-6"><span className="text-sm text-muted-foreground">{label}</span><span className="mt-2 text-[27px] font-semibold md:text-4xl">{title}</span><span className="mt-3 max-w-sm text-[14.5px] leading-relaxed text-muted-foreground md:text-base">{text}</span><span className="choice-arrow mt-5 grid size-9 place-items-center rounded-full border md:size-12"><Arrow /></span></span></Button></div>;
+ return <div className="choice-float"><Button ref={card} variant="ghost" aria-label={title === "Behandlung" ? "Einblick in die Hautbehandlungen bei The Golden Cosmetics" : "Absolventinnen der Golden Academy vor dem Studio-Logo"} onClick={() => { localStorage.setItem("tg-choice",to); navigate({ to }); }} className={`choice-card whitespace-normal ${academy ? "choice-card-academy" : ""}`}><span className="block aspect-[16/10] w-full overflow-hidden rounded-[18px] max-[699px]:aspect-video"><CardMotion variant={academy ? "academy" : "behandlung"} hostRef={card} /></span><span className="flex flex-1 flex-col items-center px-4 pb-4 pt-6"><span className="text-sm text-muted-foreground">{label}</span><span className="mt-2 text-[27px] font-semibold md:text-4xl">{title}</span><span className="mt-3 max-w-sm text-[14.5px] leading-relaxed text-muted-foreground md:text-base">{text}</span><span className="choice-arrow mt-5 grid size-9 place-items-center rounded-full border md:size-12"><Arrow /></span></span></Button></div>;
 }
 function Index() {
  const stage = useRef<HTMLDivElement>(null);
