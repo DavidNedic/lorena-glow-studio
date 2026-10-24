@@ -231,16 +231,19 @@
 @keyframes zoom-fb-return { from { scale: var(--fb-return-scale, 2.6); } to { scale: 1; } }
 
 /* Behandlungen: neues Listenkonzept */
-.first-box { background: #2A1D19; color: #F8F0EC; border-radius: 28px; padding: 34px 28px; text-align: left; }
-.first-box .text-muted-foreground { color: color-mix(in oklab, #F8F0EC 72%, transparent); }
+.first-box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 28px; padding: 30px 26px; text-align: left; }
+.analysis-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 16px; }
+.analysis-item { min-width: 0; overflow-wrap: break-word; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; scroll-margin-top: 120px; transition: background .3s, border-color .3s; }
+.analysis-item:target, .analysis-item.treat-row-hit { background: #F2E3DD; border-color: transparent; }
 .treat-cards { display: grid; gap: 20px; grid-template-columns: 1fr; margin-top: 20px; }
 @media (min-width: 820px) { .treat-cards { grid-template-columns: 1fr 1fr; } }
-.treat-card { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 26px 22px; text-align: left; }
+.treat-card { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 26px 22px; text-align: left; }
 .treat-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 10px; margin: 0 -10px; border-top: 1px solid var(--line); border-radius: 12px; scroll-margin-top: 120px; transition: background .3s; }
 .treat-row:target, .treat-row.treat-row-hit { background: #F2E3DD; }
 .treat-book { flex-shrink: 0; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; background: var(--surface); }
 .treat-book:hover { background: var(--surface-2); }
-.cal-bar { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid var(--line); border-radius: 999px; padding: 14px 22px; background: var(--surface); text-align: left; }
+.cal-bar { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid var(--line); border-radius: 28px; padding: 22px 26px; background: var(--surface); text-align: left; }
+@media (max-width: 699px) { .cal-bar { flex-direction: column; align-items: stretch; text-align: center; } .cal-bar .btn { width: 100%; } }
 
 /* Vorher/Nachher */
 .ba-frame { position: relative; aspect-ratio: 4/5; border-radius: 28px; overflow: hidden; background: var(--surface-2); container-type: inline-size; }
@@ -261,5 +264,8 @@
 .stack-stage { position: relative; overflow: hidden; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
 .stack-card { border-radius: 28px; background: var(--surface); padding: 10px; box-shadow: 0 18px 40px -18px rgba(20,16,13,.28); transition: transform .35s ease, opacity .35s ease; }
 .stack-card:not(.stack-card-top) { position: absolute; inset: 0; pointer-events: none; }
-.stack-card-scroll { max-height: 600px; overflow-y: auto; border-radius: 20px; }
+.stack-card-scroll { border-radius: 20px; overflow: hidden; }
+.stack-card-scroll img { aspect-ratio: 4/5; object-fit: cover; object-position: 50% 12%; }
+.stack-card-top { will-change: transform; }
+.stack-card-drag { transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .stack-card { transition: none; } }
