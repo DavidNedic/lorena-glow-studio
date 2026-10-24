@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { TREATMENTS, treatmentShopImage, type Treatment } from "@/lib/data";
+import { TREATMENTS, type Treatment } from "@/lib/data";
 
 export function TreatmentShop({ treatments, analysis = false, hit }: { treatments: Treatment[]; analysis?: boolean; hit: string | null }) {
  const [selected, setSelected] = useState<Treatment | null>(null);
@@ -12,9 +12,8 @@ export function TreatmentShop({ treatments, analysis = false, hit }: { treatment
  const visible = showAll ? treatments : treatments.slice(0, 6);
  return <>
   <div className="treatment-shop-grid">{visible.map(t => <article key={t.slug} id={`t-${t.slug}`} className={`shop-treatment${hit === t.slug ? "shop-treatment-hit" : ""}`}>
-   <Button variant="ghost" className="shop-image-button" onClick={() => setSelected(t)} aria-label={`${t.name} ansehen`}><img src={treatmentShopImage(t.slug)} alt="Studioeinblick bei The Golden Cosmetics in Brackenheim" loading="lazy" className="shop-treatment-image"/><span className="shop-image-label">{analysis ? "Individuell abgestimmt" : "Online buchbar"}</span></Button>
-   <div className="shop-treatment-info"><p className="text-xs text-muted-foreground">{t.duration}</p><h4>{t.name}</h4>{t.price && !analysis && <p className="shop-price">{t.price}</p>}
-    {analysis ? <Button variant="outline" className="shop-cta" onClick={() => setSelected(t)}>Ansehen <ArrowUpRight aria-hidden="true"/></Button> : <Button asChild className="btn btn-primary shop-cta"><a href={t.bookingUrl} target="_blank" rel="noreferrer" aria-label={`${t.name} buchen`}>Buchen <ArrowUpRight aria-hidden="true"/></a></Button>}
+   <div className="shop-treatment-info"><h4>{t.name}</h4><p className="text-sm text-muted-foreground">{t.duration}{t.price && !analysis ? ` · ${t.price}` : ""}</p>
+    {analysis ? <Button variant="link" className="shop-detail-link" aria-label={`${t.name} ansehen`} onClick={() => setSelected(t)}>Details <ArrowUpRight aria-hidden="true"/></Button> : <Button asChild className="btn btn-primary shop-cta"><a href={t.bookingUrl} target="_blank" rel="noreferrer" aria-label={`${t.name} buchen`}>Buchen <ArrowUpRight aria-hidden="true"/></a></Button>}
    </div>
   </article>)}</div>
   {treatments.length > 6 && <Button variant="outline" className="btn btn-ghost mt-6" onClick={() => setExpanded(!showAll)}>{showAll ? "Weniger anzeigen" : "Alle Behandlungen ansehen"}</Button>}
