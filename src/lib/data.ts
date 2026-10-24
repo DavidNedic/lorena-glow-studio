@@ -11,9 +11,9 @@ export const CONTACT = {
 };
 export function whatsappUrl(text: string) { return `https://wa.me/491629709213?text=${encodeURIComponent(text)}`; }
 
-// Prices and free slots live in Beautinda only — the website never shows prices.
+// Prices come from the Beautinda catalogue and are shown only for directly bookable treatments; free slots live in Beautinda.
 export type TreatmentGroup = "first" | "direct" | "analysis";
-export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; bookingUrl: string };
+export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; price?: string; bookingUrl: string };
 const treatment = (slug: string, name: string, group: TreatmentGroup, duration = "", extra: Partial<Treatment> = {}): Treatment => ({ slug, name, group, duration: duration || "Dauer nach Absprache", sentence: "", image: "/images/kachel-behandlung.jpg", bookingUrl: CONTACT.beautinda, ...extra });
 export const TREATMENTS: Treatment[] = [
   treatment("first", "First Time: Hautanalyse + erste Behandlung", "first", "2 Std.", { detail: true, sentence: "Wir schauen uns deine Haut genau an und verbinden deine Hautanalyse mit der ersten passenden Behandlung." }),
@@ -23,12 +23,12 @@ export const TREATMENTS: Treatment[] = [
   treatment("glow-peel", "Glow-Peel", "direct", "1 Std.", { sentence: "Fruchtiges Peeling für frischen Glow und einen ebenmäßigen Teint." }),
   treatment("refresh-peel", "Refresh-Peel", "direct", "", { sentence: "Die schnelle Auffrischung für zwischendurch." }),
   treatment("pure-peel", "Pure-Peel", "direct", "", { sentence: "Klares Peeling für reine, verfeinerte Haut." }),
-  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "1 Std. 30 Min.", { detail: true, sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
-  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "1 Std. 20 Min.", { sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
-  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
-  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
-  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "2 Std.", { sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
-  treatment("refill", "Wimpern auffüllen", "direct", "1 Std. 20 Min.", { sentence: "Dein Set bleibt voll und gepflegt." }),
+  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "1 Std. 30 Min.", { detail: true, price: "79 €", sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
+  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "1 Std. 20 Min.", { price: "69 €", sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
+  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
+  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
+  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "2 Std.", { price: "99 €", sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
+  treatment("refill", "Wimpern auffüllen", "direct", "1 Std. 20 Min.", { price: "ab 65 €", sentence: "Dein Set bleibt voll und gepflegt." }),
   // Nach deiner Hautanalyse
   treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "analysis", "1 Std. 10 Min.", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
   treatment("microneedling", "Microneedling", "analysis", "1 Std.", { sentence: "Microneedling bei Aknenarben. Kann die Erneuerung der Haut anregen und das Hautbild glätten." }),
