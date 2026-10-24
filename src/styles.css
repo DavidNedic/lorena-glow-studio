@@ -189,7 +189,7 @@
  .accordion-list > button .text-base { font-size: 13.5px; }
  .site-footer h2 { font-size: 26px; }
  .site-footer > div { padding-top: 40px; padding-bottom: 40px; }
- .start-background { --pastel-drift: none; }
+ .start-background::before { animation: none; }
  .nav-brand { max-width: none; white-space: nowrap; font-size: 12.5px; }
  .nav-brand br { display: none; }
  .chat-launcher, .chat-launcher img { width: 54px; height: 54px; }
