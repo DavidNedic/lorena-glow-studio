@@ -14,8 +14,8 @@ function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
         <div className="absolute inset-0">
           {item.after ? <img src={item.after} alt={`${item.name} nachher`} loading="lazy" className="h-full w-full object-cover" /> : panel("Nachher-Bild")}
         </div>
-        <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
-          {item.before ? <img src={item.before} alt={`${item.name} vorher`} loading="lazy" className="h-full w-full object-cover" style={{ width: "100cqw" }} /> : panel("Vorher-Bild")}
+        <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
+          {item.before ? <img src={item.before} alt={`${item.name} vorher`} loading="lazy" className="h-full w-full object-cover" /> : panel("Vorher-Bild")}
         </div>
         <span className="ba-tag left-3 top-3">Vorher</span>
         <span className="ba-tag right-3 top-3">Nachher</span>

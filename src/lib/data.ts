@@ -1,3 +1,8 @@
+import noseBefore from "@/assets/vergleich-1-vorher.jpg.asset.json";
+import noseAfter from "@/assets/vergleich-1-nachher.jpg.asset.json";
+import glowBefore from "@/assets/vergleich-2-vorher.jpg.asset.json";
+import glowAfter from "@/assets/vergleich-2-nachher.jpg.asset.json";
+
 export const CONTACT = {
   name: "The Golden Cosmetics & Academy", owner: "Lorena Kovacevic",
   legalForm: "Einzelunternehmen", vatId: "DE319849001", profession: "Fachkosmetikerin",
@@ -73,10 +78,10 @@ export const PROBLEMS = [
   { label: "Dir fehlt der Glow", text: "Du investierst viel in deine Haut, aber sie strahlt einfach nicht so, wie du es dir wünschst.", slug: "first" },
   { label: "Du weißt nicht, was deine Haut wirklich braucht", text: "Zu viele Produkte, zu viele Meinungen. Du willst endlich wissen, was bei dir funktioniert.", slug: "first" },
 ];
-// Vorher/Nachher: echte Fotos später hier eintragen (before/after Pfade).
+// Original collages split and geometrically aligned without retouching skin.
 export const BEFORE_AFTER = [
-  { id: "poren", name: "Poren & Glow", note: "Direkt nach der Behandlung", before: "/img/vn-02-vorher.jpg", after: "/img/vn-02-nachher.jpg", ratio: "1000/510" },
-  { id: "stirn", name: "Stirn & Augenpartie", note: "Glattere, frischere Haut", before: "/img/vn-04-vorher.jpg", after: "/img/vn-04-nachher.jpg", ratio: "1000/510" },
+  { id: "poren", name: "Nase & Poren", note: "Vor und nach der Behandlung", before: noseBefore.url, after: noseAfter.url, ratio: "1000/510" },
+  { id: "stirn", name: "Haut & Glow", note: "Vor und nach der Behandlung", before: glowBefore.url, after: glowAfter.url, ratio: "1000/510" },
   { id: "teint", name: "Ebenmäßiger Teint", note: "Ruhigeres Hautbild", before: "/img/vn-06-vorher.jpg", after: "/img/vn-06-nachher.jpg", ratio: "1000/510" },
 ];
 /** Ergebnis-Fotos ohne Vorher-Nachher-Collagen (die laufen im Regler). */
