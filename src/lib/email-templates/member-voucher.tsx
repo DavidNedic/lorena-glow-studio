@@ -26,5 +26,5 @@ export const template = {
   component: MemberVoucher,
   subject: `Dein ${VOUCHER_PERCENT} % Gutschein von The Golden Cosmetics`,
   displayName: 'Member Club: Persönlicher Gutschein',
-  previewData: { vorname: 'Anna', code: 'GOLDEN-7K3P', origin: 'https://thegoldencosmetics.com' },
+  previewData: { vorname: 'Anna', code: '7K3P8M', origin: 'https://thegoldencosmetics.com' },
 } satisfies TemplateEntry

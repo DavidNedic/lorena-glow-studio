@@ -116,7 +116,7 @@ function Admin() {
 
     <Section className="max-w-4xl !py-4"><div className="card p-5 text-left">
       <p className="font-semibold">Code einlösen</p>
-      <input value={quick} onChange={e => { setQuick(e.target.value.toUpperCase()); setFlash(""); }} placeholder="Code eingeben, z. B. GOLDEN-7K3P" autoCapitalize="characters" autoComplete="off" inputMode="text" aria-label="Code eingeben" className={`${input} mt-3 font-mono tracking-widest`} />
+      <input value={quick} onChange={e => { setQuick(e.target.value.toUpperCase()); setFlash(""); }} placeholder="Code eingeben, z. B. 7K3P8M" autoCapitalize="characters" autoComplete="off" inputMode="text" aria-label="Code eingeben" className={`${input} mt-3 font-mono tracking-widest`} />
       {quick.trim() && !match && <p className="mt-3 text-sm text-muted-foreground">Kein Gutschein mit diesem Code gefunden.</p>}
       {match && match.code && <div className="mt-4 space-y-3">
         <p><span className="font-semibold">{match.vorname}</span> <span className="text-sm text-muted-foreground">{match.email}</span></p>
