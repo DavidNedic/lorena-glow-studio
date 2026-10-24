@@ -31,7 +31,7 @@ function Behandlungen(){
   <div className="first-box mx-auto mt-6 max-w-4xl">
    <p className="text-sm text-muted-foreground">Neu bei mir? Hier startest du.</p>
    <h3 className="mt-2 text-2xl md:text-3xl">{first.name}</h3>
-   <p className="mt-3 text-muted-foreground">{first.duration}. Lorena schaut sich deine Haut genau an und behandelt direkt passend.</p>
+   <p className="mt-3 text-muted-foreground">{first.duration} · Lorena schaut sich deine Haut genau an und behandelt direkt passend.</p>
    <div className="mt-6 flex flex-wrap gap-3"><ActionLink href={CONTACT.beautinda} external>Direkt buchen</ActionLink><Button asChild variant="ghost" className="btn btn-ghost"><Link to="/behandlungen/$slug" params={{slug:first.slug}}>Ablauf ansehen</Link></Button></div>
   </div>
   <div className="mx-auto mt-10 max-w-5xl text-left">
