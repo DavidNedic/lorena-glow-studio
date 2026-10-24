@@ -19,9 +19,9 @@ const input = { data: { email: ' Anna@Example.DE ', vorname: 'Anna', newsletter:
 function query(result: unknown) {
   const chain: Record<string, unknown> = {}
   for (const method of ['select', 'eq', 'gte', 'insert', 'ilike']) chain[method] = vi.fn(() => chain)
-  chain.maybeSingle = vi.fn(async () => result)
-  chain.single = vi.fn(async () => result)
-  chain.then = (resolve: (value: unknown) => void) => Promise.resolve(result).then(resolve)
+  chain['maybeSingle'] = vi.fn(async () => result)
+  chain['single'] = vi.fn(async () => result)
+  chain['then'] = (resolve: (value: unknown) => void) => Promise.resolve(result).then(resolve)
   return chain
 }
 
@@ -35,7 +35,7 @@ describe('one signup per saved email', () => {
     const lookup = query({ data: { id: 'existing', ...state } })
     db.from.mockReturnValueOnce(query({ count: 0 })).mockReturnValueOnce(query({})).mockReturnValueOnce(lookup)
     expect(await signup(input)).toEqual({ status: 'exists' })
-    expect(lookup.ilike).toHaveBeenCalledWith('email', 'anna@example.de')
+    expect(lookup['ilike']).toHaveBeenCalledWith('email', 'anna@example.de')
     expect(db.from).toHaveBeenCalledTimes(3)
     expect(send).not.toHaveBeenCalled()
   })
