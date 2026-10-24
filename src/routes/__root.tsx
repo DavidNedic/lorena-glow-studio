@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import birdMark from "@/assets/kolibri-mark.png";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AnalyticsConsent } from "@/components/AnalyticsConsent";
 
 function StatusPage({ title, text, children }: { title: string; text: string; children?: ReactNode }) {
   return (
@@ -101,6 +102,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <AnalyticsConsent />
     </QueryClientProvider>
   );
 }

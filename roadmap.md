@@ -1,4 +1,5 @@
 # Member-Club-Mailversand
+- [x] Google Analytics für Geräte, Betriebssysteme und Browser mit Zustimmung, Widerruf und Datenschutz ergänzen; Vorschau geprüft, Veröffentlichung und Google-Berichtseingang noch nicht geprüft
 - [x] Bestätigte Geschäftsbedingungen und Promet.digital ergänzen; Datenschutz an den tatsächlichen Ablauf anpassen und prüfen (genauer Cloud-Speicherort nicht verifiziert)
 - [x] Neue Vorher-Nachher-Collagen trennen, deckungsgleich ausrichten und ziehbare Vergleiche prüfen
 - [x] Bestätigungslink zeigt eigene Erfolgsseite statt erneutem Anmeldeformular
