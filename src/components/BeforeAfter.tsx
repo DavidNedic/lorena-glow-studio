@@ -34,7 +34,7 @@ function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
 
 export function BeforeAfter() {
   return (
-    <div className="mt-10 grid items-start gap-8 md:grid-cols-3">
+    <div className="mx-auto mt-10 grid max-w-5xl items-start gap-8 md:grid-cols-2">
       {BEFORE_AFTER.map(item => <Compare key={item.id} item={item} />)}
     </div>
   );
