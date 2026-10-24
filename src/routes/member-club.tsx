@@ -72,7 +72,7 @@ function Offers({ member }: { member: Saved | null }) {
   const reveal = useServerFn(revealOfferCode);
   const [offers, setOffers] = useState<{ id: string; title: string; condition: string; valid_until: string | null }[]>([]);
   const [codes, setCodes] = useState<Record<string, string>>({});
-  useEffect(() => { fetchOffers().then(setOffers).catch(() => {}); }, [fetchOffers]);
+  useEffect(() => { fetchOffers().then(d => setOffers((d ?? []).map(o => ({ id: o.id ?? "", title: o.title ?? "", condition: o.condition ?? "", valid_until: o.valid_until })))).catch(() => {}); }, [fetchOffers]);
   if (!offers.length) return null;
   const show = async (id: string) => {
     if (!member) return;

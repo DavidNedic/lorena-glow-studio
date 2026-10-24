@@ -7,7 +7,7 @@ import { breadcrumbs, OG, seoHead } from "@/lib/seo";
 import { unsubscribeNewsletter } from "@/lib/member.functions";
 
 export const Route = createFileRoute("/member-club/abmelden")({
-  validateSearch: (s: Record<string, unknown>) => ({ token: typeof s.token === "string" ? s.token : "" }),
+  validateSearch: (s: Record<string, unknown>) => ({ token: typeof s["token"] === "string" ? s["token"] : "" }),
   head: () => seoHead({ path: "/member-club/abmelden", title: "Newsletter abmelden · The Golden Cosmetics", description: "Abmeldung vom Member-Club-Newsletter von The Golden Cosmetics.", image: OG.behandlungen, noindex: true, jsonLd: [breadcrumbs([["Start", "/"], ["Member Club", "/member-club"]])] }),
   component: Unsubscribe,
 });
