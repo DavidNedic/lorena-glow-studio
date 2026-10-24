@@ -2,9 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { CONTACT } from "@/lib/data";
 import { Button } from "@/components/ui/button";
+import birdMark from "@/assets/kolibri-mark.png";
 
 export function Logo({ text = true, white = false }: { text?: boolean; white?: boolean }) {
-  return <span className="flex items-center justify-center gap-2"><img src="/images/logo.png" alt="The Golden Cosmetics Logo, ein Kolibri" className={`size-9 shrink-0 object-contain ${white ? "brand-bird-white" : "brand-bird-black"}`} />{text && <span className="nav-brand text-left text-sm font-semibold leading-tight">The Golden Cosmetics<br /> & Academy</span>}</span>;
+  return <span className="flex items-center justify-center gap-2"><img src={birdMark} alt="The Golden Cosmetics Logo, ein Kolibri" className={`size-9 shrink-0 object-contain ${white ? "brand-bird-white" : "brand-bird-black"}`} />{text && <span className="nav-brand text-left text-sm font-semibold leading-tight">The Golden Cosmetics<br /> & Academy</span>}</span>;
 }
 export function Arrow({ dir = "right" }: { dir?: "right" | "left" }) { return <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">{dir === "right" ? <path d="M5 12h14M13 6l6 6-6 6" /> : <path d="M19 12H5M11 6l-6 6 6 6" />}</svg>; }
 export function InstagramLogo() {
@@ -30,7 +31,7 @@ export function FloatingNav({ back, links, cta }: NavProps) {
 export function Footer({ headline, cta }: { headline: string; cta: { label: string; href: string; external?: boolean } }) {
   return <footer className="site-footer text-center"><div className="mx-auto max-w-6xl px-5 pb-10 pt-20">
     <div className="flex flex-col items-center gap-7 border-b pb-14"><h2 className="max-w-3xl text-4xl md:text-5xl">{headline}</h2><ActionLink href={cta.href} external={cta.external ?? false} className="footer-cta">{cta.label}</ActionLink></div>
-    <div className="mt-12 flex flex-col items-start gap-3 text-left"><Logo text={false} /><p className="whitespace-nowrap text-sm font-semibold sm:text-base">{CONTACT.name}</p><p>by {CONTACT.owner}, Fachkosmetikerin in Brackenheim</p></div>
+    <div className="mt-12 flex flex-col items-start gap-3 text-left"><Logo text={false} white /><p className="whitespace-nowrap text-sm font-semibold sm:text-base">{CONTACT.name}</p><p>by {CONTACT.owner}, Fachkosmetikerin in Brackenheim</p></div>
     <div className="mx-auto grid max-w-4xl gap-8 py-10 text-left text-sm md:grid-cols-3">
       <div><p className="mb-2 font-semibold">Standort</p><p className="text-muted-foreground">{CONTACT.street}<br />{CONTACT.city}</p></div>
       <div><p className="mb-2 font-semibold">Öffnungszeiten</p><p className="text-muted-foreground">{CONTACT.hours}</p></div>

@@ -46,6 +46,9 @@ export const TREATMENTS: Treatment[] = [
   treatment("volumen", "Wimpernverlängerung Volumen Neu-Set", "analysis", "120 Min.", { sentence: "Mehr Dichte mit feinen Volumenfächern." }),
 ];
 // Aliases resolve to a current offer; everything else is a real slug now.
+// Shop imagery shows studio impressions, not a claimed result of each treatment.
+const SHOP_IMPRESSIONS = ["/img/einblick-1.jpg", "/img/einblick-3.jpg", "/img/einblick-2.jpg"];
+export function treatmentShopImage(slug: string) { const index = Math.max(0, TREATMENTS.findIndex(t => t.slug === slug)); return SHOP_IMPRESSIONS[index % SHOP_IMPRESSIONS.length] ?? "/img/einblick-1.jpg"; }
 export const LEGACY_TREATMENT_SLUGS: Record<string, string> = {
   "lash-brow": "lash", ausreinigung: "klassische-ausreinigung", rein: "klassische-ausreinigung",
   aqua: "aquafacial-ausreinigung", micro: "microneedling", "micro-salmon": "microneedling-salmon-dna",

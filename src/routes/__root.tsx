@@ -11,13 +11,14 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import birdMark from "@/assets/kolibri-mark.png";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function StatusPage({ title, text, children }: { title: string; text: string; children?: ReactNode }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-5 text-foreground">
       <div className="max-w-md text-center">
-        <img src="/images/logo.png" alt="The Golden Cosmetics Logo, ein Kolibri" className="mx-auto size-14 object-contain" />
+        <img src={birdMark} alt="The Golden Cosmetics Logo, ein Kolibri" className="brand-bird-black mx-auto size-14 object-contain" />
         <h1 className="mt-6 text-3xl md:text-4xl">{title}</h1>
         <p className="mt-4 text-muted-foreground">{text}</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -65,7 +66,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
       { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
