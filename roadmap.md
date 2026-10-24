@@ -1,4 +1,6 @@
 # Member-Club-Mailversand
+- [ ] Intro-Kolibri ohne Buchstaben und weißen Footer-Kolibri prüfen
+- [ ] Behandlungen und Hautanalyse als Shop-Auswahl gestalten und prüfen
 - [x] Große Buchen-Buttons und Hautanalyse ohne Foto/Dropdown umsetzen und prüfen
 - [x] Direktbuchung mit Kategorien statt Swipe-Karten gestalten
 - [x] Hautanalyse als ruhige Einzelansicht statt Button-Wolke gestalten und beide Bereiche prüfen
