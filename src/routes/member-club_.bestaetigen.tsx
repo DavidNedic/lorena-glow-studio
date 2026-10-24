@@ -30,7 +30,7 @@ function Confirm() {
     return () => { active = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, attempt]);
-  return <div className="bg-background">
+  return <div>
     <FloatingNav back="/" links={[]} cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
     <Section className="site-hero">
       <div className="mx-auto max-w-xl text-center" aria-live="polite" aria-busy={state === "busy"}>
