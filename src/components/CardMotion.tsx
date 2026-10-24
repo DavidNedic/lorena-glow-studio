@@ -120,7 +120,7 @@ export function CardMotion({ variant, hostRef }: { variant: Variant; hostRef?: R
   const start = () => { if (running || reduced) return; running = true; last = 0; raf = requestAnimationFrame(loop); };
   const stop = () => { running = false; cancelAnimationFrame(raf); };
   draw(reduced ? still : 0);
-  const io = new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()), { threshold: 0.1 });
+  const io = new IntersectionObserver(([e]) => (e?.isIntersecting ? start() : stop()), { threshold: 0.1 });
   io.observe(cv);
   const host = hostRef?.current;
   const fast = () => { speed = 1.3; }, slow = () => { speed = 1; };
