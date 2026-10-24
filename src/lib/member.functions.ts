@@ -1,10 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { confirmEmail, makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, voucherEmail, VOUCHER_PERCENT, type AdminRow } from "@/lib/member-club";
-
-const FROM = "The Golden Cosmetics <info@thegoldencosmetics.com>";
-const REPLY_TO = "info@thegoldencosmetics.com";
+import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, type AdminRow } from "@/lib/member-club";
 
 async function admin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -12,21 +9,6 @@ async function admin() {
 }
 function origin() {
   try { return new URL(getRequest().url).origin; } catch { return "https://thegoldencosmetics.com"; }
-}
-async function sendMail(to: string, mail: { subject: string; html: string }) {
-  const lovable = process.env["LOVABLE_API_KEY"];
-  const resend = process.env["RESEND_API_KEY"];
-  if (!lovable || !resend) throw new Error("E-Mail-Versand ist noch nicht eingerichtet.");
-  const res = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${lovable}`, "X-Connection-Api-Key": resend },
-    body: JSON.stringify({ from: FROM, reply_to: REPLY_TO, to: [to], subject: mail.subject, html: mail.html }),
-  });
-  if (!res.ok) {
-    const body = await res.text();
-    console.error(`Resend failed [${res.status}]: ${body}`);
-    throw new Error("Die E-Mail konnte gerade nicht gesendet werden. Bitte versuch es später noch einmal.");
-  }
 }
 async function sha(s: string) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
@@ -59,7 +41,12 @@ export const signupMember = createServerFn({ method: "POST" })
       member = created;
     }
     const o = origin();
-    await sendMail(email, confirmEmail({ origin: o, vorname: member.vorname, confirmUrl: `${o}/member-club/bestaetigen?token=${member.confirm_token}`, unsubscribeUrl: `${o}/member-club/abmelden?token=${member.newsletter_token}` }));
+    const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
+    const delivery = await sendTemplateEmail('member-confirmation', email, {
+      templateData: { origin: o, vorname: member.vorname, confirmUrl: `${o}/member-club/bestaetigen?token=${member.confirm_token}` },
+      idempotencyKey: `member-confirmation-${member.id}-${member.confirm_token}`,
+    });
+    if (!delivery.sent) throw new Error('An diese Adresse können derzeit keine Member-Club-Mails gesendet werden.');
     return { status: existing ? ("resent" as const) : ("sent" as const) };
   });
 
@@ -72,19 +59,26 @@ export const confirmMember = createServerFn({ method: "POST" })
     const db = await admin();
     const { data: m } = await db.from("members").select("id, vorname, email, newsletter_token, newsletter_confirmed_at, unsubscribed_at").eq("confirm_token", data.token).maybeSingle();
     if (!m || m.unsubscribed_at) return { ok: false as const };
-    const { data: v } = await db.from("vouchers").select("id").eq("member_id", m.id).maybeSingle();
-    if (v) return { ok: true as const };
+    const { data: v } = await db.from("vouchers").select("id, code").eq("member_id", m.id).maybeSingle();
     if (!m.newsletter_confirmed_at) await db.from("members").update({ newsletter_confirmed_at: new Date().toISOString() }).eq("id", m.id);
-    let code = "";
+    let code = v?.code ?? "";
     for (let i = 0; i < 8 && !code; i++) {
       const c = makeVoucherCode();
       const { error } = await db.from("vouchers").insert({ member_id: m.id, code: c, rabatt_prozent: VOUCHER_PERCENT });
       if (!error) code = c;
-      else if (error.code === "23505" && error.message.includes("member_id")) return { ok: true as const };
+      else if (error.code === "23505") {
+        const { data: existingVoucher } = await db.from('vouchers').select('code').eq('member_id', m.id).maybeSingle();
+        code = existingVoucher?.code ?? '';
+      }
     }
     if (!code) throw new Error("Gutschein konnte nicht erstellt werden.");
     const o = origin();
-    await sendMail(m.email, voucherEmail({ origin: o, vorname: m.vorname, code, unsubscribeUrl: `${o}/member-club/abmelden?token=${m.newsletter_token}` }));
+    const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
+    const delivery = await sendTemplateEmail('member-voucher', m.email, {
+      templateData: { origin: o, vorname: m.vorname, code },
+      idempotencyKey: `member-voucher-${m.id}-${code}`,
+    });
+    if (!delivery.sent) return { ok: false as const };
     return { ok: true as const };
   });
 
