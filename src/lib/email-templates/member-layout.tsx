@@ -11,7 +11,7 @@ export const emailStyles = {
   heading: { fontSize: '26px', fontWeight: 600, lineHeight: '1.1', margin: '0 0 16px' },
   text: { fontSize: '15px', lineHeight: '1.65', margin: '0 0 14px' },
   muted: { fontSize: '12px', lineHeight: '1.6', color: '#7A665E' },
-  button: { backgroundColor: '#2A1D19', color: '#ffffff', borderRadius: '999px', padding: '14px 28px', fontSize: '15px', fontWeight: 600, textDecoration: 'none' },
+  button: { backgroundColor: '#2A1D19', color: '#ffffff', borderRadius: '999px', padding: '14px 28px', fontSize: '15px', fontWeight: 600, textDecoration: 'none', display: 'inline-block', margin: '8px 0 20px' },
   voucher: { backgroundColor: '#F8F0EC', border: '1px solid #E3D5CE', borderRadius: '24px', padding: '28px 16px', margin: '24px 0' },
   code: { color: '#2A1D19', fontSize: '30px', fontWeight: 700, fontFamily: 'Consolas, monospace', letterSpacing: '2px', margin: '12px 0 0' },
 }
