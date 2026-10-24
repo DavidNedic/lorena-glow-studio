@@ -229,3 +229,37 @@
 .zoom-back { height: auto; }
 .zoom-stage .zoom-media.zoom-fallback[data-returning="true"] { animation: zoom-fb-return var(--fb-dur) ease-in-out forwards !important; }
 @keyframes zoom-fb-return { from { scale: var(--fb-return-scale, 2.6); } to { scale: 1; } }
+
+/* Behandlungen: neues Listenkonzept */
+.first-box { background: #2A1D19; color: #F8F0EC; border-radius: 28px; padding: 34px 28px; text-align: left; }
+.first-box .text-muted-foreground { color: color-mix(in oklab, #F8F0EC 72%, transparent); }
+.treat-cards { display: grid; gap: 20px; grid-template-columns: 1fr; margin-top: 20px; }
+@media (min-width: 820px) { .treat-cards { grid-template-columns: 1fr 1fr; } }
+.treat-card { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 26px 22px; text-align: left; }
+.treat-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 10px; margin: 0 -10px; border-top: 1px solid var(--line); border-radius: 12px; scroll-margin-top: 120px; transition: background .3s; }
+.treat-row:target, .treat-row.treat-row-hit { background: #F2E3DD; }
+.treat-book { flex-shrink: 0; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; background: var(--surface); }
+.treat-book:hover { background: var(--surface-2); }
+.cal-bar { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid var(--line); border-radius: 999px; padding: 14px 22px; background: var(--surface); text-align: left; }
+
+/* Vorher/Nachher */
+.ba-frame { position: relative; aspect-ratio: 4/5; border-radius: 28px; overflow: hidden; background: var(--surface-2); container-type: inline-size; }
+.ba-tag { position: absolute; z-index: 2; background: rgba(255,255,255,.92); color: var(--foreground); border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
+.ba-line { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #fff; z-index: 2; pointer-events: none; }
+.ba-knob { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; background: #fff; color: var(--foreground); font-size: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+.ba-range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; z-index: 3; margin: 0; }
+
+/* Member-Karte */
+.member-card { aspect-ratio: 8/5; border-radius: 22px; background: #14100D; color: #F8F0EC; padding: 10px; transform: rotate(-3deg); box-shadow: 0 24px 50px -20px rgba(20,16,13,.45); max-width: 420px; }
+.member-card-inner { height: 100%; border: 1px solid color-mix(in oklab, #C9A24B 65%, transparent); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; }
+.member-card-tag { color: #C9A24B; letter-spacing: .35em; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.member-card-code { font-size: clamp(20px, 5vw, 28px); font-weight: 700; letter-spacing: .08em; }
+.member-card-name { font-size: 13px; font-weight: 600; }
+.member-card-city { font-size: 12px; color: color-mix(in oklab, #F8F0EC 65%, transparent); }
+
+/* Schülerinnen-Stapel */
+.stack-stage { position: relative; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
+.stack-card { border-radius: 28px; background: var(--surface); padding: 10px; box-shadow: 0 18px 40px -18px rgba(20,16,13,.28); transition: transform .35s ease, opacity .35s ease; }
+.stack-card:not(.stack-card-top) { position: absolute; inset: 0; pointer-events: none; }
+.stack-card-scroll { max-height: 600px; overflow-y: auto; border-radius: 20px; }
+@media (prefers-reduced-motion: reduce) { .stack-card { transition: none; } }
