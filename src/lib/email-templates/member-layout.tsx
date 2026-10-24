@@ -12,7 +12,7 @@ export const emailStyles = {
   button: { backgroundColor: '#8E5A55', color: '#ffffff', borderRadius: '8px', padding: '14px 24px', fontSize: '15px', textDecoration: 'none' },
 }
 
-export function MemberLayout({ origin = 'https://thegoldencosmetics.com', preview, children }: { origin?: string; preview: string; children: ReactNode }) {
+export function MemberLayout({ origin = 'https://thegoldencosmetics.com', preview, children }: { origin?: string | undefined; preview: string; children: ReactNode }) {
   return <Html lang="de" dir="ltr"><Head /><Preview>{preview}</Preview>
     <Body style={emailStyles.body}><Container style={emailStyles.container}>
       <Section style={emailStyles.panel}>
