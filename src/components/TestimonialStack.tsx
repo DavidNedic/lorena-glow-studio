@@ -12,7 +12,8 @@ const PEEK = [
 export function TestimonialStack() {
   const [top, setTop] = useState(0);
   const [leaving, setLeaving] = useState<null | { dir: 1 | -1 }>(null);
-  const drag = useRef<{ x: number; dx: number } | null>(null);
+  const [dx, setDx] = useState(0);
+  const drag = useRef<{ x: number } | null>(null);
   const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const next = (dir: 1 | -1 = 1) => {
@@ -28,17 +29,23 @@ export function TestimonialStack() {
     <div>
       <div
         className="stack-stage"
-        onPointerDown={e => { drag.current = { x: e.clientX, dx: 0 }; (e.target as HTMLElement).setPointerCapture?.(e.pointerId); }}
-        onPointerMove={e => { if (drag.current) drag.current.dx = e.clientX - drag.current.x; }}
-        onPointerUp={() => { const d = drag.current; drag.current = null; if (d && Math.abs(d.dx) > 90) next(d.dx < 0 ? 1 : -1); }}
+        onPointerDown={e => { if (leaving) return; drag.current = { x: e.clientX }; (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId); }}
+        onPointerMove={e => { if (drag.current) setDx(e.clientX - drag.current.x); }}
+        onPointerUp={() => { const d = dx; drag.current = null; setDx(0); if (Math.abs(d) > 70) next(d < 0 ? 1 : -1); }}
+        onPointerCancel={() => { drag.current = null; setDx(0); }}
       >
         {order.map((src, i) => {
           const peek = PEEK[i - 1];
+          const dragging = i === 0 && dx !== 0 && !leaving;
           const style = i === 0
-            ? leaving ? { transform: `translate(${leaving.dir * -140}%, -10px) rotate(${leaving.dir * -14}deg)`, opacity: 0 } : undefined
-            : { transform: `translate(${peek!.x}px, ${peek!.y}px) rotate(${peek!.r}deg) scale(${peek!.s})`, zIndex: 10 - i };
+            ? leaving
+              ? { transform: `translate(${leaving.dir * -140}%, -10px) rotate(${leaving.dir * -14}deg)`, opacity: 0 }
+              : dragging
+                ? { transform: `translateX(${dx}px) rotate(${dx / 24}deg)` }
+                : undefined
+            : { transform: `translate(${peek!.x}px, ${peek!.y}px) rotate(${peek!.r}deg) scale(${peek!.s})` };
           return (
-            <div key={src} className={`stack-card${i === 0 ? " stack-card-top" : ""}`} style={{ ...style, zIndex: i === 0 ? 20 : 10 - i }} aria-hidden={i !== 0}>
+            <div key={src} className={`stack-card${i === 0 ? " stack-card-top" : ""}${dragging ? " stack-card-drag" : ""}`} style={{ ...style, zIndex: i === 0 ? 20 : 10 - i }} aria-hidden={i !== 0}>
               <div className="stack-card-scroll">
                 <img src={src} alt={i === 0 ? `Nachricht einer Absolventin (${top + 1} von ${SCHUELERINNEN.length})` : ""} loading={i === 0 ? "eager" : "lazy"} draggable={false} className="w-full select-none rounded-[20px]" />
               </div>
