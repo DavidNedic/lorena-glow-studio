@@ -181,7 +181,7 @@
  .accordion-list > button .text-base { font-size: 13.5px; }
  .site-footer h2 { font-size: 26px; }
  .site-footer > div { padding-top: 40px; padding-bottom: 40px; }
- .start-background header { min-height: 64px; padding-block: 0; }
+ .start-background header > div { min-height: 64px; }
  .start-background header img { width: 24px; height: 24px; }
  .start-background header .btn-lipstick { min-height: 36px; padding: 0 14px 0 18px; font-size: 13px; }
  .nav-brand { max-width: none; white-space: nowrap; font-size: 12.5px; }
