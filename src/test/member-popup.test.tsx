@@ -22,12 +22,12 @@ describe("Member-Pop-up auf der Behandlungsseite", () => {
   beforeEach(() => { vi.useFakeTimers(); });
   afterEach(() => { vi.useRealTimers(); });
 
-  it("erscheint erst nach 5 Sekunden, bleibt sichtbar und lässt sich wegklicken", async () => {
+  it("erscheint erst nach 10 Sekunden, bleibt sichtbar und lässt sich wegklicken", async () => {
     await renderTreatments();
 
     expect(screen.queryByRole("dialog")).toBeNull();
 
-    act(() => { vi.advanceTimersByTime(4999); });
+    act(() => { vi.advanceTimersByTime(9999); });
     expect(screen.queryByRole("dialog")).toBeNull();
 
     act(() => { vi.advanceTimersByTime(1); });

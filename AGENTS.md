@@ -18,7 +18,7 @@
 - Pages carry their SEO head (title, description, canonical, share image, JSON-LD) via the shared seoHead helper; the sitemap is built from the shared data module so new offers appear automatically.
 
 - Bundle all font weights locally through package CSS imports so typography never requires a third-party font request.
-- Reuse the intro raster hummingbird for header/footer with scoped filters, and render app icons from its traced vector for sharp edges without changing the intro.
+- Use the clean letter-free hummingbird raster for intro and header/footer with scoped filters; keep its silhouette aligned with the intro reveal mask and preserve the animation.
 - Keep unfinished Member Club and AGB content explicitly marked as placeholders, with Member Club excluded from indexing until real content is supplied.
 
 - Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.
