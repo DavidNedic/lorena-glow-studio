@@ -258,7 +258,7 @@
 .member-card-city { font-size: 12px; color: color-mix(in oklab, #F8F0EC 65%, transparent); }
 
 /* Schülerinnen-Stapel */
-.stack-stage { position: relative; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
+.stack-stage { position: relative; overflow: hidden; max-width: 420px; margin: 0 auto; touch-action: pan-y; }
 .stack-card { border-radius: 28px; background: var(--surface); padding: 10px; box-shadow: 0 18px 40px -18px rgba(20,16,13,.28); transition: transform .35s ease, opacity .35s ease; }
 .stack-card:not(.stack-card-top) { position: absolute; inset: 0; pointer-events: none; }
 .stack-card-scroll { max-height: 600px; overflow-y: auto; border-radius: 20px; }
