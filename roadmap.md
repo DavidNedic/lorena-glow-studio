@@ -1,4 +1,6 @@
 # Finale Website
+- [x] Member-Club-Bestätigung und Gutschein von Resend auf Lovable umstellen
+- [ ] Echten Mailversand und Bestätigungsablauf prüfen: wartet auf DNS-Verifizierung von info.thegoldencosmetics.com
 - [x] Alle bisherigen Schritte (siehe Archiv)
 - [ ] 3 fehlgeschlagene Tests fixen + mobile Hotspot-Labels prüfen
 - [ ] Leistungen neu: First-Time-Box, zwei Karten (direkt buchbar / nach Hautanalyse), Kalender-Balken, keine Preise
