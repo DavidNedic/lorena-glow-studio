@@ -1,15 +1,5 @@
-# Finale Website
+# Member-Club-Mailversand
+- [x] Bisherige Website-Anpassungen (siehe Gesprächsarchiv)
 - [x] Member-Club-Bestätigung und Gutschein von Resend auf Lovable umstellen
+- [x] Vorlagen, Absender und stabile Versand-IDs testen
 - [ ] Echten Mailversand und Bestätigungsablauf prüfen: wartet auf DNS-Verifizierung von info.thegoldencosmetics.com
-- [x] Alle bisherigen Schritte (siehe Archiv)
-- [ ] 3 fehlgeschlagene Tests fixen + mobile Hotspot-Labels prüfen
-- [ ] Leistungen neu: First-Time-Box, zwei Karten (direkt buchbar / nach Hautanalyse), Kalender-Balken, keine Preise
-- [ ] Vorher/Nachher-Regler (3 Vergleiche, Platzhalter, Config-Array)
-- [ ] Member-Club-Teaser auf /behandlungen + MemberCard-Komponente
-- [ ] FAQ-Storno (24h / 50 %) mit AGB-Link
-- [ ] Academy: CTAs „Jetzt Teilnahme sichern", Absolventinnen-Reihenfolge, Schülerinnen-Stapel (11 Screenshots)
-- [ ] Rechtstexte: Impressum, AGB, Widerruf, Datenschutz als Akkordeons + Footer-Widerruf-Link
-- [ ] Member Club mit Lovable Cloud: /member-club (3 Schritte), /member-club/admin, /member-club/abmelden, RLS
-- [ ] Footer-Logo schwarz wie Header
-- [ ] Chat: keine Preise, Preisfragen → Beautinda-Kalender
-- [ ] Tests anpassen + neue Tests, Mobil/Desktop prüfen

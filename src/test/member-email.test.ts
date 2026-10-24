@@ -33,7 +33,7 @@ describe('Member emails through Lovable', () => {
     expect(send.mock.calls[0]?.[0].idempotency_key).toBe('member-voucher-123-GOLDEN-7K3P')
   })
   it('does not retry suppressed recipients', async () => {
-    send.mockRejectedValue(new EmailAPIError('suppressed'))
+    send.mockRejectedValue(new EmailAPIError(403, 'suppressed', null, 'recipient_suppressed'))
     expect(await sendTemplateEmail('member-confirmation', 'anna@example.de')).toEqual({ sent: false, reason: 'recipient_suppressed' })
     expect(send).toHaveBeenCalledTimes(1)
   })
