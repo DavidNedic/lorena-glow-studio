@@ -17,10 +17,13 @@ export function TestimonialStack() {
     setTimeout(() => { setTop(t => (t + dir + SCHUELERINNEN.length) % SCHUELERINNEN.length); setLeaving(null); }, 350);
   };
 
-  const current = SCHUELERINNEN[top]!;
+  const current = SCHUELERINNEN[top];
+  if (!current) return null;
 
   return (
     <div>
+      <div className="stack-carousel">
+      <Button variant="outline" size="icon" onClick={() => next(-1)} aria-label="Vorherige Nachricht" className="size-11 rounded-full"><Arrow dir="left" /></Button>
       <div className="stack-viewport">
       <div
         className="stack-stage"
@@ -46,10 +49,10 @@ export function TestimonialStack() {
         </div>
       </div>
       </div>
-      <div className="mt-6 flex items-center justify-center gap-4">
-        <Button variant="outline" size="icon" onClick={() => next(-1)} aria-label="Vorherige Nachricht" className="size-11 rounded-full"><Arrow dir="left" /></Button>
+      <Button variant="outline" size="icon" onClick={() => next(1)} aria-label="Nächste Nachricht" className="size-11 rounded-full"><Arrow /></Button>
+      </div>
+      <div className="mt-6 flex items-center justify-center">
         <span className="text-sm text-muted-foreground" aria-live="polite">{top + 1} / {SCHUELERINNEN.length}</span>
-        <Button variant="outline" size="icon" onClick={() => next(1)} aria-label="Nächste Nachricht" className="size-11 rounded-full"><Arrow /></Button>
       </div>
       <p className="mt-3 text-center text-xs text-muted-foreground">Wischen für die nächste Nachricht</p>
     </div>
