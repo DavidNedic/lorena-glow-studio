@@ -8,3 +8,6 @@
 - [x] Angebot auf neun Behandlungen reduzieren und Preise entfernen
 - [x] Zoom, Chat und alte URLs anpassen, Academy unverändert lassen
 - [x] Aktualisierte Regeln testen und Seiten auf Mobil/Desktop prüfen
+- [ ] Header/Footer, schwarze Icons und Startseiten-Academy-Bild aktualisieren
+- [ ] Kontakt, Impressum, Footerlinks und Member-Club-Platzhalter ergänzen
+- [ ] Schrift lokal laden und Änderungen auf Mobil/Desktop testen
