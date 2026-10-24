@@ -1,4 +1,6 @@
 # Member-Club-Mailversand
+- [ ] Bestätigungslink zeigt eigene Erfolgsseite statt erneutem Anmeldeformular
+- [ ] Kurzen Gutscheincode nach Bestätigung versenden und Ablauf testen
 - [x] Behandlungen und Hautanalyse auf eine minimalistische Auswahl reduzieren und prüfen
 - [x] Intro-Kolibri ohne Buchstaben und weißen Footer-Kolibri prüfen
 - [x] Behandlungen und Hautanalyse als Shop-Auswahl gestalten und prüfen
