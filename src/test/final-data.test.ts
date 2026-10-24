@@ -13,7 +13,7 @@ it("Behandlungen: 1 First-Time, 11 direkt buchbar, 14 nach Hautanalyse",()=>{
   expect(TREATMENTS.filter(t=>t.group==="first").map(t=>t.slug)).toEqual(["first"]);
   expect(TREATMENTS.filter(t=>t.group==="direct").map(t=>t.slug)).toEqual(["klassische-ausreinigung","dermaplaning","glow-peel","refresh-peel","pure-peel","lash","brow","brow-color","brow-shape","natural","refill"]);
   expect(TREATMENTS.filter(t=>t.group==="analysis")).toHaveLength(14);
-  expect(TREATMENTS.find(t=>t.slug==="first")?.duration).toBe("2 Std.");
+  expect(TREATMENTS.find(t=>t.slug==="first")?.duration).toBe("120 Min.");
 });
 it("Preise nur bei direkt buchbaren Behandlungen, aus Beautinda",()=>{for(const t of TREATMENTS){expect(t).not.toHaveProperty("oldPrice");expect(t).not.toHaveProperty("from");expect(t).not.toHaveProperty("priceNote");if(t.group!=="direct")expect(t).not.toHaveProperty("price");}expect(Object.fromEntries(TREATMENTS.filter(t=>t.price).map(t=>[t.slug,t.price]))).toEqual({lash:"79 €",brow:"69 €","brow-color":"20 €","brow-shape":"15 €",natural:"99 €",refill:"ab 65 €"});});
 it("Hotspots verweisen auf die gewünschten Behandlungen",()=>expect(ZOOM_AREAS.map(a=>[a.id,TREATMENTS.find(t=>t.slug===a.slug)?.name])).toEqual([["stirn","Microneedling x Salmon DNA"],["augen","Korean Lashlifting inkl. Färben"],["nase","Aquafacial Ausreinigung"],["wangen","Microneedling"],["kinn","BioRePeel"],["augenbrauen","Browlifting inkl. Färben + Formen"],["pickel","Anti-Akne Face Reset"],["glow","First Time: Hautanalyse + erste Behandlung"],["unsicher","First Time: Hautanalyse + erste Behandlung"]]));
