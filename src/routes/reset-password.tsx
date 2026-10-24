@@ -20,7 +20,7 @@ function Reset() {
     if (error) { setMsg("Das hat nicht geklappt. Bitte fordere einen neuen Link an."); return; }
     navigate({ to: "/admin", replace: true });
   };
-  return <div className="bg-background"><Section className="max-w-md">
+  return <div><Section className="max-w-md">
     <h1 className="text-4xl">Neues Passwort</h1>
     <form onSubmit={submit} className="mt-8 space-y-4 text-left">
       <label className="block"><span className="mb-2 block text-sm">Neues Passwort (mind. 8 Zeichen)</span><input required minLength={8} type="password" value={pw} onChange={e => setPw(e.target.value)} autoComplete="new-password" className="w-full rounded-full border bg-surface px-5 py-3 outline-none focus:ring-1 focus:ring-ring" /></label>

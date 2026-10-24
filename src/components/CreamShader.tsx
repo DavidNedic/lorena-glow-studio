@@ -16,11 +16,11 @@ void main(){
  float tt=t*.035;
  vec2 q=vec2(fbm(p+tt),fbm(p+vec2(5.2,1.3)-tt));
  float f=fbm(p+2.2*q+off*6.);
- vec3 ivory=vec3(.976,.953,.925), nude=vec3(.93,.86,.80), hi=vec3(1.,.99,.97);
+ vec3 ivory=vec3(.982,.955,.955), nude=vec3(.905,.885,.955), hi=vec3(1.,.995,.99);
  vec3 c=mix(ivory,nude,smoothstep(.3,.85,f));
  float spec=smoothstep(.6,.9,fbm(p*1.3+q*3.+off*10.));
  c=mix(c,hi,spec*.55+off*2.);
- gl_FragColor=vec4(c,.55);
+ gl_FragColor=vec4(c,.34);
 }`;
 
 export function CreamShader() {

@@ -34,7 +34,11 @@
   --color-destructive-foreground: oklch(1 0 0);
 }
 :root {
-  --background: oklch(0.9602567 0.0101837 48.62194); /* #F8F0EC */
+  --background: oklch(0.972 0.011 24); /* weiches Rosé-Weiß */
+  --pastel-rose: oklch(0.945 0.045 8);
+  --pastel-peach: oklch(0.95 0.045 55);
+  --pastel-lilac: oklch(0.945 0.035 305);
+  --pastel-mint: oklch(0.95 0.032 168);
   --surface: oklch(1.0000000 0.0000000 89.87556);
   --surface-2: oklch(0.9261386 0.0183759 43.21977);
   --foreground: oklch(0.2454914 0.0219522 37.79336);
@@ -90,6 +94,17 @@
   * { border-color: var(--line); letter-spacing: 0; }
   html { scroll-behavior: smooth; }
   body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; margin: 0; }
+  /* Pastell-Waschung über der ganzen Seite; liegt hinter allen Inhalten. */
+  body::before {
+    content: ""; position: fixed; inset: -16%; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(52% 48% at 10% 10%, color-mix(in oklab, var(--pastel-rose) 95%, transparent), transparent 78%),
+      radial-gradient(46% 44% at 90% 4%, color-mix(in oklab, var(--pastel-peach) 92%, transparent), transparent 76%),
+      radial-gradient(52% 50% at 88% 82%, color-mix(in oklab, var(--pastel-lilac) 88%, transparent), transparent 78%),
+      radial-gradient(46% 44% at 6% 86%, color-mix(in oklab, var(--pastel-mint) 85%, transparent), transparent 76%),
+      radial-gradient(44% 40% at 50% 52%, color-mix(in oklab, var(--pastel-lilac) 42%, transparent), transparent 74%);
+    animation: pastel-wash 38s ease-in-out infinite alternate;
+  }
   h1, h2, h3 { font-weight: 600; line-height: 1.1; letter-spacing: 0; }
   button, a, input { -webkit-tap-highlight-color: transparent; }
   button, a { touch-action: manipulation; }
@@ -124,7 +139,7 @@
 .intro-subtitle { opacity: 0; animation: rise .8s 2.2s ease-out forwards; }
 .intro-screen { height: 100vh; height: 100svh; height: 100dvh; }
 .intro-silhouette { background: var(--logo-light); }
-.start-background { position: relative; background: linear-gradient(165deg, oklch(0.975 0.014 70), oklch(0.965 0.022 42)); }
+.start-background { position: relative; background: transparent; }
 .start-background::before { content: ""; position: absolute; inset: -22%; z-index: 0; background:
   radial-gradient(46% 42% at 14% 16%, oklch(0.93 0.055 16 / .85), transparent 72%),
   radial-gradient(40% 38% at 86% 10%, oklch(0.92 0.05 312 / .6), transparent 70%),
@@ -133,6 +148,7 @@
   radial-gradient(30% 28% at 50% 46%, oklch(0.97 0.02 90 / .8), transparent 75%);
  animation: pastel-drift 30s ease-in-out infinite alternate; }
 @keyframes pastel-drift { from { transform: translate3d(-3%, -2%, 0) scale(1.05); } to { transform: translate3d(3%, 2%, 0) scale(1.08); } }
+@keyframes pastel-wash { from { transform: translate3d(-2%, -1.5%, 0) scale(1.04); } to { transform: translate3d(2%, 1.5%, 0) scale(1.08); } }
 .choice-stage { perspective: 1400px; --px: 0; --py: 0; }
 .choice-float { animation: float-card 7s ease-in-out infinite alternate; }
 .choice-float:nth-child(2) { animation-duration: 8s; animation-delay: -3s; }

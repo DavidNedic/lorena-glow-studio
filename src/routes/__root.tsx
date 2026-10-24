@@ -17,7 +17,7 @@ import { AnalyticsConsent } from "@/components/AnalyticsConsent";
 
 function StatusPage({ title, text, children }: { title: string; text: string; children?: ReactNode }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-5 text-foreground">
+    <div className="flex min-h-screen items-center justify-center px-5 text-foreground">
       <div className="max-w-md text-center">
         <img src={birdMark} alt="The Golden Cosmetics Logo, ein Kolibri" className="brand-bird-black mx-auto size-14 object-contain" />
         <h1 className="mt-6 text-3xl md:text-4xl">{title}</h1>
