@@ -35,15 +35,16 @@ function Behandlungen(){
    <div className="mt-6 flex flex-wrap gap-3"><ActionLink href={CONTACT.beautinda} external>Direkt buchen</ActionLink><Button asChild variant="ghost" className="btn btn-ghost"><Link to="/behandlungen/$slug" params={{slug:first.slug}}>Ablauf ansehen</Link></Button></div>
   </div>
   <div className="booking-edit mx-auto mt-10 max-w-5xl">
-   <div className="booking-intro"><p className="text-sm text-muted-foreground">Dein Termin, deine Wahl</p><h3 className="mt-2 text-3xl">Direkt online buchen</h3><p className="mt-3 text-sm text-muted-foreground">Für deinen Glow, deinen Wimpernlook oder schön geformte Brauen.</p></div>
+   <div className="booking-intro"><h3 className="text-3xl">Direkt online buchen</h3><p className="mt-3 text-sm text-muted-foreground">Dein Glow. Dein Look. Dein Termin.</p>
+    <div className="booking-tabs" role="tablist" aria-label="Behandlungskategorie">{BOOKING_CATEGORIES.map(c=><Button key={c.id} variant="ghost" role="tab" id={`tab-${c.id}`} aria-selected={category===c.id} aria-controls="booking-options" className="booking-tab" onClick={()=>setCategory(c.id)}>{c.name}<span aria-hidden="true">↗</span></Button>)}</div>
+   </div>
    <div className="min-w-0">
-    <div className="booking-tabs" role="tablist" aria-label="Behandlungskategorie">{BOOKING_CATEGORIES.map(c=><Button key={c.id} variant="ghost" role="tab" id={`tab-${c.id}`} aria-selected={category===c.id} aria-controls="booking-options" className="booking-tab" onClick={()=>setCategory(c.id)}>{c.name}</Button>)}</div>
     <div id="booking-options" role="tabpanel" aria-labelledby={`tab-${category}`} className="booking-options"><TreatmentShop treatments={TREATMENTS.filter(t=>t.group==="direct"&&activeCategory.slugs.includes(t.slug))} hit={hit}/></div>
    </div>
   </div>
   <div className="skin-options mx-auto mt-10 max-w-5xl">
-   <p className="text-sm text-muted-foreground">Deine Haut gibt die Richtung vor</p><h3 className="mt-2 text-3xl">Nach deiner Hautanalyse</h3><p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">Nicht alles, sondern das Richtige für dich. Ich wähle mit dir die passende Behandlung. Das sind Möglichkeiten, keine Pflicht.</p>
-   <TreatmentShop treatments={analysis} analysis hit={hit}/>
+   <div className="skin-options-intro"><h3 className="text-3xl">Nach deiner Hautanalyse</h3><p className="mt-4 text-sm text-muted-foreground">Deine Haut braucht nicht alles. Nur das Passende. Ich wähle mit dir aus diesen Möglichkeiten.</p><ActionLink href={first.bookingUrl} external className="mt-6">Hautanalyse buchen</ActionLink></div>
+   <div className="min-w-0"><TreatmentShop treatments={analysis} analysis hit={hit}/></div>
   </div>
   <div className="cal-bar mx-auto max-w-5xl"><span><span className="block font-semibold">Freie Termine und aktuelle Preise</span><span className="block text-sm text-muted-foreground">Immer tagesaktuell in meinem Buchungskalender.</span></span><ActionLink href={CONTACT.beautinda} external secondary>Kalender öffnen</ActionLink></div>
  </Section>

@@ -295,12 +295,30 @@
 .club-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 4px; text-align: left; }
 @media (max-width: 699px) { .club-strip { flex-direction: column; align-items: stretch; } .club-strip .btn { width: 100%; } }
 
-.booking-edit { text-align: center; padding-block: 24px; }
-.booking-intro { max-width: 600px; margin-inline: auto; }
-.booking-tabs { display: flex; justify-content: center; border-bottom: 1px solid var(--line); gap: 24px; margin-top: 24px; }
-.booking-tab { min-width: 0; height: 44px; padding: 0 0 10px; border-radius: 0; border-bottom: 2px solid transparent; color: var(--muted-foreground); font-size: 14px; }
-.booking-tab[aria-selected="true"] { border-bottom-color: var(--foreground); color: var(--foreground); }
-.skin-options { border-top: 1px solid var(--line); padding-top: 32px; }
+.booking-edit { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: 56px; text-align: left; padding-block: 32px; border-top: 1px solid var(--line); }
+.booking-intro { min-width: 0; }
+.booking-tabs { display: flex; flex-direction: column; gap: 4px; margin-top: 28px; }
+.booking-tab { justify-content: space-between; min-width: 0; height: 48px; padding: 0 14px; border-radius: 4px; color: var(--muted-foreground); font-size: 15px; }
+.booking-tab[aria-selected="true"] { background: var(--surface-2); color: var(--foreground); }
+.skin-options { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: 56px; border-top: 1px solid var(--line); padding-block: 32px; text-align: left; }
+.skin-options-intro { min-width: 0; }
+.treatment-menu-item { min-width: 0; border-bottom: 1px solid var(--line); scroll-margin-top: 120px; }
+.treatment-menu-item:first-child { border-top: 1px solid var(--line); }
+.treatment-booking-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; }
+.treatment-booking-row h4 { font-size: 16px; font-weight: 600; line-height: 1.45; }
+.treatment-booking-button { flex-shrink: 0; min-width: 124px; }
+.treatment-option { display: flex; justify-content: space-between; width: 100%; height: auto; min-height: 64px; padding: 16px 0; border-radius: 0; white-space: normal; text-align: left; gap: 20px; font-size: 15px; }
+.treatment-option > svg { flex-shrink: 0; width: 18px; height: 18px; color: var(--muted-foreground); }
+.treatment-option-detail { max-width: 480px; padding: 0 28px 20px 0; font-size: 14px; color: var(--muted-foreground); }
+@media (max-width: 767px) {
+ .booking-edit, .skin-options { grid-template-columns: 1fr; gap: 24px; padding-block: 24px; }
+ .booking-tabs { flex-direction: row; gap: 4px; margin-top: 20px; }
+ .booking-tab { flex: 1; justify-content: center; padding-inline: 8px; font-size: 13px; }
+ .booking-tab > span { display: none; }
+ .treatment-booking-row { gap: 12px; padding-block: 18px; }
+ .treatment-booking-row h4 { font-size: 15px; }
+ .treatment-booking-button { min-width: 106px; padding-inline: 14px; }
+}
 .treatment-shop-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px 32px; margin-top: 24px; text-align: left; }
 .shop-treatment { display: flex; flex-direction: column; min-width: 0; border-bottom: 1px solid var(--line); scroll-margin-top: 120px; }
 .shop-treatment-hit { outline: 2px solid var(--rose); outline-offset: 3px; }
