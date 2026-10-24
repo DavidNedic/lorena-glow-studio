@@ -72,12 +72,12 @@ export const PROBLEMS = [
 ];
 // Vorher/Nachher: echte Fotos später hier eintragen (before/after Pfade).
 export const BEFORE_AFTER = [
-  { id: "poren", name: "Poren & Glow", note: "Direkt nach der Behandlung", before: "/img/vn-02-vorher.jpg", after: "/img/vn-02-nachher.jpg", ratio: "495/1130" },
+  { id: "poren", name: "Poren & Glow", note: "Direkt nach der Behandlung", before: "/img/vn-02-vorher.jpg", after: "/img/vn-02-nachher.jpg", ratio: "1000/510" },
   { id: "stirn", name: "Stirn & Augenpartie", note: "Glattere, frischere Haut", before: "/img/vn-04-vorher.jpg", after: "/img/vn-04-nachher.jpg", ratio: "1000/510" },
   { id: "teint", name: "Ebenmäßiger Teint", note: "Ruhigeres Hautbild", before: "/img/vn-06-vorher.jpg", after: "/img/vn-06-nachher.jpg", ratio: "1000/510" },
 ];
 /** Ergebnis-Fotos ohne Vorher-Nachher-Collagen (die laufen im Regler). */
-export const RESULT_PHOTOS = ["01", "03", "05", "07", "08", "09", "10", "11", "12"].map(n => `/img/ergebnis-${n}.jpg`);
+export const RESULT_PHOTOS = ["01", "03", "05", "07", "08", "09", "10", "12"].map(n => `/img/ergebnis-${n}.jpg`);
 export const ABSOLVENTINNEN = ["01", "05", "08", "10", "12", "13", "02", "03", "04", "06", "07", "09", "11"].map(n => `/img/absolventin-${n}.jpg`);
 export const SCHUELERINNEN = Array.from({ length: 11 }, (_, i) => `/img/schuelerinnen/schuelerin-${String(i + 1).padStart(2, "0")}.png`);
 export type Masterclass = { slug: string; name: string; format: string; group: "fachlich" | "business"; lead: string; text: string; tags: string[]; image: string };

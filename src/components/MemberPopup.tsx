@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/site";
 
-// The offer shows 5 seconds after the treatments page is opened and stays on
+// The offer shows 10 seconds after the treatments page is opened and stays on
 // screen until the visitor actively clicks it away.
-const DELAY = 5000;
+const DELAY = 10000;
 
 export function MemberPopup() {
   const [open, setOpen] = useState(false);
