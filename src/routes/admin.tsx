@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Section } from "@/components/site";
@@ -41,6 +41,7 @@ function Login() {
       <Button type="submit" className="btn btn-primary w-full">Anmelden</Button>
       <Button type="button" variant="link" onClick={forgot} className="w-full">Passwort festlegen / vergessen</Button>
     </form>
+    <Link to="/" className="btn btn-ghost mt-6 w-full">Zurück zur Startseite</Link>
   </Section>;
 }
 
@@ -103,11 +104,11 @@ function Admin() {
 
   if (!ready) return <div className="bg-background"><Section><p className="text-muted-foreground">Laden …</p></Section></div>;
   if (!signedIn) return <div className="bg-background"><Login /></div>;
-  if (denied) return <div className="bg-background"><Section className="max-w-md"><h1 className="text-4xl">Zugriff nicht möglich</h1><p className="mt-4 text-muted-foreground">Prüfe deine Verwaltungsrechte oder versuch es erneut.</p><Button variant="ghost" className="btn btn-ghost mt-6" onClick={load}>Erneut laden</Button><Button variant="ghost" className="btn btn-ghost mt-6" onClick={signOut}>Abmelden</Button></Section></div>;
+  if (denied) return <div className="bg-background"><Section className="max-w-md"><h1 className="text-4xl">Zugriff nicht möglich</h1><p className="mt-4 text-muted-foreground">Prüfe deine Verwaltungsrechte oder versuch es erneut.</p><Button variant="ghost" className="btn btn-ghost mt-6" onClick={load}>Erneut laden</Button><Button variant="ghost" className="btn btn-ghost mt-6" onClick={signOut}>Abmelden</Button><Link to="/" className="btn btn-ghost mt-6 w-full">Zurück zur Startseite</Link></Section></div>;
 
   return <div className="bg-background">
     <Section className="max-w-4xl !pb-4">
-      <div className="flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Member Club</h1><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Member Club</h1><div className="flex items-center gap-2"><Link to="/" className="btn btn-ghost">Zurück zur Startseite</Link><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div></div>
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         {[["Mitglieder", stats.members], ["Bestätigt", stats.confirmed], ["Gutscheine offen", stats.open], ["Eingelöst", stats.redeemed]].map(([l, n]) => <div key={l} className="card p-4 text-left"><p className="text-xs text-muted-foreground">{l}</p><p className="mt-1 text-2xl font-semibold">{n}</p></div>)}
       </div>
