@@ -1,16 +1,13 @@
 # Finale Website
-- [x] Kontakte, Preise und Masterclasses ersetzen
-- [x] Pastellgestaltung, zentrierte Seiten, Intro und Startkarten
-- [x] Behandlungen, Academy und Detailseiten finalisieren
-- [x] Karriere-Check und echte WhatsApp-Anfragen
-- [x] Regelbasierter Chat mit lokalem Verlauf
-- [x] Tests und Desktop-/Mobilprüfung
-- [x] Angebot auf neun Behandlungen reduzieren und Preise entfernen
-- [x] Zoom, Chat und alte URLs anpassen, Academy unverändert lassen
-- [x] Aktualisierte Regeln testen und Seiten auf Mobil/Desktop prüfen
-- [x] Header/Footer, schwarze Icons und Startseiten-Academy-Bild aktualisieren
-- [x] Kontakt, Impressum, Footerlinks und Member-Club-Platzhalter ergänzen
-- [x] Schrift lokal laden und Änderungen auf Mobil/Desktop testen
-- [ ] Hotspot-Inhalte und fünf verknüpfte Hautbehandlungen ergänzen
-- [ ] Augenbrauen/Pickel mit Foto-Zoom und Rückwärtsanimation ergänzen
-- [ ] Verknüpfungen, mobile Labels und Zoom-Wege testen
+- [x] Alle bisherigen Schritte (siehe Archiv)
+- [ ] 3 fehlgeschlagene Tests fixen + mobile Hotspot-Labels prüfen
+- [ ] Leistungen neu: First-Time-Box, zwei Karten (direkt buchbar / nach Hautanalyse), Kalender-Balken, keine Preise
+- [ ] Vorher/Nachher-Regler (3 Vergleiche, Platzhalter, Config-Array)
+- [ ] Member-Club-Teaser auf /behandlungen + MemberCard-Komponente
+- [ ] FAQ-Storno (24h / 50 %) mit AGB-Link
+- [ ] Academy: CTAs „Jetzt Teilnahme sichern", Absolventinnen-Reihenfolge, Schülerinnen-Stapel (11 Screenshots)
+- [ ] Rechtstexte: Impressum, AGB, Widerruf, Datenschutz als Akkordeons + Footer-Widerruf-Link
+- [ ] Member Club mit Lovable Cloud: /member-club (3 Schritte), /member-club/admin, /member-club/abmelden, RLS
+- [ ] Footer-Logo schwarz wie Header
+- [ ] Chat: keine Preise, Preisfragen → Beautinda-Kalender
+- [ ] Tests anpassen + neue Tests, Mobil/Desktop prüfen
