@@ -5,10 +5,10 @@ import { CONTACT } from '@/lib/data'
 import { VOUCHER_PERCENT } from '@/lib/member-club'
 
 function MemberVoucher({ origin, vorname, code }: { origin?: string; vorname?: string; code?: string }) {
-  return <MemberLayout origin={origin} preview={`Deine Anmeldung ist bestätigt. Dein persönlicher ${VOUCHER_PERCENT} %-Gutschein wartet auf dich.`}>
+  return <MemberLayout origin={origin} preview={`Dein persönlicher ${VOUCHER_PERCENT} %-Gutschein wartet auf dich.`}>
     <Text style={emailStyles.muted}>DEIN GOLDEN MEMBER CLUB</Text>
     <Heading style={emailStyles.heading}>Schön, dass du dabei bist.</Heading>
-    <Text style={emailStyles.text}>Hallo {vorname || 'du'}, deine Anmeldung ist bestätigt. Ich freue mich, dich im Member Club begrüßen zu dürfen.</Text>
+    <Text style={emailStyles.text}>Hallo {vorname || 'du'}, danke für deine Anmeldung zum Member Club. Ich freue mich, dich begrüßen zu dürfen.</Text>
     <Text style={emailStyles.text}>Als kleines Dankeschön schenke ich dir einmalig {VOUCHER_PERCENT} % auf eine Behandlung bei mir im Studio.</Text>
     <Section style={emailStyles.voucher}>
       <Text style={{ ...emailStyles.heading, margin: '0' }}>{VOUCHER_PERCENT} % für deinen nächsten Besuch</Text>
