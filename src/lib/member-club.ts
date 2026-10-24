@@ -6,7 +6,7 @@ export const VOUCHER_PERCENT = 10;
 export const SIGNUPS_PER_IP_PER_HOUR = 5;
 
 export function makeVoucherCode(rand: (n: number) => Uint8Array = n => crypto.getRandomValues(new Uint8Array(n))) {
-  return "GOLDEN-" + Array.from(rand(4)).map(b => VOUCHER_ALPHABET[b % VOUCHER_ALPHABET.length]).join("");
+  return Array.from(rand(6)).map(b => VOUCHER_ALPHABET[b % VOUCHER_ALPHABET.length]).join("");
 }
 export const normalizeEmail = (e: string) => e.trim().toLowerCase();
 export const normalizeCode = (c: string) => c.trim().toUpperCase().replace(/\s+/g, "");

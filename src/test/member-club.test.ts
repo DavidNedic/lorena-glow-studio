@@ -3,8 +3,12 @@ import { makeVoucherCode, newsletterCsv, normalizeEmail, signupSchema, SIGNUPS_P
 import { sitemapPaths } from "@/routes/sitemap[.]xml";
 
 describe("Member Club rules", () => {
-  it("voucher codes look like GOLDEN-XXXX without 0/O/1/I", () => {
-    for (let i = 0; i < 300; i++) expect(makeVoucherCode()).toMatch(/^GOLDEN-[A-HJ-NP-Z2-9]{4}$/);
+  it("new voucher codes have six characters without 0/O/1/I", () => {
+    for (let i = 0; i < 300; i++) {
+      const code = makeVoucherCode();
+      expect(code).toHaveLength(6);
+      expect(code).toMatch(/^[A-HJ-NP-Z2-9]{6}$/);
+    }
   });
   it("voucher is 10 %", () => expect(VOUCHER_PERCENT).toBe(10));
   it("max 5 signups per IP per hour", () => expect(SIGNUPS_PER_IP_PER_HOUR).toBe(5));

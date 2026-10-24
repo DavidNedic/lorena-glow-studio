@@ -86,9 +86,9 @@ export const confirmMember = createServerFn({ method: "POST" })
     const delivery = await sendTemplateEmail('member-voucher', m.email, {
       templateData: { origin: o, vorname: m.vorname, code },
       idempotencyKey: `member-voucher-${m.id}-${code}${normalizeEmail(m.email) === 'davidnedic@web.de' ? `-test-${crypto.randomUUID()}` : ''}`,
-    });
-    if (!delivery.sent) return { ok: false as const };
-    return { ok: true as const };
+    }).catch(() => ({ sent: false as const }));
+    if (!delivery.sent) return { ok: false as const, confirmed: true as const };
+    return { ok: true as const, confirmed: true as const };
   });
 
 export const unsubscribeNewsletter = createServerFn({ method: "POST" })
