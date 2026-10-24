@@ -11,14 +11,14 @@ vi.mock('@tanstack/react-start/server', () => ({ getRequestHeader: () => 'test-i
 vi.mock('@/integrations/supabase/auth-middleware', () => ({ requireSupabaseAuth: {} }))
 vi.mock('@/integrations/supabase/client.server', () => ({ supabaseAdmin: db }))
 vi.mock('@/lib/email-templates/send-email', () => ({ sendTemplateEmail: send }))
-import { signupMember } from '@/lib/member.functions'
+import { signupMember, confirmMember } from '@/lib/member.functions'
 
 const signup = signupMember as unknown as (input: { data: { email: string; vorname: string; newsletter: true } }) => Promise<{ status: string }>
 const input = { data: { email: ' Anna@Example.DE ', vorname: 'Anna', newsletter: true as const } }
 
 function query(result: unknown) {
   const chain: Record<string, unknown> = {}
-  for (const method of ['select', 'eq', 'gte', 'insert', 'ilike']) chain[method] = vi.fn(() => chain)
+  for (const method of ['select', 'eq', 'gte', 'insert', 'ilike', 'update']) chain[method] = vi.fn(() => chain)
   chain['maybeSingle'] = vi.fn(async () => result)
   chain['single'] = vi.fn(async () => result)
   chain['then'] = (resolve: (value: unknown) => void) => Promise.resolve(result).then(resolve)
@@ -82,6 +82,41 @@ describe('member signup with double opt-in', () => {
   it('does not bypass an unsubscribe for the test address', async () => {
     db.from.mockReturnValueOnce(query({ count: 0 })).mockReturnValueOnce(query({})).mockReturnValueOnce(query({ data: { id: 'david-test', unsubscribed_at: '2026-10-24' } }))
     expect(await signup({ data: { ...input.data, email: 'Davidnedic@web.de' } })).toEqual({ status: 'exists' })
+    expect(send).not.toHaveBeenCalled()
+  })
+})
+
+const confirm = confirmMember as unknown as (input: { data: { token: string } }) => Promise<{ ok: boolean; confirmed?: boolean }>
+describe('member confirmation and voucher delivery', () => {
+  const member = { id: 'member-123', vorname: 'Anna', email: 'anna@example.de', newsletter_confirmed_at: null, unsubscribed_at: null }
+  const link = { data: { token: 'a'.repeat(48) } }
+  beforeEach(() => { db.from.mockReset(); send.mockReset() })
+  it('confirms before creating and emailing one short voucher', async () => {
+    const update = query({ error: null }); const insert = query({ error: null })
+    db.from.mockReturnValueOnce(query({ data: member })).mockReturnValueOnce(query({ data: null })).mockReturnValueOnce(update).mockReturnValueOnce(insert)
+    send.mockResolvedValueOnce({ sent: true })
+    expect(await confirm(link)).toEqual({ ok: true, confirmed: true })
+    expect(update['update']).toHaveBeenCalledWith({ newsletter_confirmed_at: expect.any(String) })
+    expect(insert['insert']).toHaveBeenCalledWith({ member_id: 'member-123', code: expect.stringMatching(/^[A-HJ-NP-Z2-9]{6}$/), rabatt_prozent: 10 })
+    expect(send).toHaveBeenCalledWith('member-voucher', 'anna@example.de', expect.objectContaining({ templateData: expect.objectContaining({ code: expect.stringMatching(/^[A-HJ-NP-Z2-9]{6}$/) }) }))
+    expect(update['update'] as ReturnType<typeof vi.fn>).toHaveBeenCalledBefore(insert['insert'] as ReturnType<typeof vi.fn>)
+  })
+  it('reopening the link reuses the same voucher and stable email identity', async () => {
+    for (let i = 0; i < 2; i++) db.from.mockReturnValueOnce(query({ data: { ...member, newsletter_confirmed_at: '2026-10-24' } })).mockReturnValueOnce(query({ data: { id: 'voucher', code: 'GOLDEN-7K3P' } }))
+    send.mockResolvedValue({ sent: true })
+    await confirm(link); await confirm(link)
+    expect(db.from).toHaveBeenCalledTimes(4)
+    expect(send.mock.calls[0]).toEqual(send.mock.calls[1])
+    expect(send.mock.calls[0]?.[2]).toMatchObject({ templateData: { code: 'GOLDEN-7K3P' }, idempotencyKey: 'member-voucher-member-123-GOLDEN-7K3P' })
+  })
+  it('preserves successful confirmation when email sending fails', async () => {
+    db.from.mockReturnValueOnce(query({ data: { ...member, newsletter_confirmed_at: '2026-10-24' } })).mockReturnValueOnce(query({ data: { code: '7K3P8M' } }))
+    send.mockRejectedValueOnce(new Error('delivery unavailable'))
+    expect(await confirm(link)).toEqual({ ok: false, confirmed: true })
+  })
+  it('never sends a voucher for an invalid confirmation', async () => {
+    db.from.mockReturnValueOnce(query({ data: null }))
+    expect(await confirm(link)).toEqual({ ok: false })
     expect(send).not.toHaveBeenCalled()
   })
 })
