@@ -10,30 +10,46 @@ export const CONTACT = {
   instagram: "https://www.instagram.com/thegoldencosmetics", instagramAcademy: "https://www.instagram.com/thegoldencosmetics",
 };
 export function whatsappUrl(text: string) { return `https://wa.me/491629709213?text=${encodeURIComponent(text)}`; }
-export const CATEGORIES = ["Erstberatung", "Liftings", "Wimpernbehandlungen", "Hautbehandlungen", "Akne"] as const;
-export type Category = typeof CATEGORIES[number];
-export type Treatment = { slug: string; name: string; category: Category; duration?: string; priceNote?: string; sentence: string; image: string; detail?: boolean; bookingUrl: string };
-const treatment = (slug: string, name: string, category: Category, duration: string, extra: Partial<Treatment> = {}): Treatment => ({ slug, name, category, duration, sentence: "", image: "/images/kachel-behandlung.jpg", bookingUrl: CONTACT.beautinda, ...extra });
+
+// Prices and free slots live in Beautinda only — the website never shows prices.
+export type TreatmentGroup = "first" | "direct" | "analysis";
+export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; bookingUrl: string };
+const treatment = (slug: string, name: string, group: TreatmentGroup, duration = "", extra: Partial<Treatment> = {}): Treatment => ({ slug, name, group, duration: duration || "Dauer nach Absprache", sentence: "", image: "/images/kachel-behandlung.jpg", bookingUrl: CONTACT.beautinda, ...extra });
 export const TREATMENTS: Treatment[] = [
-  treatment("first", "First Time: Hautanalyse + erste Behandlung", "Erstberatung", "2 Std.", { detail: true, sentence: "Wir schauen uns deine Haut genau an und verbinden deine Hautanalyse mit der ersten passenden Behandlung." }),
-  treatment("lash", "Korean Lashlifting inkl. Färben", "Liftings", "1 Std. 30 Min.", { detail: true, sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
-  treatment("brow", "Browlifting inkl. Färben + Formen", "Liftings", "1 Std. 20 Min."),
-  treatment("brow-color", "Augenbrauen färben", "Liftings", "30 Min."),
-  treatment("brow-shape", "Augenbrauen formen", "Liftings", "30 Min."),
-  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "Wimpernbehandlungen", "2 Std."),
-  treatment("wispy", "Wispy Neu-Set", "Wimpernbehandlungen", "2 Std."),
-  treatment("volumen", "Volumen Neu-Set", "Wimpernbehandlungen", "2 Std."),
-  treatment("refill", "Wimpern auffüllen", "Wimpernbehandlungen", "1 Std. 20 Min."),
-  treatment("microneedling-salmon-dna", "Microneedling x Salmon DNA", "Hautbehandlungen", "Dauer auf Anfrage", { sentence: "Microneedling mit Salmon DNA. Anti-Aging-Effekt, wirkt gegen feine Linien und Falten." }),
-  treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "Hautbehandlungen", "Dauer auf Anfrage", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
-  treatment("microneedling", "Microneedling", "Hautbehandlungen", "Dauer auf Anfrage", { sentence: "Microneedling bei Aknenarben. Kann die Erneuerung der Haut anregen und das Hautbild glätten." }),
-  treatment("biorepeel", "BioRePeel", "Akne", "Dauer auf Anfrage", { sentence: "Peeling bei Akne und unreiner Haut.", priceNote: "Preis auf Anfrage" }),
-  treatment("anti-akne-face-reset", "Anti-Akne Face Reset", "Akne", "Dauer auf Anfrage", { sentence: "Gezielt gegen Pickel: Wir gehen an die Ursache, statt nur abzudecken." }),
+  treatment("first", "First Time: Hautanalyse + erste Behandlung", "first", "2 Std.", { detail: true, sentence: "Wir schauen uns deine Haut genau an und verbinden deine Hautanalyse mit der ersten passenden Behandlung." }),
+  // Direkt online buchen
+  treatment("klassische-ausreinigung", "Klassische Ausreinigung", "direct", "1 Std.", { sentence: "Die gründliche Ausreinigung für ein reines, frisches Hautbild." }),
+  treatment("dermaplaning", "Dermaplaning", "direct", "1 Std.", { sentence: "Sanftes Abtragen abgestorbener Hautschüppchen und feiner Härchen für sofort glatte Haut." }),
+  treatment("glow-peel", "Glow-Peel", "direct", "1 Std.", { sentence: "Fruchtiges Peeling für frischen Glow und einen ebenmäßigen Teint." }),
+  treatment("refresh-peel", "Refresh-Peel", "direct", "", { sentence: "Die schnelle Auffrischung für zwischendurch." }),
+  treatment("pure-peel", "Pure-Peel", "direct", "", { sentence: "Klares Peeling für reine, verfeinerte Haut." }),
+  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "1 Std. 30 Min.", { detail: true, sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
+  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "1 Std. 20 Min.", { sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
+  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
+  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
+  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "2 Std.", { sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
+  treatment("refill", "Wimpern auffüllen", "direct", "1 Std. 20 Min.", { sentence: "Dein Set bleibt voll und gepflegt." }),
+  // Nach deiner Hautanalyse
+  treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "analysis", "1 Std. 10 Min.", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
+  treatment("microneedling", "Microneedling", "analysis", "1 Std.", { sentence: "Microneedling bei Aknenarben. Kann die Erneuerung der Haut anregen und das Hautbild glätten." }),
+  treatment("micro-cica", "Microneedling x Cica-Exosome", "analysis", "1 Std.", { sentence: "Microneedling kombiniert mit beruhigenden Cica-Exosomen." }),
+  treatment("microneedling-salmon-dna", "Microneedling x Salmon DNA", "analysis", "1 Std.", { sentence: "Microneedling mit Salmon DNA. Anti-Aging-Effekt, wirkt gegen feine Linien und Falten." }),
+  treatment("glass-skin", "Signature Glasskin Treatment", "analysis", "1 Std. 20 Min.", { sentence: "Mein Signature-Treatment für den Glass-Skin-Glow." }),
+  treatment("aha-egf", "AHA-EGF Skinbooster Facial", "analysis", "1 Std.", { sentence: "Fruchtsäure trifft Wachstumsfaktoren für sichtbar erneuerte Haut." }),
+  treatment("aqua-micro", "Aquafacial x Microneedling Kombi", "analysis", "2 Std.", { sentence: "Ausreinigung und Needling in einer ausgiebigen Behandlung." }),
+  treatment("microdermabrasion", "Microdermabrasion", "analysis", "1 Std. 10 Min.", { sentence: "Apparatives Abtragen der obersten Hautschicht für ein feineres Hautbild." }),
+  treatment("anti-akne-face-reset", "Anti-Akne Face Reset", "analysis", "1 Std.", { sentence: "Gezielt gegen Pickel: Wir gehen an die Ursache, statt nur abzudecken." }),
+  treatment("biorepeel", "BioRePeel", "analysis", "", { sentence: "Peeling bei Akne und unreiner Haut." }),
+  treatment("akne-body", "Akne Body Behandlung", "analysis", "", { sentence: "Die Anti-Akne-Behandlung für Rücken und Dekolleté." }),
+  treatment("carboxy", "Carboxy-Therapie", "analysis", "1 Std.", { sentence: "CO2-Therapie, die die Durchblutung der Haut anregen kann." }),
+  treatment("wispy", "Wimpernverlängerung Wispy Neu-Set", "analysis", "2 Std.", { sentence: "Der federleichte Wispy-Look mit gestuften Längen." }),
+  treatment("volumen", "Wimpernverlängerung Volumen Neu-Set", "analysis", "2 Std.", { sentence: "Mehr Dichte mit feinen Volumenfächern." }),
 ];
-// Empty targets redirect retired offers to the overview; retained aliases resolve to an offer.
+// Aliases resolve to a current offer; everything else is a real slug now.
 export const LEGACY_TREATMENT_SLUGS: Record<string, string> = {
-  "glass-skin": "", aquafacial: "", microneedling: "", ausreinigung: "", "lash-brow": "lash",
-  aqua: "", micro: "", "micro-cica": "", "micro-salmon": "", glass: "", "aha-egf": "", rein: "", "aqua-micro": "", dermaplaning: "", microdermabrasion: "", "anti-akne": "", "akne-body": "", carboxy: "", "glow-peel": "", "refresh-peel": "", "pure-peel": "",
+  "lash-brow": "lash", ausreinigung: "klassische-ausreinigung", rein: "klassische-ausreinigung",
+  aqua: "aquafacial-ausreinigung", micro: "microneedling", "micro-salmon": "microneedling-salmon-dna",
+  glass: "glass-skin", "anti-akne": "anti-akne-face-reset",
 };
 export type ZoomArea = { id: string; area: string; problem: string; explain?: string; slug: string; help: string; x?: number; y?: number; video: boolean };
 export const ZOOM_AREAS: ZoomArea[] = [
@@ -54,6 +70,14 @@ export const PROBLEMS = [
   { label: "Dir fehlt der Glow", text: "Du investierst viel in deine Haut, aber sie strahlt einfach nicht so, wie du es dir wünschst.", slug: "first" },
   { label: "Du weißt nicht, was deine Haut wirklich braucht", text: "Zu viele Produkte, zu viele Meinungen. Du willst endlich wissen, was bei dir funktioniert.", slug: "first" },
 ];
+// Vorher/Nachher: echte Fotos später hier eintragen (before/after Pfade).
+export const BEFORE_AFTER = [
+  { id: "aquafacial", name: "Aquafacial", note: "Tiefenausreinigung der Poren", before: "", after: "" },
+  { id: "microneedling", name: "Microneedling", note: "Bei Aknenarben, nach mehreren Sitzungen", before: "", after: "" },
+  { id: "lash", name: "Korean Lashlifting", note: "Inklusive Färben", before: "", after: "" },
+];
+export const ABSOLVENTINNEN = ["01", "05", "08", "10", "12", "13", "02", "03", "04", "06", "07", "09", "11"].map(n => `/img/absolventin-${n}.jpg`);
+export const SCHUELERINNEN = Array.from({ length: 11 }, (_, i) => `/img/schuelerinnen/schuelerin-${String(i + 1).padStart(2, "0")}.jpg`);
 export type Masterclass = { slug: string; name: string; format: string; group: "fachlich" | "business"; lead: string; text: string; tags: string[]; image: string };
 const course = (slug: string, name: string, lead: string, text: string, format = "Online", group: "fachlich" | "business" = "fachlich"): Masterclass => ({ slug, name, lead, text, format, group, tags: [format, "Persönlich begleitet", "Nachbetreuung"], image: "/images/lorena-portrait-2.jpg" });
 export const MASTERCLASSES: Masterclass[] = [
@@ -62,7 +86,7 @@ export const MASTERCLASSES: Masterclass[] = [
   course("kombi", "Aquafacial & Microneedling Kombi-Masterclass", "Zwei gefragte Behandlungskonzepte in einer Masterclass.", "Ich verbinde die Grundlagen und Abläufe von Aquafacial und Microneedling. Du lernst, Hautbilder zu beurteilen und beide Konzepte gezielt einzusetzen."),
   course("glass-skin", "Glass Skin Masterclass", "Mach den Glass-Skin-Glow zu deinem gefragtesten Signature-Treatment.", "12 aufeinander abgestimmte Schritte. Ich zeige dir, wie sie zusammenwirken und wie du sie an die Bedürfnisse der Haut anpasst."),
   course("korean-lash-lifting", "Korean Lash Lifting Masterclass", "Perfekt geliftete Wimpern ohne täglichen Stylingaufwand.", "Du lernst die koreanische Lifting-Technik, die Vorbereitung und den professionellen Ablauf für geschwungene Wimpern."),
-  course("browlifting", "Browlifting Masterclass", "Ausdrucksstarke Augenbrauen, gezielt in Form gebracht.", "Ich begleite dich durch Vorbereitung, Lifting und Styling für gepflegte, in Form gebrachte Brauen."),
+  course("browlifting", "Browlifting Masterclass", "Ausdrucksvolle Augenbrauen, gezielt in Form gebracht.", "Ich begleite dich durch Vorbereitung, Lifting und Styling für gepflegte, in Form gebrachte Brauen."),
   course("zahnbleaching", "Zahnbleaching Masterclass", "Erweitere dein Beauty-Angebot um kosmetische Zahnaufhellung.", "Online-Unterlagen und ein persönlicher Live-Call. Ich erkläre dir den Ablauf der kosmetischen Zahnaufhellung und beantworte deine Fragen.", "Online · Live-Call"),
   course("hautkunde", "Hautkunde", "Verstehe die Haut und erkenne ihre Bedürfnisse.", "Dein digitales Fundament: Aufbau der Haut, Hauttypen und Hautzustände, verständlich aufbereitet als PDF.", "Digitales Produkt · PDF"),
   course("train-the-trainer", "Train the Trainer Masterclass", "Von der Beauty-Expertin zur Trainerin.", "Ich begleite dich zu deinen eigenen Schulungen: Unterlagen, Verträge, Zahlungsarten und eine saubere Preiskalkulation.", "Online · Live", "business"),

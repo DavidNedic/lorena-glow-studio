@@ -9,7 +9,7 @@ describe("sitemap", () => {
   it("lists every public page with absolute thegoldencosmetics.com URLs", () => {
     expect(pages).toEqual(["/", "/behandlungen", "/behandlungen/first", "/behandlungen/lash", "/academy", ...MASTERCLASSES.map((m) => `/academy/${m.slug}`), "/rechtliches"]);
     expect(sitemapXml()).toContain("<loc>https://thegoldencosmetics.com/behandlungen/lash</loc>");
-    expect(TREATMENTS.filter((t) => !t.detail).every((t) => !sitemapXml().includes(`/${t.slug}<`))).toBe(true);
+    expect(TREATMENTS.filter((t) => !t.detail).every((t) => !sitemapXml().includes(`/behandlungen/${t.slug}<`))).toBe(true);
   });
 });
 

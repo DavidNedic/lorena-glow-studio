@@ -1,17 +1,148 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Footer, FloatingNav, Section } from "@/components/site";
+import { useState } from "react";
+import { AccordionItem, Footer, FloatingNav, Section } from "@/components/site";
 import { CONTACT } from "@/lib/data";
 import { OG, breadcrumbs, seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/rechtliches")({
-  head: () => seoHead({ path: "/rechtliches", title: "Impressum & Datenschutz · The Golden Cosmetics", description: "Impressum und Datenschutzerklärung von The Golden Cosmetics & Academy, Kosmetikstudio von Lorena Kovacevic in Brackenheim bei Heilbronn.", image: OG.behandlungen, jsonLd: [breadcrumbs([["Start", "/"], ["Impressum & Datenschutz", "/rechtliches"]])] }),
+  head: () => seoHead({ path: "/rechtliches", title: "Impressum, AGB & Datenschutz · The Golden Cosmetics", description: "Impressum, AGB, Widerrufsbelehrung und Datenschutzerklärung von The Golden Cosmetics & Academy, Kosmetikstudio von Lorena Kovacevic in Brackenheim bei Heilbronn.", image: OG.behandlungen, jsonLd: [breadcrumbs([["Start", "/"], ["Impressum & Datenschutz", "/rechtliches"]])] }),
   component: Legal,
 });
+
+function LegalAccordion({ items }: { items: { q: string; a: string }[] }) {
+  const [open, setOpen] = useState<number | null>(null);
+  return <div className="accordion-list card mt-6 overflow-hidden">{items.map((it, i) => <AccordionItem key={it.q} open={open === i} onToggle={() => setOpen(open === i ? null : i)} head={<span className="font-semibold">{it.q}</span>}><p className="whitespace-pre-line text-muted-foreground">{it.a}</p></AccordionItem>)}</div>;
+}
+
+const AGB: { q: string; a: string }[] = [
+  { q: "1. Geltungsbereich und Anbieterin", a: `Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge über kosmetische Behandlungen, Gutscheine, Masterclasses, Mentorings und den Member Club zwischen dir und
+
+The Golden Cosmetics & Academy
+Inhaberin: Lorena Kovacevic
+Austraße 26, 74336 Brackenheim
+Telefon: 0162 9709213
+E-Mail: info@thegoldencosmetics.com
+
+Rechtsform: Einzelunternehmen. Abweichende Bedingungen gelten nur, wenn wir ihnen ausdrücklich schriftlich zustimmen.` },
+  { q: "2. Leistungen", a: `Wir bieten kosmetische Behandlungen an. Sie sind keine ärztliche oder heilkundliche Behandlung und ersetzen keinen Arztbesuch. Welche Behandlung im Einzelfall sinnvoll ist, besprechen wir vor Ort. Wir dürfen eine Behandlung ablehnen oder anpassen, wenn aus fachlicher Sicht etwas dagegen spricht.` },
+  { q: "3. Terminbuchung und Vertragsschluss", a: `Termine kannst du online über Beautinda, telefonisch, per WhatsApp oder vor Ort buchen. Mit deiner Buchung gibst du ein verbindliches Angebot ab. Der Vertrag kommt zustande, sobald wir den Termin bestätigen. Bei Online-Buchungen über Beautinda erfolgt die Bestätigung automatisch per E-Mail oder SMS.` },
+  { q: "4. Preise und Bezahlung", a: `Es gelten die Preise, die zum Zeitpunkt der Buchung angegeben sind. Alle Preise sind Endpreise inklusive gesetzlicher Umsatzsteuer. Die Behandlung bezahlst du direkt im Anschluss im Studio. Möglich sind: [ZAHLUNGSARTEN, z. B. bar, EC-Karte, Kreditkarte].` },
+  { q: "5. Absage, Verschiebung und Nichterscheinen", a: `Du kannst deinen Termin bis 24 Stunden vor Beginn kostenlos absagen oder verschieben, telefonisch, per WhatsApp oder über Beautinda.
+
+Sagst du später ab oder erscheinst du nicht, berechnen wir 50 % des Preises der gebuchten Behandlung als pauschalen Ausfall. Dieser Betrag ist nicht erstattbar. Du kannst nachweisen, dass uns kein oder ein deutlich geringerer Schaden entstanden ist, zum Beispiel weil der Termin neu vergeben wurde.
+
+Müssen wir einen Termin absagen, informieren wir dich so früh wie möglich und bieten dir einen Ersatztermin an. Bereits gezahlte Beträge erstatten wir in diesem Fall vollständig.` },
+  { q: "6. Verspätung", a: `Kommst du zu spät, kann sich die Behandlungszeit verkürzen, damit nachfolgende Termine pünktlich beginnen. Der Preis bleibt gleich. Ab einer Verspätung von 15 Minuten können wir den Termin als nicht wahrgenommen werten; dann gilt Punkt 5.` },
+  { q: "7. Gesundheit und deine Mitwirkung", a: `Vor der ersten Behandlung füllen wir gemeinsam einen Anamnesebogen aus. Bitte informiere uns vollständig und wahrheitsgemäß über Allergien, Unverträglichkeiten, Medikamente, Schwangerschaft oder Stillzeit, Hauterkrankungen, frische Sonnenbräune und frühere Behandlungen. Änderungen teilst du uns vor jedem Termin mit.
+
+Für Folgen, die entstehen, weil Angaben fehlen oder falsch sind, haften wir nicht. Pflegehinweise nach der Behandlung geben wir dir mit; bitte halte sie ein.` },
+  { q: "8. Ergebnisse", a: `Jede Haut reagiert anders. Wir arbeiten sorgfältig und nach aktuellem Fachwissen, ein bestimmtes Ergebnis können wir aber nicht garantieren. Vorher-Nachher-Bilder zeigen Einzelfälle. Leichte Rötungen oder Schwellungen nach manchen Behandlungen sind normal und klingen meist von selbst ab. Bei Beschwerden melde dich bitte umgehend.` },
+  { q: "9. Gutscheine", a: `Gutscheine sind drei Jahre gültig, gerechnet ab dem Ende des Jahres, in dem sie gekauft wurden. Sie können nicht bar ausgezahlt werden. Ein Restguthaben bleibt bis zum Ablauf erhalten. Für Termine mit Gutschein gelten dieselben Absageregeln wie unter Punkt 5.` },
+  { q: "10. The Golden Member Club", a: `Die Mitgliedschaft ist kostenlos. Beitreten kannst du nur mit einem persönlichen Einladungscode, den du nach einer Behandlung erhältst. Mit dem Beitritt bekommst du einen persönlichen Member-Code.
+
+Member-Vorteile gelten nur im angegebenen Zeitraum, sind nicht übertragbar, nicht mit anderen Rabatten kombinierbar und nicht bar auszahlbar. Wir dürfen Vorteile ändern oder beenden; bereits ausgegebene Codes bleiben bis zu ihrem Ablaufdatum gültig.
+
+Du kannst deine Mitgliedschaft jederzeit beenden. Den Newsletter kannst du unabhängig davon mit einem Klick abbestellen. Bei Missbrauch dürfen wir eine Mitgliedschaft beenden.` },
+  { q: "11. Masterclasses und Mentorings", a: `Anmeldung: Vor jeder Masterclass führen wir ein kostenloses Kennenlerngespräch. Danach erhältst du ein Angebot mit Inhalt, Termin und Preis. Der Vertrag kommt zustande, wenn du das Angebot annimmst und wir deine Anmeldung schriftlich (E-Mail oder WhatsApp) bestätigen.
+
+Bezahlung: Der Kurspreis ist vor Beginn der Masterclass fällig, per Überweisung oder als Ratenkauf über Klarna. Die Ratenzahlung ist ein Vertrag zwischen dir und Klarna und hängt von deren Prüfung ab.
+
+Absage durch dich: Bis [14] Tage vor Beginn kostenlos, danach werden [50 %] des Kurspreises fällig. Statt abzusagen, kannst du einmalig auf einen anderen Termin umbuchen. Dein gesetzliches Widerrufsrecht bleibt davon unberührt.
+
+Absage durch uns: Fällt eine Masterclass aus wichtigem Grund aus (z. B. Krankheit), bieten wir dir einen Ersatztermin an oder erstatten den gezahlten Betrag vollständig.
+
+Unterlagen und Zertifikat: Kursunterlagen und Videos sind urheberrechtlich geschützt und nur für deinen persönlichen Gebrauch bestimmt. Weitergabe, Veröffentlichung oder eigene Schulungen auf Basis unserer Unterlagen sind nicht erlaubt. Das Zertifikat erhältst du nach vollständiger Teilnahme. Es ist ein Teilnahmenachweis unserer Academy und keine staatlich anerkannte Ausbildung.` },
+  { q: "12. Fotos und Videos", a: `Fotos oder Videos von dir oder deinem Behandlungsergebnis veröffentlichen wir nur mit deiner ausdrücklichen Einwilligung. Du kannst diese Einwilligung jederzeit für die Zukunft widerrufen.` },
+  { q: "13. Haftung", a: `Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit. Bei leichter Fahrlässigkeit haften wir nur bei Verletzung einer wesentlichen Vertragspflicht und begrenzt auf den typischerweise vorhersehbaren Schaden. Für mitgebrachte Gegenstände übernehmen wir keine Haftung, außer bei Vorsatz oder grober Fahrlässigkeit.` },
+  { q: "14. Schlussbestimmungen", a: `Es gilt deutsches Recht. Zwingende Verbraucherschutzvorschriften des Landes, in dem du deinen gewöhnlichen Aufenthalt hast, bleiben unberührt. Sollte eine Bestimmung dieser AGB unwirksam sein, bleiben die übrigen Bestimmungen wirksam.
+
+Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.` },
+];
+
+const WIDERRUF: { q: string; a: string }[] = [
+  { q: "Widerrufsrecht", a: `Gilt für Verträge, die du als Verbraucherin ausschließlich über Fernkommunikationsmittel schließt, zum Beispiel per Online-Buchung, Telefon, E-Mail oder WhatsApp.
+
+Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
+
+Um dein Widerrufsrecht auszuüben, musst du uns (The Golden Cosmetics & Academy, Inhaberin: Lorena Kovacevic, Austraße 26, 74336 Brackenheim, Telefon: 0162 9709213, E-Mail: info@thegoldencosmetics.com) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über deinen Entschluss, diesen Vertrag zu widerrufen, informieren. Du kannst dafür das Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist. Zur Wahrung der Widerrufsfrist reicht es aus, dass du die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absendest.` },
+  { q: "Folgen des Widerrufs", a: `Wenn du diesen Vertrag widerrufst, haben wir dir alle Zahlungen, die wir von dir erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über deinen Widerruf bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das du bei der ursprünglichen Transaktion eingesetzt hast, es sei denn, mit dir wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden dir wegen dieser Rückzahlung Entgelte berechnet.
+
+Hast du verlangt, dass die Dienstleistung während der Widerrufsfrist beginnen soll, so hast du uns einen angemessenen Betrag zu zahlen, der dem Anteil der bis zu dem Zeitpunkt, zu dem du uns von der Ausübung des Widerrufsrechts hinsichtlich dieses Vertrags unterrichtest, bereits erbrachten Dienstleistungen im Vergleich zum Gesamtumfang der im Vertrag vorgesehenen Dienstleistungen entspricht.
+
+Das Widerrufsrecht erlischt bei einem Vertrag über Dienstleistungen, wenn wir die Dienstleistung vollständig erbracht haben und mit der Ausführung erst begonnen haben, nachdem du dazu deine ausdrückliche Zustimmung gegeben und gleichzeitig bestätigt hast, dass du dein Widerrufsrecht bei vollständiger Vertragserfüllung verlierst.` },
+  { q: "Muster-Widerrufsformular", a: `Wenn du den Vertrag widerrufen willst, fülle bitte dieses Formular aus und sende es zurück.
+
+An: The Golden Cosmetics & Academy, Inhaberin: Lorena Kovacevic, Austraße 26, 74336 Brackenheim, Telefon: 0162 9709213, E-Mail: info@thegoldencosmetics.com
+
+Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über die Erbringung der folgenden Dienstleistung (*):
+_______________
+
+Bestellt am (*) / erhalten am (*):
+Name des/der Verbraucher(s):
+Anschrift des/der Verbraucher(s):
+Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier):
+Datum:
+
+(*) Unzutreffendes streichen.` },
+];
+
+const DATENSCHUTZ: { q: string; a: string }[] = [
+  { q: "1. Verantwortliche", a: `Verantwortlich für die Datenverarbeitung auf dieser Website ist:
+
+The Golden Cosmetics & Academy
+Inhaberin: Lorena Kovacevic
+Austraße 26, 74336 Brackenheim
+Telefon: 0162 9709213
+E-Mail: info@thegoldencosmetics.com
+
+Eine Datenschutzbeauftragte ist gesetzlich nicht vorgeschrieben und daher nicht benannt. Bei Fragen zum Datenschutz schreib uns einfach an die oben genannte E-Mail-Adresse.` },
+  { q: "2. Überblick und Rechtsgrundlagen", a: `Wir verarbeiten personenbezogene Daten nur, soweit das für eine funktionierende Website, unsere Leistungen oder die Kommunikation mit dir nötig ist.
+
+Rechtsgrundlagen sind: deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Erfüllung eines Vertrags oder vorvertraglicher Maßnahmen (lit. b), rechtliche Pflichten wie Aufbewahrungsfristen (lit. c) und unser berechtigtes Interesse an einem sicheren, funktionierenden Angebot (lit. f).` },
+  { q: "3. Hosting und Server-Logfiles", a: `Diese Website wird bei [HOSTER, z. B. Lovable Labs Incorporated AB, Schweden] gehostet. Beim Aufruf der Seiten werden automatisch technische Daten verarbeitet: IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Browser und Betriebssystem sowie die zuvor besuchte Seite.
+
+Diese Daten sind nötig, um die Website auszuliefern und vor Angriffen zu schützen (Art. 6 Abs. 1 lit. f DSGVO). Sie werden nach spätestens [7] Tagen gelöscht, sofern sie nicht zur Aufklärung eines Sicherheitsvorfalls benötigt werden.
+
+Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung. Werden dabei Daten in die USA übertragen, erfolgt dies auf Grundlage des EU-US Data Privacy Framework oder der EU-Standardvertragsklauseln.` },
+  { q: "4. Verschlüsselung", a: `Diese Website nutzt aus Sicherheitsgründen eine SSL- bzw. TLS-Verschlüsselung. Du erkennst sie am Schloss-Symbol und an „https://" in der Adresszeile.` },
+  { q: "5. Cookies und lokale Speicherung", a: `Wir setzen keine Tracking- oder Werbe-Cookies ein.
+
+Die Website speichert einige wenige Einstellungen direkt in deinem Browser (Local Storage und Session Storage): ob du das Intro schon gesehen hast, welchen Bereich du zuletzt gewählt hast und den Verlauf des Chat-Assistenten. Diese Daten verlassen dein Gerät nicht und sind für die gewünschten Funktionen unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst sie jederzeit über die Einstellungen deines Browsers löschen.` },
+  { q: "6. Kontakt per E-Mail, Telefon und WhatsApp", a: `Wenn du uns kontaktierst, verarbeiten wir deine Angaben (z. B. Name, Telefonnummer, E-Mail-Adresse, Nachricht), um deine Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO, sonst lit. f). Wir löschen die Daten, wenn deine Anfrage erledigt ist und keine Aufbewahrungspflichten bestehen.
+
+Schreibst du uns per WhatsApp, verarbeitet zusätzlich die WhatsApp Ireland Limited (Meta) Daten wie deine Telefonnummer und Metadaten. Die Inhalte sind Ende-zu-Ende-verschlüsselt. Wenn du das nicht möchtest, nutze bitte Telefon oder E-Mail. Mehr dazu: whatsapp.com/legal/privacy-policy-eea` },
+  { q: "7. Rückruf- und Anmeldeformular der Academy", a: `Über das Formular „Jetzt Teilnahme sichern" und den Karriere-Check kannst du einen Rückruf anfragen. Dabei verarbeiten wir deinen Vornamen, deine Handynummer, dein Interesse und deine Antworten im Check, um dich zur passenden Masterclass zu beraten (Art. 6 Abs. 1 lit. b DSGVO).
+
+Kommt kein Vertrag zustande, löschen wir die Daten spätestens nach 6 Monaten.` },
+  { q: "8. Terminbuchung über Beautinda", a: `Für Online-Termine nutzen wir Beautinda, einen Dienst der Beautinda GmbH, Deutschland. Wenn du auf „Termin buchen" klickst oder den eingebundenen Buchungskalender nutzt, verarbeitet Beautinda die Daten, die du dort eingibst (z. B. Name, Kontaktdaten, gewünschte Behandlung, Termin), in unserem Auftrag zur Terminverwaltung (Art. 6 Abs. 1 lit. b DSGVO).
+
+Mit Beautinda besteht ein Vertrag zur Auftragsverarbeitung. Bei einem eingebundenen Kalender werden erst Daten an Beautinda übertragen, wenn du ihn aktiv nutzt [ODER: nach deiner Einwilligung, je nach technischer Umsetzung]. Mehr dazu in der Datenschutzerklärung von Beautinda.` },
+  { q: "9. Terminbuchung über Calendly", a: `Für Kennenlerngespräche der Academy kannst du einen Termin über Calendly buchen, einen Dienst der Calendly LLC, USA. Calendly verarbeitet dabei deinen Namen, deine Kontaktdaten und den gewählten Termin (Art. 6 Abs. 1 lit. b DSGVO). Die Übermittlung in die USA erfolgt auf Grundlage des EU-US Data Privacy Framework. Calendly wird erst geladen, wenn du den Link anklickst.` },
+  { q: "10. Member Club", a: `Für den Member Club verarbeiten wir deinen Einladungscode, deinen Vornamen, deine E-Mail-Adresse, deinen persönlichen Member-Code und welche Member-Vorteile du eingelöst hast. Das ist nötig, um dir die Mitgliedschaft und die Vorteile bereitzustellen (Art. 6 Abs. 1 lit. b DSGVO).
+
+Die Daten speichern wir bei [DATENBANK-ANBIETER, z. B. Supabase Inc., Serverstandort EU] als Auftragsverarbeiter. Beendest du deine Mitgliedschaft, löschen wir deine Daten, soweit keine Aufbewahrungspflichten bestehen.` },
+  { q: "11. Newsletter für Members", a: `Den Newsletter erhältst du nur, wenn du ihn beim Beitritt ausdrücklich auswählst (Art. 6 Abs. 1 lit. a DSGVO). Wir nutzen das Double-Opt-in-Verfahren: Du bekommst zuerst eine E-Mail, in der du deine Anmeldung bestätigst. Anmeldung und Bestätigung protokollieren wir mit Zeitpunkt, um sie nachweisen zu können.
+
+Versendet wird der Newsletter über [VERSANDDIENST, z. B. Resend, Plus Five Five Inc., USA] als Auftragsverarbeiter, auf Grundlage des EU-US Data Privacy Framework bzw. der Standardvertragsklauseln. Wir werten nicht aus, ob oder wann du eine E-Mail öffnest.
+
+Du kannst den Newsletter jederzeit mit einem Klick auf „Abmelden" in jeder E-Mail oder per Nachricht an uns abbestellen. Deine E-Mail-Adresse löschen wir dann aus dem Verteiler.` },
+  { q: "12. Chat-Assistent", a: `Der Chat-Assistent auf unserer Website beantwortet Fragen automatisch und direkt in deinem Browser. Deine Eingaben werden nicht an uns oder an Dritte übertragen. Der Verlauf wird nur lokal auf deinem Gerät gespeichert und lässt sich jederzeit über „Verlauf löschen" entfernen.` },
+  { q: "13. Links zu Instagram, Google Maps und WhatsApp", a: `Auf unserer Website findest du einfache Links zu Instagram, Google Maps und WhatsApp. Es werden keine Plugins oder Inhalte dieser Dienste eingebunden. Daten werden erst übertragen, wenn du einen Link anklickst und die jeweilige Seite öffnest. Dort gilt dann die Datenschutzerklärung des jeweiligen Anbieters.` },
+  { q: "14. Schriftarten", a: `Die verwendeten Schriftarten sind lokal auf unserem Server eingebunden. Beim Laden der Website wird keine Verbindung zu Servern von Google oder anderen Schriftanbietern aufgebaut.` },
+  { q: "15. Ratenzahlung über Klarna", a: `Wählst du für eine Masterclass die Ratenzahlung, wirst du an die Klarna Bank AB (publ), Schweden, weitergeleitet. Klarna verarbeitet deine Daten für die Zahlungsabwicklung und gegebenenfalls eine Bonitätsprüfung in eigener Verantwortung. Mehr dazu in der Datenschutzerklärung von Klarna.` },
+  { q: "16. Speicherdauer", a: `Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck nötig ist. Gesetzliche Aufbewahrungspflichten bleiben unberührt: Rechnungen und Buchungsbelege bewahren wir 8 Jahre auf, Geschäftsbriefe 6 Jahre (§ 147 AO, § 257 HGB).` },
+  { q: "17. Deine Rechte", a: `Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21). Eine erteilte Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen.
+
+Du hast außerdem das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Für uns zuständig ist: Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg, Lautenschlagerstraße 20, 70173 Stuttgart.
+
+Für alle Anfragen genügt eine kurze Nachricht an info@thegoldencosmetics.com.` },
+  { q: "18. Änderungen", a: `Wir passen diese Datenschutzerklärung an, wenn sich unsere Website oder die rechtlichen Vorgaben ändern. Es gilt die jeweils hier veröffentlichte Fassung.` },
+];
 
 function Legal() {
   return (
     <div className="bg-background">
-      <FloatingNav back="/" links={[{ label: "Impressum", href: "#impressum" }, { label: "Datenschutz", href: "#datenschutz" }]} cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
+      <FloatingNav back="/" links={[{ label: "Impressum", href: "#impressum" }, { label: "AGB", href: "#agb" }, { label: "Datenschutz", href: "#datenschutz" }]} cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
       <Section id="impressum" className="max-w-3xl">
         <h1 className="text-5xl">Impressum</h1>
          <p className="mt-6 text-muted-foreground">{CONTACT.name}<br />{CONTACT.owner}<br />Rechtsform: {CONTACT.legalForm}<br />{CONTACT.street}<br />{CONTACT.city}<br />Telefon: {CONTACT.phone}<br />E-Mail: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
@@ -19,14 +150,20 @@ function Legal() {
          <h2 className="mt-8 text-2xl">Verbraucherstreitbeilegung</h2>
          <p className="mt-4 text-muted-foreground">{CONTACT.disputeResolution}</p>
       </Section>
+      <Section id="agb" className="max-w-3xl">
+        <h2 className="text-4xl">AGB</h2>
+        <p className="mt-3 text-sm text-muted-foreground">Stand: Oktober 2026</p>
+        <LegalAccordion items={AGB} />
+      </Section>
+      <Section id="widerruf" className="max-w-3xl">
+        <h2 className="text-4xl">Widerrufsbelehrung</h2>
+        <LegalAccordion items={WIDERRUF} />
+      </Section>
       <Section id="datenschutz" className="max-w-3xl">
         <h2 className="text-4xl">Datenschutz</h2>
-        <p className="mt-6 text-muted-foreground">[DATENSCHUTZERKLÄRUNG]</p>
+        <p className="mt-3 text-sm text-muted-foreground">Stand: Oktober 2026</p>
+        <LegalAccordion items={DATENSCHUTZ} />
       </Section>
-       <Section id="agb" className="max-w-3xl">
-         <h2 className="text-4xl">AGB</h2>
-         <p className="mt-6 text-muted-foreground">Die Allgemeinen Geschäftsbedingungen werden hier ergänzt.</p>
-       </Section>
       <Footer headline="Bereit für deinen Glow?" cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
     </div>
   );
