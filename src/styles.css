@@ -291,3 +291,16 @@
 /* Member Club: schlichte Leiste */
 .club-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 4px; text-align: left; }
 @media (max-width: 699px) { .club-strip { flex-direction: column; align-items: stretch; } .club-strip .btn { width: 100%; } }
+
+.book-rail { display: flex; gap: 12px; margin: 16px 0 0; padding: 4px 2px 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.book-rail::-webkit-scrollbar { display: none; }
+.book-tile { flex: 0 0 210px; display: flex; flex-direction: column; scroll-snap-align: start; scroll-margin-top: 120px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 18px; transition: background .3s, transform .3s; }
+@media (hover: hover) { .book-tile:hover { transform: translateY(-3px); } }
+.book-tile.treat-row-hit { background: #F2E3DD; }
+.analysis-panel { text-align: center; border-top: 1px solid var(--line); padding-top: 32px; }
+.chip-cloud { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 20px; }
+.skin-chip { border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; font-size: 14px; background: transparent; color: inherit; cursor: pointer; scroll-margin-top: 140px; transition: background .25s, color .25s, border-color .25s; }
+.skin-chip-on { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
+.chip-note { margin: 18px auto 0; max-width: 460px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px 18px; animation: chipIn .3s ease; }
+@keyframes chipIn { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .chip-note { animation: none; } }

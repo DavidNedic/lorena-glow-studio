@@ -34,15 +34,20 @@ function Behandlungen(){
    <p className="mt-3 text-muted-foreground">{first.duration}. Lorena schaut sich deine Haut genau an und behandelt direkt passend.</p>
    <div className="mt-6 flex flex-wrap gap-3"><ActionLink href={CONTACT.beautinda} external>Direkt buchen</ActionLink><Button asChild variant="ghost" className="btn btn-ghost"><Link to="/behandlungen/$slug" params={{slug:first.slug}}>Ablauf ansehen</Link></Button></div>
   </div>
-  <div className="treat-cards mx-auto max-w-5xl">
-   <div className="treat-card"><h3 className="text-xl">Direkt online buchen</h3><p className="mt-1 text-sm text-muted-foreground">Ohne Vorgespräch, wähl einfach deinen Termin.</p><div className="mt-4">{TREATMENTS.filter(t=>t.group==="direct").map(t=><Row key={t.slug} t={t} hit={hit===t.slug} bookable/>)}</div></div>
-   <div className="treat-card"><h3 className="text-xl">Nach deiner Hautanalyse</h3><p className="mt-1 text-sm text-muted-foreground">Diese Behandlungen stimmen wir bei First Time gemeinsam auf deine Haut ab. Tipp an für mehr.</p>
-    <div className="mt-4">{TREATMENTS.filter(t=>t.group==="analysis").map(t=>{const open=sel===t.slug;return <div key={t.slug} id={`t-${t.slug}`} className={`treat-row analysis-row${hit===t.slug||open?" treat-row-hit":""}`}>
-     <button type="button" aria-expanded={open} onClick={()=>setSel(open?null:t.slug)} className="analysis-toggle"><span className="min-w-0"><span className="block font-semibold">{t.name}</span><span className="mt-0.5 block text-sm text-muted-foreground">{t.duration}</span></span><span className={`analysis-plus${open?" analysis-plus-open":""}`} aria-hidden="true">+</span></button>
-     {open&&<p className="analysis-text">{t.sentence||"Wir schauen bei deinem First-Time-Termin, ob das zu deiner Haut passt."}{t.detail&&<> <Link to="/behandlungen/$slug" params={{slug:t.slug}} className="underline underline-offset-4">Mehr erfahren</Link></>}</p>}
-    </div>;})}</div>
-    <p className="mt-4 text-sm text-muted-foreground">Kein Muss, kein Paket. <Link to="/behandlungen/$slug" params={{slug:first.slug}} className="underline underline-offset-4">Start mit First Time</Link></p>
-   </div>
+  <div className="mx-auto mt-10 max-w-5xl text-left">
+   <div className="flex items-end justify-between gap-4"><div><p className="text-sm text-muted-foreground">Sofort buchbar</p><h3 className="mt-1 text-2xl">Direkt online buchen</h3></div><span className="hidden text-sm text-muted-foreground md:block">Wisch zur Seite →</span></div>
+   <div className="book-rail">{TREATMENTS.filter(t=>t.group==="direct").map(t=><div key={t.slug} id={`t-${t.slug}`} className={`book-tile${hit===t.slug?" treat-row-hit":""}`}>
+    <span className="text-sm text-muted-foreground">{t.duration}</span>
+    <span className="mt-2 block text-lg font-semibold leading-snug">{t.name}</span>
+    <span className="mt-auto flex items-center justify-between gap-2 pt-5"><span className="text-xl">{t.price||""}</span><a href={CONTACT.beautinda} target="_blank" rel="noreferrer" className="treat-book">Buchen</a></span>
+    {t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="mt-3 text-xs text-muted-foreground underline underline-offset-4">Ablauf ansehen</Link>}
+   </div>)}</div>
+  </div>
+  <div className="analysis-panel mx-auto mt-10 max-w-5xl">
+   <p className="text-sm text-muted-foreground">Gemeinsam abgestimmt</p><h3 className="mt-1 text-2xl">Nach deiner Hautanalyse</h3>
+   <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">Kein Muss, kein Paket. Tipp an, was dich interessiert.</p>
+   <div className="chip-cloud">{TREATMENTS.filter(t=>t.group==="analysis").map(t=>{const open=sel===t.slug;return <button key={t.slug} id={`t-${t.slug}`} type="button" aria-pressed={open} onClick={()=>setSel(open?null:t.slug)} className={`skin-chip${open||hit===t.slug?" skin-chip-on":""}`}>{t.name}</button>;})}</div>
+   {(()=>{const t=TREATMENTS.find(x=>x.slug===sel&&x.group==="analysis");return t?<div className="chip-note" aria-live="polite"><p className="font-semibold">{t.name}<span className="font-normal text-muted-foreground"> · {t.duration}</span></p><p className="mt-1 text-sm text-muted-foreground">{t.sentence||"Wir schauen bei deinem First-Time-Termin, ob das zu deiner Haut passt."}</p>{t.detail&&<Link to="/behandlungen/$slug" params={{slug:t.slug}} className="mt-2 inline-block text-sm underline underline-offset-4">Mehr erfahren</Link>}</div>:<p className="mt-5 text-xs text-muted-foreground">Start immer mit <Link to="/behandlungen/$slug" params={{slug:first.slug}} className="underline underline-offset-4">First Time</Link>.</p>;})()}
   </div>
   <div className="cal-bar mx-auto max-w-5xl"><span><span className="block font-semibold">Freie Termine und aktuelle Preise</span><span className="block text-sm text-muted-foreground">Immer tagesaktuell in meinem Buchungskalender.</span></span><ActionLink href={CONTACT.beautinda} external secondary>Kalender öffnen</ActionLink></div>
  </Section>
