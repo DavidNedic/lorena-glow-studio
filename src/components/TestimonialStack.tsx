@@ -3,12 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Arrow } from "@/components/site";
 import { SCHUELERINNEN } from "@/lib/data";
 
-const PEEK = [
-  { x: 18, y: 16, r: 3.5, s: 0.95 },
-  { x: -16, y: 28, r: -3, s: 0.91 },
-  { x: 0, y: 38, r: 0, s: 0.87 },
-];
-
 export function TestimonialStack() {
   const [top, setTop] = useState(0);
   const [leaving, setLeaving] = useState<null | { dir: 1 | -1 }>(null);
@@ -23,7 +17,7 @@ export function TestimonialStack() {
     setTimeout(() => { setTop(t => (t + dir + SCHUELERINNEN.length) % SCHUELERINNEN.length); setLeaving(null); }, 350);
   };
 
-  const order = [0, 1, 2, 3].map(i => SCHUELERINNEN[(top + i) % SCHUELERINNEN.length]!);
+  const current = SCHUELERINNEN[top]!;
 
   return (
     <div>
