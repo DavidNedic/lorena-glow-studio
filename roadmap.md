@@ -1,4 +1,6 @@
 # Member-Club-Mailversand
+- [ ] Intro-Vogel ohne O, Popup nach 10 Sekunden und dezente Gesichtspunkte
+- [ ] Hautoptionen und Member Club vereinfachen, Fotoformate angleichen und vorletztes Ergebnisfoto entfernen
 - [x] Bisherige Website-Anpassungen (siehe Gesprächsarchiv)
 - [x] Member-Club-Bestätigung und Gutschein von Resend auf Lovable umstellen
 - [x] Vorlagen, Absender und stabile Versand-IDs testen
