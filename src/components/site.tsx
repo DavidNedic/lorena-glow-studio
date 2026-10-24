@@ -3,6 +3,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { CONTACT } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import birdMark from "@/assets/kolibri-mark.png";
+import { openCookieSettings } from "@/lib/analytics";
 
 export function Logo({ text = true, white = false }: { text?: boolean; white?: boolean }) {
   return <span className="flex items-center justify-center gap-2"><img src={birdMark} alt="The Golden Cosmetics Logo, ein Kolibri" className={`size-9 shrink-0 object-contain ${white ? "brand-bird-white" : "brand-bird-black"}`} />{text && <span className="nav-brand text-left text-sm font-semibold leading-tight">The Golden Cosmetics<br /> & Academy</span>}</span>;
@@ -37,6 +38,7 @@ export function Footer({ headline, cta }: { headline: string; cta: { label: stri
       <div><p className="mb-2 font-semibold">Öffnungszeiten</p><p className="text-muted-foreground">{CONTACT.hours}</p></div>
       <div className="space-y-2"><p className="font-semibold">Kontakt</p><a href={CONTACT.tel} className="block text-muted-foreground">{CONTACT.phone}</a><a href={`mailto:${CONTACT.email}`} className="block text-muted-foreground">{CONTACT.email}</a><a href={CONTACT.instagram} target="_blank" rel="noreferrer" className="block text-muted-foreground">@thegoldencosmetics</a></div>
     </div><div className="flex flex-wrap justify-start gap-5 border-t pt-6 text-left text-xs text-muted-foreground"><span>© 2026 The Golden Cosmetics</span><Link to="/rechtliches" hash="impressum">Impressum</Link><Link to="/rechtliches" hash="datenschutz">Datenschutz</Link><Link to="/rechtliches" hash="agb">AGB</Link><Link to="/rechtliches" hash="widerruf">Widerruf</Link><Link to="/member-club">Member Club</Link><Link to="/admin" className="opacity-60 hover:opacity-100">Admin</Link><a href={CONTACT.websiteCreator.url} target="_blank" rel="noreferrer">Website von {CONTACT.websiteCreator.name}</a></div>
+    <div className="mt-4 text-left"><Button variant="link" className="h-auto p-0 text-xs text-muted-foreground" onClick={openCookieSettings}>Cookie-Einstellungen</Button></div>
   </div></footer>;
 }
 export function AccordionItem({ open, onToggle, head, children, id }: { open: boolean; onToggle: () => void; head: ReactNode; children: ReactNode; id?: string }) {
