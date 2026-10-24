@@ -1,6 +1,7 @@
 # Member-Club-Mailversand
-- [ ] Bestätigungslink zeigt eigene Erfolgsseite statt erneutem Anmeldeformular
-- [ ] Kurzen Gutscheincode nach Bestätigung versenden und Ablauf testen
+- [x] Bestätigungslink zeigt eigene Erfolgsseite statt erneutem Anmeldeformular
+- [x] Neue Gutscheincodes auf sechs Zeichen verkürzen; vorhandene Codes bleiben gültig
+- [x] Bestätigungsablauf mit Testadresse, Erfolgsseite und protokolliertem Gutscheinversand prüfen
 - [x] Behandlungen und Hautanalyse auf eine minimalistische Auswahl reduzieren und prüfen
 - [x] Intro-Kolibri ohne Buchstaben und weißen Footer-Kolibri prüfen
 - [x] Behandlungen und Hautanalyse als Shop-Auswahl gestalten und prüfen
@@ -13,4 +14,4 @@
 - [x] Gutscheinmail im Website-Design gestalten und gerendert prüfen
 - [x] Weitere Anmeldungen derselben E-Mail verhindern und testen
 - [x] Lorenas Verwaltungszugang und Mitgliederübersicht mit ihrer Sitzung prüfen
-- [ ] Echten Mailversand und Bestätigungsablauf prüfen: benötigt eine neue echte Anmeldung mit Bestätigung; Domain ist verifiziert, es wurde keine zusätzliche Testmail verschickt
+- [x] Echten Mailversand und Bestätigungsablauf mit Davids Testadresse prüfen; Bestätigungs- und Gutscheinmail als gesendet protokolliert
