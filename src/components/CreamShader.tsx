@@ -6,21 +6,31 @@ uniform vec2 r; uniform float t; uniform vec3 drops[8];
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
  return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.02;a*=.5;}return v;}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(p);p*=2.02;a*=.5;}return v;}
 void main(){
- vec2 uv=gl_FragCoord.xy/r; vec2 p=uv*vec2(r.x/r.y,1.)*1.6;
+ vec2 uv=gl_FragCoord.xy/r;
+ vec2 asp=vec2(r.x/r.y,1.);
+ vec2 p=uv*asp*1.35;
  float off=0.;
  for(int i=0;i<8;i++){vec3 d=drops[i]; float age=t-d.z; if(age>0.&&age<4.){
-   vec2 dp=(uv-d.xy)*vec2(r.x/r.y,1.); float dist=length(dp);
-   off+=sin(dist*48.-age*7.)*exp(-dist*5.)*exp(-age*1.1)*.06;}}
- float tt=t*.035;
+   vec2 dp=(uv-d.xy)*asp; float dist=length(dp);
+   off+=sin(dist*34.-age*5.)*exp(-dist*5.)*exp(-age*1.2)*.03;}}
+ float tt=t*.025;
  vec2 q=vec2(fbm(p+tt),fbm(p+vec2(5.2,1.3)-tt));
- float f=fbm(p+2.2*q+off*6.);
- vec3 ivory=vec3(.976,.953,.925), nude=vec3(.93,.86,.80), hi=vec3(1.,.99,.97);
- vec3 c=mix(ivory,nude,smoothstep(.3,.85,f));
- float spec=smoothstep(.6,.9,fbm(p*1.3+q*3.+off*10.));
- c=mix(c,hi,spec*.55+off*2.);
- gl_FragColor=vec4(c,.78);
+ float f=fbm(p+1.5*q+off*4.);
+ vec3 cream=vec3(.984,.962,.942), blush=vec3(.972,.902,.868), petal=vec3(.958,.874,.852);
+ vec3 c=mix(cream,blush,smoothstep(.2,.85,f));
+ c=mix(c,petal,smoothstep(.6,1.,f)*.4);
+ for(int i=0;i<3;i++){
+  float fi=float(i);
+  vec2 cp=vec2(.5+.36*sin(tt*2.2+fi*2.1),.5+.32*cos(tt*1.8+fi*1.7))*asp;
+  float dgl=1.-smoothstep(0.,.8,length(uv-cp)/length(asp));
+  vec3 tint=fi<1.?vec3(1.,.945,.9):fi<2.?vec3(1.,.965,.94):vec3(.99,.955,.925);
+  c=mix(c,tint,dgl*.32);
+ }
+ float sheen=smoothstep(.55,.95,fbm(p*.85+q*2.+off*6.));
+ c=mix(c,vec3(1.,.996,.988),sheen*.22+off*1.6);
+ gl_FragColor=vec4(c,.76);
 }`;
 
 export function CreamShader() {
