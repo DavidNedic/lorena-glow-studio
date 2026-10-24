@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useRef, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { IntroGate } from "@/components/Intro";
 import { CreamShader } from "@/components/CreamShader";
 import { ActionLink, Arrow, Logo } from "@/components/site";
