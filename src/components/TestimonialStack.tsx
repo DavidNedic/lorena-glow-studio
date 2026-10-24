@@ -1,0 +1,57 @@
+import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Arrow } from "@/components/site";
+import { SCHUELERINNEN } from "@/lib/data";
+
+const PEEK = [
+  { x: 18, y: 16, r: 3.5, s: 0.95 },
+  { x: -16, y: 28, r: -3, s: 0.91 },
+  { x: 0, y: 38, r: 0, s: 0.87 },
+];
+
+export function TestimonialStack() {
+  const [top, setTop] = useState(0);
+  const [leaving, setLeaving] = useState<null | { dir: 1 | -1 }>(null);
+  const drag = useRef<{ x: number; dx: number } | null>(null);
+  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const next = (dir: 1 | -1 = 1) => {
+    if (leaving) return;
+    if (reduced) { setTop(t => (t + dir + SCHUELERINNEN.length) % SCHUELERINNEN.length); return; }
+    setLeaving({ dir });
+    setTimeout(() => { setTop(t => (t + dir + SCHUELERINNEN.length) % SCHUELERINNEN.length); setLeaving(null); }, 350);
+  };
+
+  const order = [0, 1, 2, 3].map(i => SCHUELERINNEN[(top + i) % SCHUELERINNEN.length]!);
+
+  return (
+    <div>
+      <div
+        className="stack-stage"
+        onPointerDown={e => { drag.current = { x: e.clientX, dx: 0 }; (e.target as HTMLElement).setPointerCapture?.(e.pointerId); }}
+        onPointerMove={e => { if (drag.current) drag.current.dx = e.clientX - drag.current.x; }}
+        onPointerUp={() => { const d = drag.current; drag.current = null; if (d && Math.abs(d.dx) > 90) next(d.dx < 0 ? 1 : -1); }}
+      >
+        {order.map((src, i) => {
+          const peek = PEEK[i - 1];
+          const style = i === 0
+            ? leaving ? { transform: `translate(${leaving.dir * -140}%, -10px) rotate(${leaving.dir * -14}deg)`, opacity: 0 } : undefined
+            : { transform: `translate(${peek!.x}px, ${peek!.y}px) rotate(${peek!.r}deg) scale(${peek!.s})`, zIndex: 10 - i };
+          return (
+            <div key={src} className={`stack-card${i === 0 ? " stack-card-top" : ""}`} style={{ ...style, zIndex: i === 0 ? 20 : 10 - i }} aria-hidden={i !== 0}>
+              <div className="stack-card-scroll">
+                <img src={src} alt={i === 0 ? `Nachricht einer Absolventin (${top + 1} von ${SCHUELERINNEN.length})` : ""} loading={i === 0 ? "eager" : "lazy"} draggable={false} className="w-full select-none rounded-[20px]" />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-6 flex items-center justify-center gap-4">
+        <Button variant="outline" size="icon" onClick={() => next(-1)} aria-label="Vorherige Nachricht" className="size-11 rounded-full"><Arrow dir="left" /></Button>
+        <span className="text-sm text-muted-foreground" aria-live="polite">{top + 1} / {SCHUELERINNEN.length}</span>
+        <Button variant="outline" size="icon" onClick={() => next(1)} aria-label="Nächste Nachricht" className="size-11 rounded-full"><Arrow /></Button>
+      </div>
+      <p className="mt-3 text-center text-xs text-muted-foreground">Wischen für die nächste Nachricht</p>
+    </div>
+  );
+}
