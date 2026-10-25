@@ -65,7 +65,7 @@ function MemberClub() {
       <div>
         <Label>Newsletter & Willkommensgutschein</Label>
         <h1 className="text-4xl md:text-5xl">The Golden Member Club</h1>
-        <p className="mt-5 text-muted-foreground">Melde dich an und bekomm einmalig 10 % auf eine Behandlung bei mir im Studio. Dazu erfährst du als Erste von neuen Treatments und freien Terminen.</p>
+        <p className="mt-5 text-muted-foreground">Als Mitglied des Golden Member Clubs erhältst du exklusive Einblicke in neue Treatments, profitierst von besonderen Preisvorteilen und genießt als Willkommensgeschenk 10 % auf deine erste Behandlung im Studio.</p>
       </div>
       <JoinPanel />
     </div></Section>
