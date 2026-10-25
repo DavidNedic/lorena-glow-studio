@@ -11,7 +11,9 @@ describe("Direktbuchungen unter 100 Euro auf Beautinda", () => {
     expect(isDirectBookingEligible({ ...sample, beautindaPrice: 120 })).toBe(false);
   });
   it("schließt nicht belegte und offene Ab-Preise aus", () => {
-    expect(isDirectBookingEligible({ ...sample, beautindaPrice: undefined, price: "ab 65 €" })).toBe(false);
+    const { beautindaPrice, ...unpriced } = sample;
+    expect(beautindaPrice).toBe(99);
+    expect(isDirectBookingEligible({ ...unpriced, price: "ab 65 €" })).toBe(false);
     expect(isDirectBookingEligible({ ...sample, bookingUrl: "https://example.com" })).toBe(false);
     expect(isDirectBookingEligible({ ...sample, beautindaPrice: NaN })).toBe(false);
   });
