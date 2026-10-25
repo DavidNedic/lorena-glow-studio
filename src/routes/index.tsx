@@ -3,7 +3,7 @@ import { useRef, type PointerEvent } from "react";
 import { IntroGate } from "@/components/Intro";
 import { CreamShader } from "@/components/CreamShader";
 import { CardMotion } from "@/components/CardMotion";
-import { ActionLink, Arrow, Logo } from "@/components/site";
+import { ActionLink, Arrow, FloatingNav } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/data";
 import { BEAUTY_SALON, OG, seoHead } from "@/lib/seo";
