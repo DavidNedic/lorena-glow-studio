@@ -36,11 +36,12 @@ export function MemberPopup() {
     return () => { document.body.style.overflow = previousOverflow; window.removeEventListener("keydown", onKeyDown); };
   }, [open]);
 
-  if (!open) return null;
   const dismiss = () => setOpen(false);
 
   return (
-    <div className="member-pop" role="dialog" aria-modal="true" aria-labelledby="member-pop-title">
+    <>
+    <Button asChild variant="ghost" className="btn member-sticky"><Link to="/member-club"><span>Member werden</span><span className="member-sticky-benefit">10 % für dich</span></Link></Button>
+    {open && <div className="member-pop" role="dialog" aria-modal="true" aria-labelledby="member-pop-title">
       <div className="member-pop-card" ref={cardRef}>
         <Button ref={closeRef} variant="ghost" size="icon" aria-label="Pop-up schließen" onClick={dismiss} className="member-pop-close">
           <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
@@ -51,6 +52,7 @@ export function MemberPopup() {
         <Button asChild variant="ghost" className="btn btn-primary mt-6 w-full"><Link to="/member-club" onClick={dismiss}>Jetzt Member werden</Link></Button>
         <Button variant="link" onClick={dismiss} className="mt-2 text-sm text-muted-foreground">Vielleicht später</Button>
       </div>
-    </div>
+    </div>}
+    </>
   );
 }

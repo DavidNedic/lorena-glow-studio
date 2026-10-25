@@ -274,6 +274,11 @@
 @media (prefers-reduced-motion: reduce) { .stack-card { transition: none; } }
 
 /* Member-Pop-up auf der Behandlungsseite */
+.member-sticky { position: fixed; left: 20px; bottom: max(20px, env(safe-area-inset-bottom)); z-index: 44; max-width: calc(100vw - 112px); gap: 14px; background: var(--footer-button); color: var(--foreground); box-shadow: var(--shadow-soft); border: 1px solid var(--line); }
+.member-sticky:hover { background: var(--surface-2); }
+.member-sticky-benefit { padding-left: 14px; border-left: 1px solid currentColor; font-size: 12px; font-weight: 500; }
+@media (max-width: 767px) { body:has(.member-sticky) .chat-dock > div > span { display: none; } }
+@media (max-width: 479px) { .member-sticky { left: 12px; padding-inline: 16px; gap: 10px; } .member-sticky-benefit { padding-left: 10px; } }
 .member-pop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: color-mix(in oklab, var(--foreground) 55%, transparent); animation: member-pop-fade .3s ease-out; }
 .member-pop-card { position: relative; width: min(100%, 420px); max-height: 85dvh; overflow-y: auto; background: var(--surface); border-radius: 24px; box-shadow: var(--shadow-soft); padding: 32px 26px 26px; text-align: center; animation: member-pop-in .35s ease-out; }
 .member-pop-close { position: absolute; right: 12px; top: 12px; display: grid; place-items: center; width: 36px; height: 36px; min-height: 36px; border-radius: 999px; background: var(--surface-2); color: var(--foreground); }

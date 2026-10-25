@@ -30,7 +30,11 @@ export const LEGAL_TERMS = {
 
 // Prices come from the Beautinda catalogue and are shown only for directly bookable treatments; free slots live in Beautinda.
 export type TreatmentGroup = "first" | "direct" | "analysis";
-export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; price?: string; bookingUrl: string };
+export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; price?: string; beautindaPrice?: number; bookingUrl: string };
+export const DIRECT_BOOKING_PRICE_CAP = 100;
+export function isDirectBookingEligible(t: Treatment) {
+  return t.group === "direct" && t.bookingUrl === CONTACT.beautinda && typeof t.beautindaPrice === "number" && Number.isFinite(t.beautindaPrice) && t.beautindaPrice > 0 && t.beautindaPrice < DIRECT_BOOKING_PRICE_CAP;
+}
 const treatment = (slug: string, name: string, group: TreatmentGroup, duration = "", extra: Partial<Treatment> = {}): Treatment => ({ slug, name, group, duration: duration || "Dauer nach Absprache", sentence: "", image: "/images/kachel-behandlung.jpg", bookingUrl: CONTACT.beautinda, ...extra });
 export const TREATMENTS: Treatment[] = [
   treatment("first", "First Time: Hautanalyse + erste Behandlung", "first", "120 Min.", { detail: true, sentence: "Wir schauen uns deine Haut genau an und verbinden deine Hautanalyse mit der ersten passenden Behandlung." }),
@@ -40,11 +44,11 @@ export const TREATMENTS: Treatment[] = [
   treatment("glow-peel", "Glow-Peel", "direct", "60 Min.", { sentence: "Fruchtiges Peeling für frischen Glow und einen ebenmäßigen Teint." }),
   treatment("refresh-peel", "Refresh-Peel", "direct", "", { sentence: "Die schnelle Auffrischung für zwischendurch." }),
   treatment("pure-peel", "Pure-Peel", "direct", "", { sentence: "Klares Peeling für reine, verfeinerte Haut." }),
-  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "90 Min.", { detail: true, price: "79 €", sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
-  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "80 Min.", { price: "69 €", sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
-  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
-  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
-  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "99 €", sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
+  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "90 Min.", { detail: true, price: "79 €", beautindaPrice: 79, sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
+  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "80 Min.", { price: "69 €", beautindaPrice: 69, sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
+  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", beautindaPrice: 20, sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
+  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", beautindaPrice: 15, sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
+  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "99 €", beautindaPrice: 99, sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
   treatment("refill", "Wimpern auffüllen", "direct", "80 Min.", { price: "ab 65 €", sentence: "Dein Set bleibt voll und gepflegt." }),
   // Nach deiner Hautanalyse
   treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "analysis", "70 Min.", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
@@ -100,7 +104,8 @@ export const RESULT_PHOTOS = ["01", "03", "05", "07", "08", "09", "10", "12"].ma
 export const ABSOLVENTINNEN = ["01", "05", "08", "10", "12", "13", "02", "03", "04", "06", "07", "09", "11"].map(n => `/img/absolventin-${n}.jpg`);
 export const SCHUELERINNEN = Array.from({ length: 11 }, (_, i) => `/img/schuelerinnen/schuelerin-${String(i + 1).padStart(2, "0")}.png`);
 export type Masterclass = { slug: string; name: string; format: string; group: "fachlich" | "business"; lead: string; text: string; tags: string[]; image: string };
-const course = (slug: string, name: string, lead: string, text: string, format = "Online", group: "fachlich" | "business" = "fachlich"): Masterclass => ({ slug, name, lead, text, format, group, tags: [format, "Persönlich begleitet", "Nachbetreuung"], image: "/images/lorena-portrait-2.jpg" });
+export const MASTERCLASS_MODES = ["Vor Ort", "Online"] as const;
+const course = (slug: string, name: string, lead: string, text: string, format = MASTERCLASS_MODES.join(" & "), group: "fachlich" | "business" = "fachlich"): Masterclass => ({ slug, name, lead, text, format, group, tags: [format, "Persönlich begleitet", "Nachbetreuung"], image: "/images/lorena-portrait-2.jpg" });
 export const MASTERCLASSES: Masterclass[] = [
   course("aquafacial", "Aquafacial Masterclass", "Lerne nicht einfach eine Behandlung. Lerne, was dahintersteckt.", "Dein Einstieg in die apparative Kosmetik. Ich vermittle dir die Grundlagen der Haut, die Vorbereitung und die professionelle Umsetzung Schritt für Schritt."),
   course("microneedling", "Microneedling Masterclass", "Lerne, Hautbilder gezielt zu behandeln.", "Grundlagen, Hautbeurteilung, Technik und sichere Durchführung. Du lernst, wie Microneedling die Regeneration der Haut anregen kann."),
@@ -108,10 +113,10 @@ export const MASTERCLASSES: Masterclass[] = [
   course("glass-skin", "Glass Skin Masterclass", "Mach den Glass-Skin-Glow zu deinem gefragtesten Signature-Treatment.", "12 aufeinander abgestimmte Schritte. Ich zeige dir, wie sie zusammenwirken und wie du sie an die Bedürfnisse der Haut anpasst."),
   course("korean-lash-lifting", "Korean Lash Lifting Masterclass", "Perfekt geliftete Wimpern ohne täglichen Stylingaufwand.", "Du lernst die koreanische Lifting-Technik, die Vorbereitung und den professionellen Ablauf für geschwungene Wimpern."),
   course("browlifting", "Browlifting Masterclass", "Ausdrucksvolle Augenbrauen, gezielt in Form gebracht.", "Ich begleite dich durch Vorbereitung, Lifting und Styling für gepflegte, in Form gebrachte Brauen."),
-  course("zahnbleaching", "Zahnbleaching Masterclass", "Erweitere dein Beauty-Angebot um kosmetische Zahnaufhellung.", "Online-Unterlagen und ein persönlicher Live-Call. Ich erkläre dir den Ablauf der kosmetischen Zahnaufhellung und beantworte deine Fragen.", "Online · Live-Call"),
+  course("zahnbleaching", "Zahnbleaching Masterclass", "Erweitere dein Beauty-Angebot um kosmetische Zahnaufhellung.", "Vor Ort oder online mit Unterlagen und einem persönlichen Live-Call. Ich erkläre dir den Ablauf der kosmetischen Zahnaufhellung und beantworte deine Fragen."),
   course("hautkunde", "Hautkunde", "Verstehe die Haut und erkenne ihre Bedürfnisse.", "Dein digitales Fundament: Aufbau der Haut, Hauttypen und Hautzustände, verständlich aufbereitet als PDF.", "Digitales Produkt · PDF"),
-  course("train-the-trainer", "Train the Trainer Masterclass", "Von der Beauty-Expertin zur Trainerin.", "Ich begleite dich zu deinen eigenen Schulungen: Unterlagen, Verträge, Zahlungsarten und eine saubere Preiskalkulation.", "Online · Live", "business"),
-  course("social-media", "Social Media Masterclass", "Neue Kundinnen finden kaum den Weg zu dir?", "Ich zeige dir, wie du dein Können auf Instagram sichtbar machst, passende Inhalte entwickelst und daraus Termine machst.", "Online · Live", "business"),
-  course("business-growth-mentoring", "Business Growth Mentoring", "Du hast bewiesen, dass du es kannst. Jetzt geht es darum, wie viel mehr möglich ist.", "Wir schauen gemeinsam auf dein Studio, deine Preise und deine Abläufe und planen deinen nächsten Schritt.", "1:1 · Premium", "business"),
+  course("train-the-trainer", "Train the Trainer Masterclass", "Von der Beauty-Expertin zur Trainerin.", "Ich begleite dich zu deinen eigenen Schulungen: Unterlagen, Verträge, Zahlungsarten und eine saubere Preiskalkulation.", "Vor Ort & Online · Live", "business"),
+  course("social-media", "Social Media Masterclass", "Neue Kundinnen finden kaum den Weg zu dir?", "Ich zeige dir, wie du dein Können auf Instagram sichtbar machst, passende Inhalte entwickelst und daraus Termine machst.", "Vor Ort & Online · Live", "business"),
+  course("business-growth-mentoring", "Business Growth Mentoring", "Du hast bewiesen, dass du es kannst. Jetzt geht es darum, wie viel mehr möglich ist.", "Wir schauen gemeinsam auf dein Studio, deine Preise und deine Abläufe und planen deinen nächsten Schritt.", "Vor Ort & Online · 1:1 Premium", "business"),
 ];
 export const LEGACY_COURSE_SLUGS: Record<string, string> = { "trainer-mentoring": "train-the-trainer", "lash-browlifting": "korean-lash-lifting" };
