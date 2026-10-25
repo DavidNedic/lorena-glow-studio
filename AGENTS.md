@@ -15,6 +15,7 @@
 - Decode the shared bird before starting the intro and hand its visible silhouette directly to an identically sized reveal mask without an intermediate fade-out phase, preventing blank frames at the transition.
 - Before/after comparisons use aligned, unretouched photo pairs on full-size layers; the slider clips the foreground without changing either image's dimensions or position.
 - Treatment booking and analysis use a shared catalogue-backed menu with category navigation for booking and inline expandable analysis details; analysis actions book First Time rather than implying every offer is required.
+- Direct-booking eligibility uses explicit catalogue provenance and a confirmed numeric total below the configured cap; unknown prices and unbounded starting prices are excluded to avoid misleading offers.
 - Keep all contact information, the price-free treatment catalogue and Academy offerings in the shared data module so every page and assistant uses the same source.
 - Use scoped semantic CSS tokens for the treatment, Academy and footer palettes to preserve consistent theming.
 - Keep the assistant deterministic and device-local, cap history at 80 messages, and never submit chat data to a server.
