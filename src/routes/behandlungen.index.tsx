@@ -7,18 +7,17 @@ import { ChatAssistant } from "@/components/ChatAssistant";
 import { FaceZoom } from "@/components/FaceZoom";
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { MemberPopup } from "@/components/MemberPopup";
-import { CONTACT, RESULT_PHOTOS, TREATMENTS } from "@/lib/data";
+import { CONTACT, RESULT_PHOTOS, TREATMENTS, isDirectBookingEligible } from "@/lib/data";
 import { BEAUTY_SALON, OG, breadcrumbs, seoHead } from "@/lib/seo";
 export const FAQ=[{q:"Wie läuft mein erster Termin ab?",a:"Wir starten mit einer Hautanalyse und wählen die passende erste Behandlung. Am einfachsten buchst du First Time: Hautanalyse + erste Behandlung."},{q:"Welche Behandlung passt zu mir?",a:"Tipp oben im Gesicht an, wo du etwas verändern möchtest, oder frag den Assistenten unten rechts. Final entscheiden wir gemeinsam bei deiner Hautanalyse."},{q:"Wie bereite ich mich vor?",a:"Komm am besten ungeschminkt. So kann ich deine Haut direkt beurteilen."},{q:"Kann ich meinen Termin verschieben oder absagen?",a:<>Ja, bis 24 Stunden vor deinem Termin kostenlos. Bei einer späteren Absage oder wenn du nicht erscheinst, werden 50 % des Behandlungspreises fällig, diese sind nicht erstattbar. Alles Weitere steht in den <Link to="/rechtliches" hash="agb" className="underline">AGB</Link>.</>},{q:"Gibt es Gutscheine?",a:"Ja, schreib mir per WhatsApp, dann besprechen wir deinen Gutschein."},{q:"Behandelst du auch Männer?",a:"Ja, auch für Männer starten wir mit First Time: Hautanalyse + erste Behandlung."}];
 export const Route=createFileRoute("/behandlungen/")({head:()=>seoHead({path:"/behandlungen",title:"Kosmetik & Wimpern in Brackenheim · The Golden Cosmetics",description:"Hautanalyse, Lashlifting, Browlifting und Wimpernverlängerung bei Fachkosmetikerin Lorena Kovacevic in Brackenheim bei Heilbronn. Jetzt Termin buchen.",image:OG.behandlungen,jsonLd:[BEAUTY_SALON,{"@context":"https://schema.org","@type":"FAQPage",mainEntity:FAQ.map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:typeof f.a==="string"?f.a:"Ja, bis 24 Stunden vor deinem Termin kostenlos. Bei einer späteren Absage oder wenn du nicht erscheinst, werden 50 % des Behandlungspreises fällig, diese sind nicht erstattbar. Alles Weitere steht in den AGB."}}))},breadcrumbs([["Start","/"],["Behandlungen","/behandlungen"]])]}),component:Behandlungen});
 const BOOK={label:"Termin buchen",href:CONTACT.beautinda,external:true};
 const BOOKING_CATEGORIES = [
- {id:"skin",name:"Haut & Glow",slugs:["klassische-ausreinigung","dermaplaning","glow-peel","refresh-peel","pure-peel"]},
- {id:"lashes",name:"Wimpern",slugs:["lash","natural","refill"]},
+ {id:"lashes",name:"Wimpern",slugs:["lash","natural"]},
  {id:"brows",name:"Augenbrauen",slugs:["brow","brow-color","brow-shape"]},
 ];
 function Behandlungen(){
- const [hit,setHit]=useState<string|null>(null);const [category,setCategory]=useState("skin");useScrollToHash();
+ const [hit,setHit]=useState<string|null>(null);const [category,setCategory]=useState("lashes");useScrollToHash();
  const first=TREATMENTS.find(t=>t.group==="first");
  const analysis=TREATMENTS.filter(t=>t.group==="analysis");
  const activeCategory=BOOKING_CATEGORIES.find(c=>c.id===category)??BOOKING_CATEGORIES[0];
@@ -39,7 +38,7 @@ function Behandlungen(){
     <div className="booking-tabs" role="tablist" aria-label="Behandlungskategorie">{BOOKING_CATEGORIES.map(c=><Button key={c.id} variant="ghost" role="tab" id={`tab-${c.id}`} aria-selected={category===c.id} aria-controls="booking-options" className="booking-tab" onClick={()=>setCategory(c.id)}>{c.name}<span aria-hidden="true">↗</span></Button>)}</div>
    </div>
    <div className="min-w-0">
-    <div id="booking-options" role="tabpanel" aria-labelledby={`tab-${category}`} className="booking-options"><TreatmentShop treatments={TREATMENTS.filter(t=>t.group==="direct"&&activeCategory.slugs.includes(t.slug))} hit={hit}/></div>
+    <div id="booking-options" role="tabpanel" aria-labelledby={`tab-${category}`} className="booking-options"><TreatmentShop treatments={TREATMENTS.filter(t=>isDirectBookingEligible(t)&&activeCategory.slugs.includes(t.slug))} hit={hit}/></div>
    </div>
   </div>
   <div className="skin-options mx-auto mt-10 max-w-5xl">

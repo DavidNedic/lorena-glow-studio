@@ -30,7 +30,11 @@ export const LEGAL_TERMS = {
 
 // Prices come from the Beautinda catalogue and are shown only for directly bookable treatments; free slots live in Beautinda.
 export type TreatmentGroup = "first" | "direct" | "analysis";
-export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; price?: string; bookingUrl: string };
+export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; price?: string; beautindaPrice?: number; bookingUrl: string };
+export const DIRECT_BOOKING_PRICE_CAP = 100;
+export function isDirectBookingEligible(t: Treatment) {
+  return t.group === "direct" && t.bookingUrl === CONTACT.beautinda && typeof t.beautindaPrice === "number" && Number.isFinite(t.beautindaPrice) && t.beautindaPrice > 0 && t.beautindaPrice < DIRECT_BOOKING_PRICE_CAP;
+}
 const treatment = (slug: string, name: string, group: TreatmentGroup, duration = "", extra: Partial<Treatment> = {}): Treatment => ({ slug, name, group, duration: duration || "Dauer nach Absprache", sentence: "", image: "/images/kachel-behandlung.jpg", bookingUrl: CONTACT.beautinda, ...extra });
 export const TREATMENTS: Treatment[] = [
   treatment("first", "First Time: Hautanalyse + erste Behandlung", "first", "120 Min.", { detail: true, sentence: "Wir schauen uns deine Haut genau an und verbinden deine Hautanalyse mit der ersten passenden Behandlung." }),
@@ -40,11 +44,11 @@ export const TREATMENTS: Treatment[] = [
   treatment("glow-peel", "Glow-Peel", "direct", "60 Min.", { sentence: "Fruchtiges Peeling für frischen Glow und einen ebenmäßigen Teint." }),
   treatment("refresh-peel", "Refresh-Peel", "direct", "", { sentence: "Die schnelle Auffrischung für zwischendurch." }),
   treatment("pure-peel", "Pure-Peel", "direct", "", { sentence: "Klares Peeling für reine, verfeinerte Haut." }),
-  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "90 Min.", { detail: true, price: "79 €", sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
-  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "80 Min.", { price: "69 €", sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
-  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
-  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
-  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "99 €", sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
+  treatment("lash", "Korean Lashlifting inkl. Färben", "direct", "90 Min.", { detail: true, price: "79 €", beautindaPrice: 79, sentence: "Geschwungene Wimpern mit koreanischer Lifting-Technik, ganz ohne Extensions.", image: "/images/lorena-portrait-1.jpg" }),
+  treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "80 Min.", { price: "69 €", beautindaPrice: 69, sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
+  treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", beautindaPrice: 20, sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
+  treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", beautindaPrice: 15, sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
+  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "99 €", beautindaPrice: 99, sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
   treatment("refill", "Wimpern auffüllen", "direct", "80 Min.", { price: "ab 65 €", sentence: "Dein Set bleibt voll und gepflegt." }),
   // Nach deiner Hautanalyse
   treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "analysis", "70 Min.", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
