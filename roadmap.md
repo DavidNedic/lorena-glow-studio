@@ -1,7 +1,7 @@
 # Member-Club-Mailversand
-- [ ] Festen Member-Button auf der Behandlungsseite ergänzen und prüfen
-- [ ] Direktbuchungen auf Beautinda-Angebote unter 100 € beschränken und testen
-- [ ] Academy-Einwände nach unten verschieben und Vor-Ort-/Online-Teilnahme aktualisieren und prüfen
+- [x] Festen Member-Button auf der Behandlungsseite ergänzen und prüfen
+- [x] Direktbuchungen auf fünf bestätigte Beautinda-Festpreis-Angebote unter 100 € beschränken und testen; offene Ab-Preise ausgeschlossen
+- [x] Academy-Einwände nach unten verschieben und Vor-Ort-/Online-Teilnahme aktualisieren und prüfen
 - [x] Google Analytics für Geräte, Betriebssysteme und Browser mit Zustimmung, Widerruf und Datenschutz ergänzen; Vorschau geprüft, Veröffentlichung und Google-Berichtseingang noch nicht geprüft
 - [x] Bestätigte Geschäftsbedingungen und Promet.digital ergänzen; Datenschutz an den tatsächlichen Ablauf anpassen und prüfen (genauer Cloud-Speicherort nicht verifiziert)
 - [x] Neue Vorher-Nachher-Collagen trennen, deckungsgleich ausrichten und ziehbare Vergleiche prüfen
