@@ -12,6 +12,8 @@ export const CONTACT = {
   websiteCreator: { name: "Promet.digital", url: "https://promet.digital" },
   beautinda: "https://beautinda.de/salon/xUqq2vyQw724bbTtNRDh",
   whatsapp: "https://wa.me/491629709213?text=" + encodeURIComponent("Hi Lorena, ich habe eine Frage zu einer Behandlung."),
+  whatsappAcademy: whatsappUrl("Hi Lorena, ich habe eine Frage zu einer Masterclass."),
+
   calendly: "https://calendly.com/thegoldencosmetics",
   instagram: "https://www.instagram.com/thegoldencosmetics", instagramAcademy: "https://www.instagram.com/thegoldencosmetics",
 };
