@@ -36,6 +36,18 @@ import { readFileSync as rfMB } from "node:fs";
 test("mobile bottom bar is removed everywhere", () => {
   for (const f of ["src/components/site.tsx","src/routes/behandlungen.index.tsx","src/routes/behandlungen.$slug.tsx","src/routes/academy.index.tsx","src/routes/academy.$slug.tsx"]) expect(rfMB(f,"utf8")).not.toContain("MobileBar");
 });
+it("Academy-WhatsApp fragt nach einer Masterclass, Behandlungstext bleibt unverändert", () => {
+  expect(CONTACT.whatsappAcademy).toBe("https://wa.me/491629709213?text=" + encodeURIComponent("Hi Lorena, ich habe eine Frage zu einer Masterclass."));
+  expect(CONTACT.whatsapp).toBe("https://wa.me/491629709213?text=" + encodeURIComponent("Hi Lorena, ich habe eine Frage zu einer Behandlung."));
+});
+test("nur Academy-Seiten nutzen den Masterclass-WhatsApp-Text", () => {
+  for (const f of ["src/routes/academy.index.tsx", "src/routes/academy.$slug.tsx"]) {
+    const s = rfMB(f, "utf8");
+    expect(s).toContain("CONTACT.whatsappAcademy");
+    expect(s).not.toMatch(/CONTACT\.whatsapp\b/);
+  }
+  expect(rfMB("src/routes/behandlungen.index.tsx", "utf8")).toContain("CONTACT.whatsapp");
+});
 test("Rechtstexte haben alle vier Anker", () => {
   const legal = rfMB("src/routes/rechtliches.tsx","utf8");
   for (const id of ['id="impressum"','id="agb"','id="widerruf"','id="datenschutz"']) expect(legal).toContain(id);
