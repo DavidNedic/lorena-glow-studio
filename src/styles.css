@@ -125,8 +125,8 @@
 .intro-subtitle { opacity: 0; animation: rise .8s 2.2s ease-out forwards; }
 .intro-screen { height: 100vh; height: 100svh; height: 100dvh; }
 .intro-silhouette { background: var(--logo-light); }
-.start-background { background: var(--start-backdrop) url('/images/creme-hintergrund.jpg') center/cover fixed; background-blend-mode: multiply; }
-@media (hover: none) { .start-background { background-attachment: scroll; background-size: auto 100lvh; background-repeat: repeat-y; } }
+.start-background { isolation: isolate; background: var(--start-backdrop); }
+.start-background::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 100lvh; z-index: -1; pointer-events: none; background: var(--start-backdrop) url('/images/creme-hintergrund.jpg') center/cover no-repeat; background-blend-mode: multiply; }
 .start-background > canvas { opacity: .16; mix-blend-mode: soft-light; }
 .choice-stage { perspective: 1400px; --px: 0; --py: 0; }
 .choice-float { animation: float-card 7s ease-in-out infinite alternate; }
