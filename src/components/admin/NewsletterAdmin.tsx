@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { adminListNewsletters, adminSaveNewsletter, adminSendNewsletter } from "@/lib/member.functions";
 import type { Newsletter } from "@/lib/member-club";
 import { CONTACT } from "@/lib/data";
+import { NewsletterPreview } from "./NewsletterPreview";
 
 const input = "w-full rounded-2xl border bg-surface px-5 py-3 outline-none focus:ring-1 focus:ring-ring";
 const empty = { betreff: "", vorschau: "", ueberschrift: "", text: "", button_text: "Termin buchen", button_url: CONTACT.beautinda };
@@ -49,6 +50,7 @@ export function NewsletterAdmin() {
         </div>
       </div>
       {msg && <p role="status" className="mt-4 text-sm">{msg}</p>}
+      <div className="mt-5"><NewsletterPreview draft={draft} /></div>
       {sent ? <p className="mt-5 text-sm text-muted-foreground">Dieser Newsletter wurde bereits gesendet.</p> : <div className="mt-6 grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-end">
         <label className="block"><span className="mb-2 block text-sm">Test-E-Mail</span><input type="email" value={testEmail} onChange={e => setTestEmail(e.target.value)} className={input} /></label>
         <Button variant="ghost" className="btn btn-ghost" disabled={busy} onClick={onTest}>Test senden</Button>
