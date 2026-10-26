@@ -378,3 +378,14 @@
   .invoice-sheet { box-shadow: none; border-radius: 0; max-width: none; min-height: 297mm; padding: 20mm 20mm 14mm; }
   .no-print { display: none !important; }
 }
+
+/* Vorher-Nachher: Swipe-Hinweis */
+.ba-hint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 3; pointer-events: none; white-space: nowrap; border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 600; background: color-mix(in oklab, var(--paper) 88%, transparent); color: var(--foreground); box-shadow: var(--shadow-soft); animation: ba-hint 2.4s ease-in-out infinite; }
+@keyframes ba-hint { 0%,100% { transform: translateX(-50%); } 30% { transform: translateX(calc(-50% - 8px)); } 70% { transform: translateX(calc(-50% + 8px)); } }
+
+/* Member-Button: goldener Glanz */
+.member-sticky { overflow: hidden; isolation: isolate; background: linear-gradient(120deg, oklch(0.86 0.09 80), oklch(0.95 0.05 85) 45%, oklch(0.8 0.1 70)); border-color: oklch(0.78 0.1 75); box-shadow: 0 10px 28px -10px oklch(0.6 0.12 70 / .6), inset 0 1px 0 oklch(1 0 0 / .6); }
+.member-sticky:hover { background: linear-gradient(120deg, oklch(0.88 0.09 80), oklch(0.97 0.05 85) 45%, oklch(0.82 0.1 70)); }
+.member-sticky::after { content: ""; position: absolute; inset: -40% auto -40% -60%; width: 40%; z-index: -1; background: linear-gradient(100deg, transparent, oklch(1 0 0 / .85), transparent); transform: skewX(-20deg); animation: member-shine 3.2s ease-in-out infinite; }
+@keyframes member-shine { 0%, 55% { left: -60%; } 100% { left: 130%; } }
+@media (prefers-reduced-motion: reduce) { .member-sticky::after, .ba-hint { animation: none; } }

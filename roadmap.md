@@ -1,4 +1,6 @@
 # Member-Club-Mailversand
+- [x] Startkarte Bild statt Tropfen, Hautanalyse vor Direktbuchung, Swipe-Hinweis und weiterer Vorher/Nachher-Ausschnitt, goldener Chat-Kolibri, glänzender Member-Button, doppelte Academy-Fragen entfernt, Business-Kurse nur online
+- [x] Nachname, Newsletter- und Rechnungsersteller im Admin
 - [x] Festen Member-Button auf der Behandlungsseite ergänzen und prüfen
 - [x] Direktbuchungen auf fünf bestätigte Beautinda-Festpreis-Angebote unter 100 € beschränken und testen; offene Ab-Preise ausgeschlossen
 - [x] Academy-Einwände nach unten verschieben und Vor-Ort-/Online-Teilnahme aktualisieren und prüfen
