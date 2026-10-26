@@ -49,6 +49,7 @@
   --lipstick-end: oklch(0.605 0.086 36.8);
   --lipstick-text: oklch(1 0 0);
   --choice-academy: oklch(0.8670572 0.0250191 36.50547);
+  --start-backdrop: oklch(0.895 0.012 50);
   --choice-academy-text: oklch(0.2378533 0.0260894 27.11463);
   --footer-bg: oklch(0.1768756 0.0090263 59.01422);
   --footer-text: oklch(0.961 0.011 43.6);
@@ -124,7 +125,8 @@
 .intro-subtitle { opacity: 0; animation: rise .8s 2.2s ease-out forwards; }
 .intro-screen { height: 100vh; height: 100svh; height: 100dvh; }
 .intro-silhouette { background: var(--logo-light); }
-.start-background { background: url('/images/creme-hintergrund.jpg') center/cover fixed; }
+.start-background { background: var(--start-backdrop) url('/images/creme-hintergrund.jpg') center/cover fixed; background-blend-mode: multiply; }
+.start-background > canvas { opacity: .16; mix-blend-mode: soft-light; }
 .choice-stage { perspective: 1400px; --px: 0; --py: 0; }
 .choice-float { animation: float-card 7s ease-in-out infinite alternate; }
 .choice-float:nth-child(2) { animation-duration: 8s; animation-delay: -3s; }
