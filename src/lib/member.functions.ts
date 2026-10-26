@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, type AdminRow } from "@/lib/member-club";
+import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, invoiceSchema, invoiceTotals, newsletterSchema, type AdminRow, type Invoice, type Newsletter } from "@/lib/member-club";
 
 async function admin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -41,7 +41,7 @@ export const signupMember = createServerFn({ method: "POST" })
     if (existing?.newsletter_confirmed_at && !isTestEmail) return { status: "exists" as const };
     const resend = !!existing;
     if (!member) {
-      const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_confirmed_at, unsubscribed_at").single();
+      const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), nachname: data.nachname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_confirmed_at, unsubscribed_at").single();
       if (error?.code === '23505') return { status: 'exists' as const };
       if (error || !created) throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal.");
       member = created;
@@ -112,13 +112,13 @@ export const adminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { data: members, error: memberError } = await context.supabase.from("members").select("id, vorname, email, created_at, newsletter_confirmed_at, unsubscribed_at").order("created_at", { ascending: false });
+    const { data: members, error: memberError } = await context.supabase.from("members").select("id, vorname, nachname, email, created_at, newsletter_confirmed_at, unsubscribed_at").order("created_at", { ascending: false });
     const { data: vouchers, error: voucherError } = await context.supabase.from("vouchers").select("member_id, code, redeemed_at, redeemed_note");
     if (memberError || voucherError) throw new Error('Die Mitglieder konnten nicht geladen werden. Bitte versuch es erneut.');
     const byMember = new Map((vouchers ?? []).map((v: any) => [v.member_id, v]));
     return (members ?? []).map((m: any): AdminRow => {
       const v: any = byMember.get(m.id);
-      return { member_id: m.id, vorname: m.vorname, email: m.email, created_at: m.created_at, status: m.unsubscribed_at ? "abgemeldet" : m.newsletter_confirmed_at ? "bestätigt" : "offen", code: v?.code ?? null, redeemed_at: v?.redeemed_at ?? null, redeemed_note: v?.redeemed_note ?? null };
+      return { member_id: m.id, vorname: m.vorname, nachname: m.nachname ?? "", email: m.email, created_at: m.created_at, status: m.unsubscribed_at ? "abgemeldet" : m.newsletter_confirmed_at ? "bestätigt" : "offen", code: v?.code ?? null, redeemed_at: v?.redeemed_at ?? null, redeemed_note: v?.redeemed_note ?? null };
     });
   });
 

@@ -13,8 +13,8 @@ vi.mock('@/integrations/supabase/client.server', () => ({ supabaseAdmin: db }))
 vi.mock('@/lib/email-templates/send-email', () => ({ sendTemplateEmail: send }))
 import { signupMember, confirmMember } from '@/lib/member.functions'
 
-const signup = signupMember as unknown as (input: { data: { email: string; vorname: string; newsletter: true } }) => Promise<{ status: string }>
-const input = { data: { email: ' Anna@Example.DE ', vorname: 'Anna', newsletter: true as const } }
+const signup = signupMember as unknown as (input: { data: { email: string; vorname: string; nachname: string; newsletter: true } }) => Promise<{ status: string }>
+const input = { data: { email: ' Anna@Example.DE ', vorname: 'Anna', nachname: 'Muster', newsletter: true as const } }
 
 function query(result: unknown) {
   const chain: Record<string, unknown> = {}
@@ -65,7 +65,7 @@ describe('member signup with double opt-in', () => {
     expect(await signup(input)).toEqual({ status: 'confirm' })
     expect(db.from).toHaveBeenCalledTimes(4)
     expect(db.from).not.toHaveBeenCalledWith('vouchers')
-    expect(insert['insert']).toHaveBeenCalledWith({ vorname: 'Anna', email: 'anna@example.de', newsletter: true })
+    expect(insert['insert']).toHaveBeenCalledWith({ vorname: 'Anna', nachname: 'Muster', email: 'anna@example.de', newsletter: true })
     expect(send).toHaveBeenCalledTimes(1)
     const [template, to, opts] = send.mock.calls[0] as [string, string, { templateData: { confirmUrl: string }; idempotencyKey: string }]
     expect(template).toBe('member-confirm')

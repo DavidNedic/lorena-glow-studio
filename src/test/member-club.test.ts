@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { makeVoucherCode, newsletterCsv, normalizeEmail, signupSchema, SIGNUPS_PER_IP_PER_HOUR, VOUCHER_PERCENT, type AdminRow } from "@/lib/member-club";
+import { makeVoucherCode, newsletterCsv, normalizeEmail, signupSchema, invoiceTotals, SIGNUPS_PER_IP_PER_HOUR, VOUCHER_PERCENT, type AdminRow } from "@/lib/member-club";
 import { sitemapPaths } from "@/routes/sitemap[.]xml";
 
 describe("Member Club rules", () => {
@@ -14,11 +14,13 @@ describe("Member Club rules", () => {
   it("max 5 signups per IP per hour", () => expect(SIGNUPS_PER_IP_PER_HOUR).toBe(5));
   it("emails compare case-insensitively", () => expect(normalizeEmail(" Anna@Example.DE ")).toBe("anna@example.de"));
   it("newsletter checkbox is required", () => {
-    expect(signupSchema.safeParse({ vorname: "Anna", email: "a@b.de", newsletter: false }).success).toBe(false);
-    expect(signupSchema.safeParse({ vorname: "Anna", email: "a@b.de", newsletter: true }).success).toBe(true);
+    expect(signupSchema.safeParse({ vorname: "Anna", nachname: "Muster", email: "a@b.de", newsletter: false }).success).toBe(false);
+    expect(signupSchema.safeParse({ vorname: "Anna", nachname: "Muster", email: "a@b.de", newsletter: true }).success).toBe(true);
   });
+  it("blank nachname fails", () => expect(signupSchema.safeParse({ vorname: "Anna", nachname: "  ", email: "a@b.de", newsletter: true }).success).toBe(false));
+  it("invoice totals extract 19 % VAT from gross", () => expect(invoiceTotals([{ text: "Lashlifting", menge: 1, einzelpreis: 79 }, { text: "Brow", menge: 2, einzelpreis: 10.5 }])).toEqual({ brutto: 100, netto: 84.03, ust: 15.97 }));
   it("CSV exports only confirmed, not unsubscribed", () => {
-    const base = { member_id: "x", created_at: "2026-01-01", code: null, redeemed_at: null, redeemed_note: null };
+    const base = { member_id: "x", nachname: "M", created_at: "2026-01-01", code: null, redeemed_at: null, redeemed_note: null };
     const rows: AdminRow[] = [{ ...base, vorname: "A", email: "a@x.de", status: "bestätigt" }, { ...base, vorname: "B", email: "b@x.de", status: "offen" }, { ...base, vorname: "C", email: "c@x.de", status: "abgemeldet" }];
     const csv = newsletterCsv(rows);
     expect(csv).toContain("a@x.de"); expect(csv).not.toContain("b@x.de"); expect(csv).not.toContain("c@x.de");

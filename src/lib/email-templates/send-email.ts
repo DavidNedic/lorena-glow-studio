@@ -24,6 +24,7 @@ export interface SendTemplateEmailOptions {
   /** Dedupes retries of the same logical send; defaults to a random UUID (no dedupe). */
   idempotencyKey?: string
   replyTo?: string
+  purpose?: 'transactional' | 'marketing'
 }
 
 /**
@@ -75,7 +76,7 @@ export async function sendTemplateEmail(
         subject,
         html,
         text,
-        purpose: 'transactional',
+        purpose: options.purpose ?? 'transactional',
         label: templateName,
         idempotency_key: options.idempotencyKey || crypto.randomUUID(),
         reply_to: options.replyTo ?? CONTACT.email,
