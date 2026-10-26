@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Application rules
+- Admin newsletter previews render the registered email template locally in an isolated iframe and print that document for PDF saving; previewing never saves or sends a draft.
 - Google Analytics loads only after recorded analytics consent, uses sanitized overview-page URLs without user data, disables advertising signals, and rechecks consent on navigation and cross-tab changes; keep sensitive member/admin/treatment-detail paths unmeasured.
 - Academy feedback uses a fixed-height image stage with navigation outside the animated layer so different message sizes never move the arrows.
 - Decode the shared bird before starting the intro and hand its visible silhouette directly to an identically sized reveal mask without an intermediate fade-out phase, preventing blank frames at the transition.
