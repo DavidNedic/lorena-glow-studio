@@ -3,6 +3,7 @@ import { BEFORE_AFTER } from "@/lib/data";
 
 function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
   const [pos, setPos] = useState(50);
+  const [touched, setTouched] = useState(false);
   const panel = (label: string) => (
     <div className="grid h-full w-full place-items-center bg-surface-2">
       <span className="text-sm text-muted-foreground">{label}</span>
@@ -19,12 +20,12 @@ function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
         </div>
         <span className="ba-tag left-3 top-3">Vorher</span>
         <span className="ba-tag right-3 top-3">Nachher</span>
-        {pos === 50 && <span className="ba-hint" aria-hidden="true">← Zum Vergleichen ziehen →</span>}
-        <div className="ba-line" style={{ left: `${pos}%` }} aria-hidden="true">
+        <div className={`ba-line${touched ? "" : " ba-line-hint"}`} style={{ left: `${pos}%` }} aria-hidden="true">
           <span className="ba-knob">↔</span>
         </div>
+        {!touched && <span className="ba-swipe" aria-hidden="true"><span>←</span>Wischen zum Vergleichen<span>→</span></span>}
         <input
-          type="range" min={0} max={100} value={pos} onChange={e => setPos(Number(e.target.value))}
+          type="range" min={0} max={100} value={pos} onChange={e => { setPos(Number(e.target.value)); setTouched(true); }} onPointerDown={() => setTouched(true)}
           aria-label={`Vorher-Nachher-Regler für ${item.name}`} className="ba-range"
         />
       </div>
