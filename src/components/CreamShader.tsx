@@ -64,12 +64,13 @@ export function CreamShader() {
     let auto: ReturnType<typeof setTimeout>;
     const autoDrop = () => { drop(Math.random(), Math.random()); auto = setTimeout(autoDrop, 3000 + Math.random() * 2000); };
     auto = setTimeout(autoDrop, 1500);
-    const resize = () => { const d = Math.min(devicePixelRatio, 1.5) * 0.6; cv.width = innerWidth * d; cv.height = innerHeight * d; gl.viewport(0, 0, cv.width, cv.height); };
+    let lw = 0;
+    const resize = () => { if (innerWidth === lw && cv.width > 0) return; lw = innerWidth; const d = Math.min(devicePixelRatio, 1.5) * 0.6; cv.width = innerWidth * d; cv.height = Math.max(innerHeight, screen.height) * d; gl.viewport(0, 0, cv.width, cv.height); };
     resize(); addEventListener("resize", resize);
     let raf = 0;
     const loop = () => { gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, now()); gl.uniform3fv(uD, drops); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); raf = requestAnimationFrame(loop); };
     loop();
     return () => { cancelAnimationFrame(raf); clearTimeout(auto); removeEventListener("pointermove", onMove); removeEventListener("pointerdown", onClick); removeEventListener("resize", resize); };
   }, []);
-  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 h-full w-full" />;
+  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-x-0 top-0 h-lvh w-full" />;
 }
