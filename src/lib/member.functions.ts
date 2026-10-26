@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, type AdminRow } from "@/lib/member-club";
+import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, invoiceSchema, invoiceTotals, newsletterSchema, type AdminRow, type Invoice, type Newsletter } from "@/lib/member-club";
 
 async function admin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -41,7 +41,7 @@ export const signupMember = createServerFn({ method: "POST" })
     if (existing?.newsletter_confirmed_at && !isTestEmail) return { status: "exists" as const };
     const resend = !!existing;
     if (!member) {
-      const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_confirmed_at, unsubscribed_at").single();
+      const { data: created, error } = await db.from("members").insert({ vorname: data.vorname.trim(), nachname: data.nachname.trim(), email, newsletter: true }).select("id, vorname, confirm_token, newsletter_confirmed_at, unsubscribed_at").single();
       if (error?.code === '23505') return { status: 'exists' as const };
       if (error || !created) throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal.");
       member = created;
@@ -112,13 +112,13 @@ export const adminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { data: members, error: memberError } = await context.supabase.from("members").select("id, vorname, email, created_at, newsletter_confirmed_at, unsubscribed_at").order("created_at", { ascending: false });
+    const { data: members, error: memberError } = await context.supabase.from("members").select("id, vorname, nachname, email, created_at, newsletter_confirmed_at, unsubscribed_at").order("created_at", { ascending: false });
     const { data: vouchers, error: voucherError } = await context.supabase.from("vouchers").select("member_id, code, redeemed_at, redeemed_note");
     if (memberError || voucherError) throw new Error('Die Mitglieder konnten nicht geladen werden. Bitte versuch es erneut.');
     const byMember = new Map((vouchers ?? []).map((v: any) => [v.member_id, v]));
     return (members ?? []).map((m: any): AdminRow => {
       const v: any = byMember.get(m.id);
-      return { member_id: m.id, vorname: m.vorname, email: m.email, created_at: m.created_at, status: m.unsubscribed_at ? "abgemeldet" : m.newsletter_confirmed_at ? "bestätigt" : "offen", code: v?.code ?? null, redeemed_at: v?.redeemed_at ?? null, redeemed_note: v?.redeemed_note ?? null };
+      return { member_id: m.id, vorname: m.vorname, nachname: m.nachname ?? "", email: m.email, created_at: m.created_at, status: m.unsubscribed_at ? "abgemeldet" : m.newsletter_confirmed_at ? "bestätigt" : "offen", code: v?.code ?? null, redeemed_at: v?.redeemed_at ?? null, redeemed_note: v?.redeemed_note ?? null };
     });
   });
 
@@ -135,5 +135,119 @@ export const adminSetRedeemed = createServerFn({ method: "POST" })
     const { data: rows, error } = await q.select("code");
     if (error) throw new Error("Speichern fehlgeschlagen");
     if (!rows?.length) return { ok: false as const, reason: data.redeemed ? "Dieser Code wurde bereits eingelöst oder existiert nicht." : "Dieser Code ist nicht eingelöst." };
+    return { ok: true as const };
+  });
+
+// ---- Newsletter-Ersteller ----
+export const adminListNewsletters = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await requireAdmin(context);
+    const { data, error } = await context.supabase.from("newsletters").select("*").order("created_at", { ascending: false });
+    if (error) throw new Error("Newsletter konnten nicht geladen werden.");
+    const { count } = await context.supabase.from("members").select("id", { count: "exact", head: true }).not("newsletter_confirmed_at", "is", null).is("unsubscribed_at", null);
+    return { list: (data ?? []) as Newsletter[], recipients: count ?? 0 };
+  });
+
+export const adminSaveNewsletter = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => {
+    const r = newsletterSchema.safeParse(d);
+    if (!r.success) throw new Error(r.error.issues[0]?.message ?? "Ungültige Eingabe");
+    return r.data;
+  })
+  .handler(async ({ data, context }) => {
+    await requireAdmin(context);
+    const { id, ...fields } = data;
+    if (id) {
+      const { data: row, error } = await context.supabase.from("newsletters").update({ ...fields, updated_at: new Date().toISOString() }).eq("id", id).eq("status", "entwurf").select("id").maybeSingle();
+      if (error || !row) throw new Error("Speichern fehlgeschlagen. Bereits gesendete Newsletter können nicht mehr geändert werden.");
+      return { id: row.id as string };
+    }
+    const { data: row, error } = await context.supabase.from("newsletters").insert(fields).select("id").single();
+    if (error || !row) throw new Error("Speichern fehlgeschlagen.");
+    return { id: row.id as string };
+  });
+
+export const adminSendNewsletter = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string; test: boolean; testEmail?: string }) => {
+    if (typeof d?.id !== "string" || !/^[0-9a-f-]{36}$/.test(d.id)) throw new Error("Ungültiger Newsletter");
+    const testEmail = (d.testEmail ?? "").trim();
+    if (d.test && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(testEmail)) throw new Error("Bitte eine gültige Test-E-Mail eingeben.");
+    return { id: d.id, test: !!d.test, testEmail };
+  })
+  .handler(async ({ data, context }) => {
+    await requireAdmin(context);
+    const { data: nl } = await context.supabase.from("newsletters").select("*").eq("id", data.id).maybeSingle();
+    if (!nl) throw new Error("Newsletter nicht gefunden.");
+    if (!data.test && nl.status === "gesendet") throw new Error("Dieser Newsletter wurde bereits gesendet.");
+    const o = origin();
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const content = { origin: o, betreff: nl.betreff, vorschau: nl.vorschau, ueberschrift: nl.ueberschrift, text: nl.text, buttonText: nl.button_text, buttonUrl: nl.button_url };
+    if (data.test) {
+      await sendTemplateEmail("member-newsletter", data.testEmail, { templateData: { ...content, vorname: "Test", unsubscribeUrl: `${o}/member-club/abmelden` }, purpose: "marketing" });
+      return { sent: 1, skipped: 0 };
+    }
+    // Atomar sperren, damit ein Doppelklick nicht zweimal versendet.
+    const { data: locked } = await context.supabase.from("newsletters").update({ status: "gesendet", gesendet_at: new Date().toISOString() }).eq("id", nl.id).eq("status", "entwurf").select("id").maybeSingle();
+    if (!locked) throw new Error("Dieser Newsletter wird bereits gesendet oder wurde gesendet.");
+    const db = await admin();
+    const { data: members } = await db.from("members").select("id, vorname, email, newsletter_token").not("newsletter_confirmed_at", "is", null).is("unsubscribed_at", null);
+    let sent = 0, skipped = 0;
+    for (const m of members ?? []) {
+      try {
+        const r = await sendTemplateEmail("member-newsletter", m.email, {
+          templateData: { ...content, vorname: m.vorname, unsubscribeUrl: `${o}/member-club/abmelden?token=${m.newsletter_token}` },
+          idempotencyKey: `newsletter-${nl.id}-${m.id}`,
+          purpose: "marketing",
+        });
+        if (r.sent) sent++; else skipped++;
+      } catch { skipped++; }
+    }
+    await context.supabase.from("newsletters").update({ empfaenger: sent }).eq("id", nl.id);
+    return { sent, skipped };
+  });
+
+// ---- Rechnungsersteller ----
+export const adminListInvoices = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await requireAdmin(context);
+    const { data, error } = await context.supabase.from("rechnungen").select("*").order("created_at", { ascending: false }).limit(500);
+    if (error) throw new Error("Rechnungen konnten nicht geladen werden.");
+    return (data ?? []).map((r: any) => ({ ...r, netto: Number(r.netto), ust: Number(r.ust), brutto: Number(r.brutto), ust_satz: Number(r.ust_satz) })) as Invoice[];
+  });
+
+export const adminCreateInvoice = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => {
+    const r = invoiceSchema.safeParse(d);
+    if (!r.success) throw new Error(r.error.issues[0]?.message ?? "Ungültige Eingabe");
+    return r.data;
+  })
+  .handler(async ({ data, context }) => {
+    await requireAdmin(context);
+    const { data: nummer, error: numErr } = await context.supabase.rpc("next_rechnung_nummer");
+    if (numErr || !nummer) throw new Error("Rechnungsnummer konnte nicht vergeben werden.");
+    const totals = invoiceTotals(data.positionen, data.ust_satz);
+    const { data: row, error } = await context.supabase.from("rechnungen").insert({ ...data, nummer, ...totals }).select("*").single();
+    if (error || !row) throw new Error("Rechnung konnte nicht gespeichert werden.");
+    return { ...row, netto: Number(row.netto), ust: Number(row.ust), brutto: Number(row.brutto), ust_satz: Number(row.ust_satz) } as Invoice;
+  });
+
+export const adminUpdateInvoiceStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string; bezahlt?: boolean; storno?: boolean }) => {
+    if (typeof d?.id !== "string" || !/^[0-9a-f-]{36}$/.test(d.id)) throw new Error("Ungültige Rechnung");
+    return { id: d.id, bezahlt: d.bezahlt, storno: !!d.storno };
+  })
+  .handler(async ({ data, context }) => {
+    await requireAdmin(context);
+    const patch: { bezahlt?: boolean; storniert_at?: string } = {};
+    if (typeof data.bezahlt === "boolean") patch.bezahlt = data.bezahlt;
+    if (data.storno) patch.storniert_at = new Date().toISOString();
+    const { error } = await context.supabase.from("rechnungen").update(patch).eq("id", data.id).is("storniert_at", null);
+    if (error) throw new Error("Speichern fehlgeschlagen.");
     return { ok: true as const };
   });

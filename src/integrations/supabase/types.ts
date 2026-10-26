@@ -76,6 +76,7 @@ export type Database = {
           id: string
           invite_code: string
           member_code: string
+          nachname: string
           newsletter: boolean
           newsletter_confirmed_at: string | null
           newsletter_token: string
@@ -89,6 +90,7 @@ export type Database = {
           id?: string
           invite_code?: string
           member_code?: string
+          nachname?: string
           newsletter?: boolean
           newsletter_confirmed_at?: string | null
           newsletter_token?: string
@@ -102,11 +104,117 @@ export type Database = {
           id?: string
           invite_code?: string
           member_code?: string
+          nachname?: string
           newsletter?: boolean
           newsletter_confirmed_at?: string | null
           newsletter_token?: string
           unsubscribed_at?: string | null
           vorname?: string
+        }
+        Relationships: []
+      }
+      newsletters: {
+        Row: {
+          betreff: string
+          button_text: string
+          button_url: string
+          created_at: string
+          empfaenger: number
+          gesendet_at: string | null
+          id: string
+          status: string
+          text: string
+          ueberschrift: string
+          updated_at: string
+          vorschau: string
+        }
+        Insert: {
+          betreff: string
+          button_text?: string
+          button_url?: string
+          created_at?: string
+          empfaenger?: number
+          gesendet_at?: string | null
+          id?: string
+          status?: string
+          text: string
+          ueberschrift: string
+          updated_at?: string
+          vorschau?: string
+        }
+        Update: {
+          betreff?: string
+          button_text?: string
+          button_url?: string
+          created_at?: string
+          empfaenger?: number
+          gesendet_at?: string | null
+          id?: string
+          status?: string
+          text?: string
+          ueberschrift?: string
+          updated_at?: string
+          vorschau?: string
+        }
+        Relationships: []
+      }
+      rechnungen: {
+        Row: {
+          bezahlt: boolean
+          brutto: number
+          created_at: string
+          datum: string
+          id: string
+          kunde_adresse: string
+          kunde_email: string
+          kunde_name: string
+          leistungsdatum: string
+          netto: number
+          notiz: string
+          nummer: string
+          positionen: Json
+          storniert_at: string | null
+          ust: number
+          ust_satz: number
+          zahlungsart: string
+        }
+        Insert: {
+          bezahlt?: boolean
+          brutto: number
+          created_at?: string
+          datum?: string
+          id?: string
+          kunde_adresse?: string
+          kunde_email?: string
+          kunde_name: string
+          leistungsdatum?: string
+          netto: number
+          notiz?: string
+          nummer: string
+          positionen?: Json
+          storniert_at?: string | null
+          ust: number
+          ust_satz?: number
+          zahlungsart?: string
+        }
+        Update: {
+          bezahlt?: boolean
+          brutto?: number
+          created_at?: string
+          datum?: string
+          id?: string
+          kunde_adresse?: string
+          kunde_email?: string
+          kunde_name?: string
+          leistungsdatum?: string
+          netto?: number
+          notiz?: string
+          nummer?: string
+          positionen?: Json
+          storniert_at?: string | null
+          ust?: number
+          ust_satz?: number
+          zahlungsart?: string
         }
         Relationships: []
       }
@@ -216,6 +324,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      next_rechnung_nummer: { Args: never; Returns: string }
       redeem_invite: {
         Args: {
           _code: string

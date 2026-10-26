@@ -16,6 +16,7 @@ export const Route = createFileRoute("/member-club")({
 function JoinPanel() {
   const signup = useServerFn(signupMember);
   const [vorname, setVorname] = useState("");
+  const [nachname, setNachname] = useState("");
   const [email, setEmail] = useState("");
   const [newsletter, setNewsletter] = useState(false);
   const [website, setWebsite] = useState("");
@@ -28,7 +29,7 @@ function JoinPanel() {
     if (!newsletter) { setError("Bitte bestätige die Newsletter-Anmeldung."); return; }
     setBusy(true); setError("");
     try {
-      const res = await signup({ data: { vorname, email, newsletter: true, website } });
+      const res = await signup({ data: { vorname, nachname, email, newsletter: true, website } });
       setDone(res.status);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Anmeldung fehlgeschlagen");
@@ -47,7 +48,7 @@ function JoinPanel() {
   return (
     <form onSubmit={submit} className="card w-full space-y-4 p-7 text-left">
       <h2 className="text-2xl">10 % für dich</h2>
-      <label className="block"><span className="mb-2 block text-sm">Vorname</span><input required value={vorname} onChange={e => setVorname(e.target.value)} maxLength={80} autoComplete="given-name" className="w-full rounded-full border bg-surface px-5 py-3 outline-none focus:ring-1 focus:ring-ring" /></label>
+      <div className="grid gap-4 sm:grid-cols-2"><label className="block"><span className="mb-2 block text-sm">Vorname</span><input required value={vorname} onChange={e => setVorname(e.target.value)} maxLength={80} autoComplete="given-name" className="w-full rounded-full border bg-surface px-5 py-3 outline-none focus:ring-1 focus:ring-ring" /></label><label className="block"><span className="mb-2 block text-sm">Nachname</span><input required value={vorname} onChange={e => setNachname(e.target.value)} maxLength={80} autoComplete="family-name" className="w-full rounded-full border bg-surface px-5 py-3 outline-none focus:ring-1 focus:ring-ring" /></label></div>
       <label className="block"><span className="mb-2 block text-sm">E-Mail</span><input required type="email" value={email} onChange={e => setEmail(e.target.value)} maxLength={255} autoComplete="email" className="w-full rounded-full border bg-surface px-5 py-3 outline-none focus:ring-1 focus:ring-ring" /></label>
       <input type="text" name="website" value={website} onChange={e => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <label className="flex items-start gap-3 text-sm text-muted-foreground"><input type="checkbox" required checked={newsletter} onChange={e => setNewsletter(e.target.checked)} className="mt-1" />{NEWSLETTER_CONSENT}</label>
@@ -70,7 +71,7 @@ function MemberClub() {
       <JoinPanel />
     </div></Section>
     <Section><div className="mx-auto grid max-w-4xl gap-6 text-left md:grid-cols-3">
-      {[["01", "Anmelden", "Vorname und E-Mail eintragen, Haken setzen."], ["02", "Bestätigen und Code erhalten", "Bestätige deine Anmeldung per E-Mail, dann kommt dein Gutscheincode in dein Postfach."], ["03", "Gutschein zeigen", "Deinen Code bei der nächsten Behandlung im Studio zeigen."]].map(([n, t, d]) => <div key={n} className="border-t pt-4"><p className="text-sm text-muted-foreground">{n}</p><p className="mt-2 font-semibold">{t}</p><p className="mt-2 text-sm text-muted-foreground">{d}</p></div>)}
+      {[["01", "Anmelden", "Vor- und Nachname und E-Mail eintragen, Haken setzen."], ["02", "Bestätigen und Code erhalten", "Bestätige deine Anmeldung per E-Mail, dann kommt dein Gutscheincode in dein Postfach."], ["03", "Gutschein zeigen", "Deinen Code bei der nächsten Behandlung im Studio zeigen."]].map(([n, t, d]) => <div key={n} className="border-t pt-4"><p className="text-sm text-muted-foreground">{n}</p><p className="mt-2 font-semibold">{t}</p><p className="mt-2 text-sm text-muted-foreground">{d}</p></div>)}
     </div></Section>
     <Footer headline="Bereit für deinen Glow?" cta={{ label: "Termin buchen", href: CONTACT.beautinda, external: true }} />
   </div>;
