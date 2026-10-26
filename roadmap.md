@@ -1,4 +1,5 @@
 # Member-Club-Mailversand
+- [ ] Newsletter-Vorschau mit bestehender Mailvorlage und PDF-Druck im Admin ergänzen und prüfen
 - [x] Startkarte Bild statt Tropfen, Hautanalyse vor Direktbuchung, Swipe-Hinweis und weiterer Vorher/Nachher-Ausschnitt, goldener Chat-Kolibri, glänzender Member-Button, doppelte Academy-Fragen entfernt, Business-Kurse nur online
 - [x] Nachname, Newsletter- und Rechnungsersteller im Admin
 - [x] Festen Member-Button auf der Behandlungsseite ergänzen und prüfen
