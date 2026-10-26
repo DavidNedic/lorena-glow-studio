@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { OG, seoHead } from "@/lib/seo";
 import { adminOverview, adminSetRedeemed } from "@/lib/member.functions";
 import { newsletterCsv, normalizeCode, type AdminRow } from "@/lib/member-club";
+import { NewsletterAdmin } from "@/components/admin/NewsletterAdmin";
+import { InvoiceAdmin } from "@/components/admin/InvoiceAdmin";
 import { useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute("/admin")({
@@ -56,6 +58,7 @@ function Admin() {
   const [quick, setQuick] = useState("");
   const [note, setNote] = useState("");
   const [flash, setFlash] = useState("");
+  const [tab, setTab] = useState<"member" | "newsletter" | "rechnungen">("member");
   const overview = useServerFn(adminOverview);
   const setRedeemed = useServerFn(adminSetRedeemed);
   const signOut = async () => {
@@ -86,7 +89,7 @@ function Admin() {
   }), [rows]);
   const visible = useMemo(() => {
     const s = q.trim().toLowerCase();
-    return rows.filter(r => (!s || r.vorname.toLowerCase().includes(s) || r.email.includes(s) || (r.code ?? "").toLowerCase().includes(s))
+    return rows.filter(r => (!s || `${r.vorname} ${r.nachname}`.toLowerCase().includes(s) || r.email.includes(s) || (r.code ?? "").toLowerCase().includes(s))
       && (filter === "alle" || (filter === "offen" && r.code && !r.redeemed_at) || (filter === "eingelöst" && r.redeemed_at) || (filter === "abgemeldet" && r.status === "abgemeldet")));
   }, [rows, q, filter]);
   const match = quick.trim() ? rows.find(r => r.code === normalizeCode(quick)) : undefined;
@@ -108,18 +111,21 @@ function Admin() {
 
   return <div className="bg-background">
     <Section className="max-w-4xl !pb-4">
-      <div className="flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Member Club</h1><div className="flex items-center gap-2"><Link to="/" className="btn btn-ghost">Zurück zur Startseite</Link><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div></div>
-      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="no-print flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Verwaltung</h1><div className="flex items-center gap-2"><Link to="/" className="btn btn-ghost">Zurück zur Startseite</Link><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div></div>
+      <div role="tablist" className="admin-tabs no-print mt-5">{([["member", "Member Club"], ["newsletter", "Newsletter"], ["rechnungen", "Rechnungen"]] as const).map(([k, l]) => <Button key={k} role="tab" aria-selected={tab === k} variant="ghost" className="chip" data-active={tab === k} onClick={() => setTab(k)}>{l}</Button>)}</div>
+      {tab === "member" && <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         {[["Mitglieder", stats.members], ["Bestätigt", stats.confirmed], ["Gutscheine offen", stats.open], ["Eingelöst", stats.redeemed]].map(([l, n]) => <div key={l} className="card p-4 text-left"><p className="text-xs text-muted-foreground">{l}</p><p className="mt-1 text-2xl font-semibold">{n}</p></div>)}
-      </div>
+      </div>}
     </Section>
-
+    {tab === "newsletter" && <Section className="max-w-4xl !pt-4"><NewsletterAdmin /></Section>}
+    {tab === "rechnungen" && <Section className="max-w-4xl !pt-4"><InvoiceAdmin /></Section>}
+    {tab === "member" && <>
     <Section className="max-w-4xl !py-4"><div className="card p-5 text-left">
       <p className="font-semibold">Code einlösen</p>
       <input value={quick} onChange={e => { setQuick(e.target.value.toUpperCase()); setFlash(""); }} placeholder="Code eingeben, z. B. 7K3P8M" autoCapitalize="characters" autoComplete="off" inputMode="text" aria-label="Code eingeben" className={`${input} mt-3 font-mono tracking-widest`} />
       {quick.trim() && !match && <p className="mt-3 text-sm text-muted-foreground">Kein Gutschein mit diesem Code gefunden.</p>}
       {match && match.code && <div className="mt-4 space-y-3">
-        <p><span className="font-semibold">{match.vorname}</span> <span className="text-sm text-muted-foreground">{match.email}</span></p>
+        <p><span className="font-semibold">{match.vorname} {match.nachname}</span> <span className="text-sm text-muted-foreground">{match.email}</span></p>
         {match.redeemed_at
           ? <><p className="rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-semibold text-destructive">Bereits eingelöst am {fmt(match.redeemed_at)}{match.redeemed_note ? ` · ${match.redeemed_note}` : ""}</p><Button variant="ghost" className="btn btn-ghost w-full" onClick={() => { if (match.code) void toggle(match.code, false); }}>Einlösung rückgängig machen</Button></>
           : <><p className="rounded-2xl bg-surface-2 px-4 py-3 text-sm font-semibold">Offen · 10 % einmalig</p><input value={note} onChange={e => setNote(e.target.value)} maxLength={200} placeholder="Notiz (optional), z. B. Lashlifting" className={input} /><Button className="btn btn-primary w-full" onClick={() => { if (match.code) void toggle(match.code, true); }}>Als eingelöst markieren</Button></>}
@@ -135,12 +141,13 @@ function Admin() {
       <div className="mt-3 flex flex-wrap gap-2">{(["alle", "offen", "eingelöst", "abgemeldet"] as Filter[]).map(f => <Button key={f} variant="ghost" className="chip capitalize" data-active={filter === f} onClick={() => setFilter(f)}>{f}</Button>)}</div>
       <div className="mt-5 divide-y text-left text-sm">
         {visible.map(r => <div key={r.member_id} className="grid gap-1 py-3 md:grid-cols-[1.4fr_1fr_1fr] md:items-center">
-          <span><span className="block font-semibold">{r.vorname}</span><span className="break-all text-muted-foreground">{r.email}</span><span className="block text-xs text-muted-foreground">angemeldet {fmt(r.created_at)} · Newsletter {r.status}</span></span>
+          <span><span className="block font-semibold">{r.vorname} {r.nachname}</span><span className="break-all text-muted-foreground">{r.email}</span><span className="block text-xs text-muted-foreground">angemeldet {fmt(r.created_at)} · Newsletter {r.status}</span></span>
           <span className="font-mono tracking-widest">{r.code ?? "–"}</span>
           <span className="flex items-center gap-2">{r.code ? (r.redeemed_at ? <><span className="font-semibold text-destructive">eingelöst am {fmt(r.redeemed_at)}</span><Button variant="link" className="h-auto px-0 text-xs" onClick={() => { if (r.code) void toggle(r.code, false); }}>rückgängig</Button></> : <><span>offen</span><Button variant="link" className="h-auto px-0 text-xs" onClick={() => { if (r.code) void toggle(r.code, true); }}>einlösen</Button></>) : <span className="text-muted-foreground">kein Gutschein</span>}</span>
         </div>)}
         {!visible.length && <p className="py-6 text-center text-muted-foreground">Keine Einträge.</p>}
       </div>
     </Section>
+    </>}
   </div>;
 }
