@@ -3,6 +3,7 @@ import { useRef, type PointerEvent } from "react";
 import { IntroGate } from "@/components/Intro";
 import { CreamShader } from "@/components/CreamShader";
 import { CardMotion } from "@/components/CardMotion";
+import kachelBehandlung from "@/assets/kachel-behandlung-neu.jpg";
 import { Arrow, FloatingNav } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/data";
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/")({ head: () => seoHead({ path: "/", tit
 function ChoiceCard({ to, academy, img, label, title, text }: { to: "/behandlungen" | "/academy"; academy?: boolean; img: string; label: string; title: string; text: string }) {
  const navigate = useNavigate();
  const card = useRef<HTMLButtonElement>(null);
- return <div className="choice-float"><Button ref={card} variant="ghost" aria-label={title === "Behandlung" ? "Einblick in die Hautbehandlungen bei The Golden Cosmetics" : "Absolventinnen der Golden Academy vor dem Studio-Logo"} onClick={() => { localStorage.setItem("tg-choice",to); navigate({ to }); }} className={`choice-card whitespace-normal ${academy ? "choice-card-academy" : ""}`}><span className="block aspect-[16/10] w-full overflow-hidden rounded-[18px] max-[699px]:aspect-video"><CardMotion variant={academy ? "academy" : "behandlung"} hostRef={card} /></span><span className="flex flex-1 flex-col items-center px-4 pb-4 pt-6"><span className="text-sm text-muted-foreground">{label}</span><span className="mt-2 text-[27px] font-semibold md:text-4xl">{title}</span><span className="mt-3 max-w-sm text-[14.5px] leading-relaxed text-muted-foreground md:text-base">{text}</span><span className="choice-arrow mt-5 grid size-9 place-items-center rounded-full border md:size-12"><Arrow /></span></span></Button></div>;
+ return <div className="choice-float"><Button ref={card} variant="ghost" aria-label={title === "Behandlung" ? "Einblick in die Hautbehandlungen bei The Golden Cosmetics" : "Absolventinnen der Golden Academy vor dem Studio-Logo"} onClick={() => { localStorage.setItem("tg-choice",to); navigate({ to }); }} className={`choice-card whitespace-normal ${academy ? "choice-card-academy" : ""}`}><span className="block aspect-[16/10] w-full overflow-hidden rounded-[18px] max-[699px]:aspect-video">{academy ? <CardMotion variant="academy" hostRef={card} /> : <img src={kachelBehandlung} alt="" width={1280} height={800} className="h-full w-full object-cover" />}</span><span className="flex flex-1 flex-col items-center px-4 pb-4 pt-6"><span className="text-sm text-muted-foreground">{label}</span><span className="mt-2 text-[27px] font-semibold md:text-4xl">{title}</span><span className="mt-3 max-w-sm text-[14.5px] leading-relaxed text-muted-foreground md:text-base">{text}</span><span className="choice-arrow mt-5 grid size-9 place-items-center rounded-full border md:size-12"><Arrow /></span></span></Button></div>;
 }
 function Index() {
  const stage = useRef<HTMLDivElement>(null);
