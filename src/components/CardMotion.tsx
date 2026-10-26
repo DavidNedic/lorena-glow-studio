@@ -147,7 +147,8 @@ export function CardMotion({ variant, hostRef }: { variant: Variant; hostRef?: R
   const host = hostRef?.current;
   const fast = () => { speed = 1.3; }, slow = () => { speed = 1; };
   host?.addEventListener("mouseenter", fast); host?.addEventListener("mouseleave", slow);
-  const onResize = () => { resize(); if (!running) draw(reduced ? still : time); };
+  let lw = innerWidth;
+  const onResize = () => { if (innerWidth === lw) return; lw = innerWidth; resize(); if (!running) draw(reduced ? still : time); };
   addEventListener("resize", onResize);
   return () => { stop(); io.disconnect(); removeEventListener("resize", onResize); host?.removeEventListener("mouseenter", fast); host?.removeEventListener("mouseleave", slow); };
  }, [variant, hostRef]);
