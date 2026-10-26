@@ -1,7 +1,7 @@
 import noseBefore from "@/assets/vergleich-1-vorher.jpg.asset.json";
 import noseAfter from "@/assets/vergleich-1-nachher.jpg.asset.json";
-import glowBefore from "@/assets/vergleich-2-vorher.jpg.asset.json";
-import glowAfter from "@/assets/vergleich-2-nachher.jpg.asset.json";
+import glowBefore from "@/assets/vergleich-2-vorher-weit.jpg.asset.json";
+import glowAfter from "@/assets/vergleich-2-nachher-weit.jpg.asset.json";
 
 export const CONTACT = {
   name: "The Golden Cosmetics & Academy", owner: "Lorena Kovacevic",
@@ -99,7 +99,7 @@ export const PROBLEMS = [
 // Original collages split and geometrically aligned without retouching skin.
 export const BEFORE_AFTER = [
   { id: "poren", name: "Nase & Poren", note: "Vor und nach der Behandlung", before: noseBefore.url, after: noseAfter.url, ratio: "1000/510" },
-  { id: "stirn", name: "Haut & Glow", note: "Vor und nach der Behandlung", before: glowBefore.url, after: glowAfter.url, ratio: "1000/510" },
+  { id: "stirn", name: "Haut & Glow", note: "Vor und nach der Behandlung", before: glowBefore.url, after: glowAfter.url, ratio: "800/640" },
 ];
 /** Ergebnis-Fotos ohne Vorher-Nachher-Collagen (die laufen im Regler). */
 export const RESULT_PHOTOS = ["01", "03", "05", "07", "08", "09", "10", "12"].map(n => `/img/ergebnis-${n}.jpg`);
@@ -117,8 +117,8 @@ export const MASTERCLASSES: Masterclass[] = [
   course("browlifting", "Browlifting Masterclass", "Ausdrucksvolle Augenbrauen, gezielt in Form gebracht.", "Ich begleite dich durch Vorbereitung, Lifting und Styling für gepflegte, in Form gebrachte Brauen."),
   course("zahnbleaching", "Zahnbleaching Masterclass", "Erweitere dein Beauty-Angebot um kosmetische Zahnaufhellung.", "Vor Ort oder online mit Unterlagen und einem persönlichen Live-Call. Ich erkläre dir den Ablauf der kosmetischen Zahnaufhellung und beantworte deine Fragen."),
   course("hautkunde", "Hautkunde", "Verstehe die Haut und erkenne ihre Bedürfnisse.", "Dein digitales Fundament: Aufbau der Haut, Hauttypen und Hautzustände, verständlich aufbereitet als PDF.", "Digitales Produkt · PDF"),
-  course("train-the-trainer", "Train the Trainer Masterclass", "Von der Beauty-Expertin zur Trainerin.", "Ich begleite dich zu deinen eigenen Schulungen: Unterlagen, Verträge, Zahlungsarten und eine saubere Preiskalkulation.", "Vor Ort & Online · Live", "business"),
-  course("social-media", "Social Media Masterclass", "Neue Kundinnen finden kaum den Weg zu dir?", "Ich zeige dir, wie du dein Können auf Instagram sichtbar machst, passende Inhalte entwickelst und daraus Termine machst.", "Vor Ort & Online · Live", "business"),
-  course("business-growth-mentoring", "Business Growth Mentoring", "Du hast bewiesen, dass du es kannst. Jetzt geht es darum, wie viel mehr möglich ist.", "Wir schauen gemeinsam auf dein Studio, deine Preise und deine Abläufe und planen deinen nächsten Schritt.", "Vor Ort & Online · 1:1 Premium", "business"),
+  course("train-the-trainer", "Train the Trainer Masterclass", "Von der Beauty-Expertin zur Trainerin.", "Ich begleite dich zu deinen eigenen Schulungen: Unterlagen, Verträge, Zahlungsarten und eine saubere Preiskalkulation.", "Online · Live", "business"),
+  course("social-media", "Social Media Masterclass", "Neue Kundinnen finden kaum den Weg zu dir?", "Ich zeige dir, wie du dein Können auf Instagram sichtbar machst, passende Inhalte entwickelst und daraus Termine machst.", "Online · Live", "business"),
+  course("business-growth-mentoring", "Business Growth Mentoring", "Du hast bewiesen, dass du es kannst. Jetzt geht es darum, wie viel mehr möglich ist.", "Wir schauen gemeinsam auf dein Studio, deine Preise und deine Abläufe und planen deinen nächsten Schritt.", "Online · 1:1 Premium", "business"),
 ];
 export const LEGACY_COURSE_SLUGS: Record<string, string> = { "trainer-mentoring": "train-the-trainer", "lash-browlifting": "korean-lash-lifting" };

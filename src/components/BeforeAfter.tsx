@@ -19,6 +19,7 @@ function Compare({ item }: { item: (typeof BEFORE_AFTER)[number] }) {
         </div>
         <span className="ba-tag left-3 top-3">Vorher</span>
         <span className="ba-tag right-3 top-3">Nachher</span>
+        {pos === 50 && <span className="ba-hint" aria-hidden="true">← Zum Vergleichen ziehen →</span>}
         <div className="ba-line" style={{ left: `${pos}%` }} aria-hidden="true">
           <span className="ba-knob">↔</span>
         </div>
