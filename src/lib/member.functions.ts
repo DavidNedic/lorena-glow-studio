@@ -87,12 +87,12 @@ export const confirmMember = createServerFn({ method: "POST" })
       templateData: { origin: o, vorname: m.vorname, code },
       idempotencyKey: `member-voucher-${m.id}-${code}${normalizeEmail(m.email) === 'davidnedic@web.de' ? `-test-${crypto.randomUUID()}` : ''}`,
     }).catch(() => ({ sent: false as const }));
-    await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
+    try { await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
       templateData: { origin: o, art: 'Neues Member-Club-Mitglied', felder: [
         { label: 'Name', wert: `${m.vorname} ${m.nachname ?? ''}`.trim() },
         { label: 'E-Mail', wert: m.email }, { label: 'Gutschein-Code', wert: code }] },
       idempotencyKey: `owner-member-${m.id}`,
-    }).catch(() => null);
+    }); } catch { /* owner notice must not block confirmation */ }
     if (!delivery.sent) return { ok: false as const, confirmed: true as const };
     return { ok: true as const, confirmed: true as const };
   });

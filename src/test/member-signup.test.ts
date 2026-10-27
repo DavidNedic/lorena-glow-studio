@@ -106,8 +106,10 @@ describe('member confirmation and voucher delivery', () => {
     send.mockResolvedValue({ sent: true })
     await confirm(link); await confirm(link)
     expect(db.from).toHaveBeenCalledTimes(4)
-    expect(send.mock.calls[0]).toEqual(send.mock.calls[1])
-    expect(send.mock.calls[0]?.[2]).toMatchObject({ templateData: { code: 'GOLDEN-7K3P' }, idempotencyKey: 'member-voucher-member-123-GOLDEN-7K3P' })
+    const voucherCalls = send.mock.calls.filter(c => c[0] === 'member-voucher')
+    expect(voucherCalls[0]).toEqual(voucherCalls[1])
+    expect(send).toHaveBeenCalledWith('owner-notification', 'thegoldencosmetics@web.de', expect.objectContaining({ idempotencyKey: 'owner-member-member-123' }))
+    expect(voucherCalls[0]?.[2]).toMatchObject({ templateData: { code: 'GOLDEN-7K3P' }, idempotencyKey: 'member-voucher-member-123-GOLDEN-7K3P' })
   })
   it('preserves successful confirmation when email sending fails', async () => {
     db.from.mockReturnValueOnce(query({ data: { ...member, newsletter_confirmed_at: '2026-10-24' } })).mockReturnValueOnce(query({ data: { code: '7K3P8M' } }))
