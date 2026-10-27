@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { adminListNewsletters, adminSaveNewsletter, adminSendNewsletter } from "@/lib/member.functions";
+import { adminListNewsletters, adminSaveNewsletter, adminSendNewsletter, adminUnsubscribeMember } from "@/lib/member.functions";
 import type { Newsletter } from "@/lib/member-club";
 import { CONTACT } from "@/lib/data";
 import { NewsletterPreview } from "./NewsletterPreview";
@@ -14,6 +14,8 @@ export function NewsletterAdmin() {
   const list = useServerFn(adminListNewsletters);
   const save = useServerFn(adminSaveNewsletter);
   const send = useServerFn(adminSendNewsletter);
+  const unsub = useServerFn(adminUnsubscribeMember);
+  const [unsubEmail, setUnsubEmail] = useState("");
   const [items, setItems] = useState<Newsletter[]>([]);
   const [recipients, setRecipients] = useState(0);
   const [draft, setDraft] = useState<Draft>(empty);
@@ -58,6 +60,14 @@ export function NewsletterAdmin() {
       </div>}
       {!sent && <Button className="btn btn-primary mt-4 w-full" disabled={busy || !recipients} onClick={onSend}>{busy ? "Einen Moment …" : `An alle ${recipients} Mitglieder senden`}</Button>}
       <p className="mt-3 text-xs text-muted-foreground">Jede Mail enthält automatisch einen Abmeldelink. Abgemeldete und unbestätigte Mitglieder bekommen nichts.</p>
+    </div>
+    <div className="card mt-6 p-5 md:p-7">
+      <h3 className="text-xl">Mitglied abmelden</h3>
+      <p className="mt-1 text-sm text-muted-foreground">Die Person bekommt danach keine Newsletter mehr.</p>
+      <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
+        <input type="email" value={unsubEmail} onChange={e => setUnsubEmail(e.target.value)} placeholder="E-Mail-Adresse" className={input} />
+        <Button variant="ghost" className="btn btn-ghost" disabled={busy || !unsubEmail} onClick={() => { if (!window.confirm(`${unsubEmail} vom Newsletter abmelden?`)) return; void run(async () => { const r = await unsub({ data: { email: unsubEmail } }); setUnsubEmail(""); return r.ok ? `${unsubEmail} wurde abgemeldet.` : "Kein aktives Mitglied mit dieser E-Mail gefunden."; }); }}>Abmelden</Button>
+      </div>
     </div>
     <div className="mt-6">
       <div className="flex items-center justify-between"><h3 className="text-xl">Bisherige Newsletter</h3><Button variant="link" onClick={() => { setDraft(empty); setMsg(""); }}>Neuer Newsletter</Button></div>

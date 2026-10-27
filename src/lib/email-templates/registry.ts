@@ -3,6 +3,7 @@ import { template as memberVoucher } from './member-voucher'
 import { template as memberConfirm } from './member-confirm'
 import { template as memberNewsletter } from './member-newsletter'
 import { template as ownerNotification } from './owner-notification'
+import { template as academyConfirm } from './academy-confirm'
 
 export interface TemplateEntry {
   component: ComponentType<any>
@@ -26,4 +27,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'member-confirm': memberConfirm,
   'member-newsletter': memberNewsletter,
   'owner-notification': ownerNotification,
+  'academy-confirm': academyConfirm,
 }
