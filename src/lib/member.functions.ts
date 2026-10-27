@@ -81,7 +81,7 @@ export const confirmMember = createServerFn({ method: "POST" })
       }
     }
     if (!code) throw new Error("Gutschein konnte nicht erstellt werden.");
-    const o = origin();
+    const o = EMAIL_ORIGIN;
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const delivery = await sendTemplateEmail('member-voucher', m.email, {
       templateData: { origin: o, vorname: m.vorname, code },
@@ -115,12 +115,12 @@ export const notifyAcademyRequest = createServerFn({ method: "POST" })
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const id = crypto.randomUUID();
     const r = await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
-      templateData: { origin: origin(), art: 'Academy – Kennenlerngespräch', felder: [
+      templateData: { origin: EMAIL_ORIGIN, art: 'Academy – Kennenlerngespräch', felder: [
         { label: 'Name', wert: `${data.vorname} ${data.nachname}` }, { label: 'Handynummer', wert: data.telefon }, { label: 'E-Mail', wert: data.email },
         { label: 'Zeitfenster für Anruf', wert: data.zeitfenster }, { label: 'Interesse', wert: data.interesse }, { label: 'Wünsche', wert: data.wuensche }] },
       idempotencyKey: `owner-academy-${id}`,
     }).catch(() => ({ sent: false }));
-    await sendTemplateEmail('academy-confirm', data.email, { templateData: { origin: origin(), vorname: data.vorname, zeitfenster: data.zeitfenster }, idempotencyKey: `academy-confirm-${id}` }).catch(() => null);
+    await sendTemplateEmail('academy-confirm', data.email, { templateData: { origin: EMAIL_ORIGIN, vorname: data.vorname, zeitfenster: data.zeitfenster }, idempotencyKey: `academy-confirm-${id}` }).catch(() => null);
     return { ok: r.sent };
   });
 
