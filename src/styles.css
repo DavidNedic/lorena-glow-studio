@@ -124,7 +124,7 @@
 .intro-title { opacity: 0; animation: rise .8s 1.9s ease-out forwards; }
 .intro-subtitle { opacity: 0; animation: rise .8s 2.2s ease-out forwards; }
 .intro-screen { height: 100vh; height: 100svh; height: 100dvh; }
-.intro-silhouette { background: var(--logo-light); }
+.intro-silhouette { background: linear-gradient(135deg, oklch(0.86 0.1 85), oklch(0.7 0.12 70) 55%, oklch(0.9 0.08 90)); }
 .start-background { isolation: isolate; background: var(--start-backdrop); }
 .start-background::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 100lvh; z-index: -1; pointer-events: none; background: var(--start-backdrop) url('/images/creme-hintergrund.jpg') center/cover no-repeat; background-blend-mode: multiply; }
 .start-background > canvas { opacity: .16; mix-blend-mode: soft-light; }
