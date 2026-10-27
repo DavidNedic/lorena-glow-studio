@@ -63,7 +63,7 @@ export const confirmMember = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const db = await admin();
-    const { data: m } = await db.from("members").select("id, vorname, email, newsletter_token, newsletter_confirmed_at, unsubscribed_at").eq("confirm_token", data.token).maybeSingle();
+    const { data: m } = await db.from("members").select("id, vorname, nachname, email, newsletter_token, newsletter_confirmed_at, unsubscribed_at").eq("confirm_token", data.token).maybeSingle();
     if (!m || m.unsubscribed_at) return { ok: false as const };
     const { data: v } = await db.from("vouchers").select("id, code").eq("member_id", m.id).maybeSingle();
     if (!m.newsletter_confirmed_at) {
@@ -87,10 +87,9 @@ export const confirmMember = createServerFn({ method: "POST" })
       templateData: { origin: o, vorname: m.vorname, code },
       idempotencyKey: `member-voucher-${m.id}-${code}${normalizeEmail(m.email) === 'davidnedic@web.de' ? `-test-${crypto.randomUUID()}` : ''}`,
     }).catch(() => ({ sent: false as const }));
-    const { data: full } = await db.from("members").select("vorname, nachname, email").eq("id", m.id).maybeSingle();
     await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
       templateData: { origin: o, art: 'Neues Member-Club-Mitglied', felder: [
-        { label: 'Name', wert: `${full?.vorname ?? m.vorname} ${full?.nachname ?? ''}`.trim() },
+        { label: 'Name', wert: `${m.vorname} ${m.nachname ?? ''}`.trim() },
         { label: 'E-Mail', wert: m.email }, { label: 'Gutschein-Code', wert: code }] },
       idempotencyKey: `owner-member-${m.id}`,
     }).catch(() => null);
