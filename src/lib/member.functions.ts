@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, invoiceSchema, invoiceTotals, newsletterSchema, type AdminRow, type Invoice, type Newsletter } from "@/lib/member-club";
 
@@ -7,9 +7,9 @@ async function admin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   return supabaseAdmin;
 }
-function origin() {
-  try { return new URL(getRequest().url).origin; } catch { return "https://thegoldencosmetics.com"; }
-}
+// Links und Logo in Mails zeigen immer auf die echte Domain – auch bei
+// Test-Versänden aus der Vorschau, sonst landen sie auf localhost.
+const EMAIL_ORIGIN = "https://thegoldencosmetics.com";
 async function sha(s: string) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
@@ -46,7 +46,7 @@ export const signupMember = createServerFn({ method: "POST" })
       if (error || !created) throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal.");
       member = created;
     }
-    const o = origin();
+    const o = EMAIL_ORIGIN;
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const delivery = await sendTemplateEmail('member-confirm', email, {
       templateData: { origin: o, vorname: member.vorname, confirmUrl: `${o}/member-club/bestaetigen?token=${member.confirm_token}` },
@@ -81,7 +81,7 @@ export const confirmMember = createServerFn({ method: "POST" })
       }
     }
     if (!code) throw new Error("Gutschein konnte nicht erstellt werden.");
-    const o = origin();
+    const o = EMAIL_ORIGIN;
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const delivery = await sendTemplateEmail('member-voucher', m.email, {
       templateData: { origin: o, vorname: m.vorname, code },
@@ -115,12 +115,12 @@ export const notifyAcademyRequest = createServerFn({ method: "POST" })
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const id = crypto.randomUUID();
     const r = await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
-      templateData: { origin: origin(), art: 'Academy – Kennenlerngespräch', felder: [
+      templateData: { origin: EMAIL_ORIGIN, art: 'Academy – Kennenlerngespräch', felder: [
         { label: 'Name', wert: `${data.vorname} ${data.nachname}` }, { label: 'Handynummer', wert: data.telefon }, { label: 'E-Mail', wert: data.email },
         { label: 'Zeitfenster für Anruf', wert: data.zeitfenster }, { label: 'Interesse', wert: data.interesse }, { label: 'Wünsche', wert: data.wuensche }] },
       idempotencyKey: `owner-academy-${id}`,
     }).catch(() => ({ sent: false }));
-    await sendTemplateEmail('academy-confirm', data.email, { templateData: { origin: origin(), vorname: data.vorname, zeitfenster: data.zeitfenster }, idempotencyKey: `academy-confirm-${id}` }).catch(() => null);
+    await sendTemplateEmail('academy-confirm', data.email, { templateData: { origin: EMAIL_ORIGIN, vorname: data.vorname, zeitfenster: data.zeitfenster }, idempotencyKey: `academy-confirm-${id}` }).catch(() => null);
     return { ok: r.sent };
   });
 
@@ -228,7 +228,7 @@ export const adminSendNewsletter = createServerFn({ method: "POST" })
     const { data: nl } = await context.supabase.from("newsletters").select("*").eq("id", data.id).maybeSingle();
     if (!nl) throw new Error("Newsletter nicht gefunden.");
     if (!data.test && nl.status === "gesendet") throw new Error("Dieser Newsletter wurde bereits gesendet.");
-    const o = origin();
+    const o = EMAIL_ORIGIN;
     const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
     const content = { origin: o, betreff: nl.betreff, vorschau: nl.vorschau, ueberschrift: nl.ueberschrift, text: nl.text, buttonText: nl.button_text, buttonUrl: nl.button_url };
     if (data.test) {
