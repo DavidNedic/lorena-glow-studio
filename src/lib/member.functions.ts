@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { makeVoucherCode, normalizeCode, normalizeEmail, SIGNUPS_PER_IP_PER_HOUR, signupSchema, VOUCHER_PERCENT, invoiceSchema, invoiceTotals, newsletterSchema, type AdminRow, type Invoice, type Newsletter } from "@/lib/member-club";
 
@@ -7,9 +7,9 @@ async function admin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   return supabaseAdmin;
 }
-function origin() {
-  try { return new URL(getRequest().url).origin; } catch { return "https://thegoldencosmetics.com"; }
-}
+// Links und Logo in Mails zeigen immer auf die echte Domain – auch bei
+// Test-Versänden aus der Vorschau, sonst landen sie auf localhost.
+const EMAIL_ORIGIN = "https://thegoldencosmetics.com";
 async function sha(s: string) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
