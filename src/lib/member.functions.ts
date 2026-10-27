@@ -87,8 +87,39 @@ export const confirmMember = createServerFn({ method: "POST" })
       templateData: { origin: o, vorname: m.vorname, code },
       idempotencyKey: `member-voucher-${m.id}-${code}${normalizeEmail(m.email) === 'davidnedic@web.de' ? `-test-${crypto.randomUUID()}` : ''}`,
     }).catch(() => ({ sent: false as const }));
+    const { data: full } = await db.from("members").select("vorname, nachname, email").eq("id", m.id).maybeSingle();
+    await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
+      templateData: { origin: o, art: 'Neues Member-Club-Mitglied', felder: [
+        { label: 'Name', wert: `${full?.vorname ?? m.vorname} ${full?.nachname ?? ''}`.trim() },
+        { label: 'E-Mail', wert: m.email }, { label: 'Gutschein-Code', wert: code }] },
+      idempotencyKey: `owner-member-${m.id}`,
+    }).catch(() => null);
     if (!delivery.sent) return { ok: false as const, confirmed: true as const };
     return { ok: true as const, confirmed: true as const };
+  });
+
+export const notifyAcademyRequest = createServerFn({ method: "POST" })
+  .inputValidator((d: { vorname?: unknown; telefon?: unknown; interesse?: unknown }) => {
+    const s = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+    const r = { vorname: s(d?.vorname, 80), telefon: s(d?.telefon, 30), interesse: s(d?.interesse, 120) };
+    if (!r.vorname || !/^[+0-9() /-]{6,30}$/.test(r.telefon)) throw new Error("Ungültige Eingabe");
+    return r;
+  })
+  .handler(async ({ data }) => {
+    const db = await admin();
+    const ip = getRequestHeader("cf-connecting-ip") || getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const ipHash = await sha("tgc-academy:" + ip);
+    const since = new Date(Date.now() - 3600_000).toISOString();
+    const { count } = await db.from("signup_attempts").select("id", { count: "exact", head: true }).eq("ip_hash", ipHash).gte("created_at", since);
+    if ((count ?? 0) >= SIGNUPS_PER_IP_PER_HOUR) return { ok: false as const };
+    await db.from("signup_attempts").insert({ ip_hash: ipHash });
+    const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
+    const r = await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
+      templateData: { origin: origin(), art: 'Academy – Kennenlerngespräch', felder: [
+        { label: 'Vorname', wert: data.vorname }, { label: 'Handynummer', wert: data.telefon }, { label: 'Interesse', wert: data.interesse }] },
+      idempotencyKey: `owner-academy-${crypto.randomUUID()}`,
+    }).catch(() => ({ sent: false }));
+    return { ok: r.sent };
   });
 
 export const unsubscribeNewsletter = createServerFn({ method: "POST" })
