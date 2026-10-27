@@ -46,7 +46,7 @@ export const signupMember = createServerFn({ method: "POST" })
       if (error || !created) throw new Error("Anmeldung fehlgeschlagen. Bitte versuch es noch einmal.");
       member = created;
     }
-    const o = origin();
+    const o = EMAIL_ORIGIN;
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
     const delivery = await sendTemplateEmail('member-confirm', email, {
       templateData: { origin: o, vorname: member.vorname, confirmUrl: `${o}/member-club/bestaetigen?token=${member.confirm_token}` },
