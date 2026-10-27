@@ -228,7 +228,7 @@ export const adminSendNewsletter = createServerFn({ method: "POST" })
     const { data: nl } = await context.supabase.from("newsletters").select("*").eq("id", data.id).maybeSingle();
     if (!nl) throw new Error("Newsletter nicht gefunden.");
     if (!data.test && nl.status === "gesendet") throw new Error("Dieser Newsletter wurde bereits gesendet.");
-    const o = origin();
+    const o = EMAIL_ORIGIN;
     const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
     const content = { origin: o, betreff: nl.betreff, vorschau: nl.vorschau, ueberschrift: nl.ueberschrift, text: nl.text, buttonText: nl.button_text, buttonUrl: nl.button_url };
     if (data.test) {
