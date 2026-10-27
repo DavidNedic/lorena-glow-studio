@@ -10,7 +10,7 @@ export function CallbackForm({ course, compact = false }: { course?: string; com
    <label className="block text-left"><span className="mb-2 block text-sm">Vorname</span><input required name="vorname" autoComplete="given-name" maxLength={80} className={field} /></label>
    <label className="block text-left"><span className="mb-2 block text-sm">Nachname</span><input required name="nachname" autoComplete="family-name" maxLength={80} className={field} /></label>
   </div>
-  <label className="block text-left"><span className="mb-2 block text-sm">Handynummer</span><input required type="tel" name="telefon" autoComplete="tel" pattern="[+0-9() /-]{6,30}" className={field} /></label>
+  <label className="block text-left"><span className="mb-2 block text-sm">Handynummer</span><input required type="tel" name="telefon" autoComplete="tel" pattern={String.raw`[\+0-9\(\) \/\-]{6,30}`} className={field} /></label>
   <label className="block text-left"><span className="mb-2 block text-sm">E-Mail</span><input required type="email" name="email" autoComplete="email" maxLength={200} className={field} /></label>
   <fieldset><legend className="mb-3 w-full text-left text-sm">Wann darf ich dich anrufen?</legend><div className="flex flex-wrap gap-2">{["Vormittags","Nachmittags"].map(c=><Button key={c} type="button" variant="ghost" className="chip" data-active={slot===c} aria-pressed={slot===c} onClick={()=>setSlot(c)}>{c}</Button>)}</div></fieldset>
   <label className="block text-left"><span className="mb-2 block text-sm">Deine Wünsche (optional)</span><textarea name="wuensche" rows={3} maxLength={1000} className={`${field} !rounded-3xl resize-y`} /></label>
