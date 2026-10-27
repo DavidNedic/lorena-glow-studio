@@ -14,7 +14,7 @@ function OwnerNotification({ origin, art, felder }: { origin?: string; art?: str
 
 export const template = {
   component: OwnerNotification,
-  subject: (d: Record<string, any>) => `Neue Anfrage: ${d.art ?? 'Website'}`,
+  subject: (d: Record<string, any>) => `Neue Anfrage: ${d['art'] ?? 'Website'}`,
   displayName: 'Inhaberin: Neue Anfrage',
   to: OWNER_EMAIL,
   previewData: { art: 'Academy – Kennenlerngespräch', felder: [{ label: 'Vorname', wert: 'Anna' }, { label: 'Handynummer', wert: '0170 1234567' }] },
