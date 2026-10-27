@@ -8,10 +8,10 @@ describe("voluntary Google Analytics", () => {
     delete (window as Window & { gtag?: unknown }).gtag;
   });
   it("uses the dedicated Golden Cosmetics measurement ID after consent", () => {
-    expect(ANALYTICS_MEASUREMENT_ID).toBe("G-Z3V1JKN1C1");
+    expect(ANALYTICS_MEASUREMENT_ID).toBe("G-QEFL4FKQR3");
     saveConsent(true);
     updateAnalytics(ANALYTICS_MEASUREMENT_ID, "/");
-    expect(document.getElementById("golden-google-analytics")?.getAttribute("src")).toBe("https://www.googletagmanager.com/gtag/js?id=G-Z3V1JKN1C1");
+    expect(document.getElementById("golden-google-analytics")?.getAttribute("src")).toBe("https://www.googletagmanager.com/gtag/js?id=G-QEFL4FKQR3");
   });
   it("does not load tracking before consent", () => {
     updateAnalytics("G-TEST123", "/");

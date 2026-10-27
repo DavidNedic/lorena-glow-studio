@@ -1,4 +1,4 @@
-export const ANALYTICS_MEASUREMENT_ID = "G-Z3V1JKN1C1";
+export const ANALYTICS_MEASUREMENT_ID = "G-QEFL4FKQR3";
 export const CONSENT_KEY = "golden-analytics-consent";
 export const CONSENT_VERSION = "2026-10-24";
 export const CONSENT_NOTICE = "Mit deiner Zustimmung nutzt Google Analytics Angaben zu Gerät, Betriebssystem, Browser und Seitenaufrufen für Besucherstatistiken. Anbieter ist Google Ireland Limited; eine Verarbeitung in den USA ist möglich. Keine Werbung. Du kannst ablehnen und deine Auswahl jederzeit unter Cookie-Einstellungen ändern.";
