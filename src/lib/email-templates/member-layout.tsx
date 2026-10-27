@@ -23,7 +23,7 @@ export const emailStyles = {
 export function MemberLayout({ origin = 'https://thegoldencosmetics.com', preview, children }: { origin?: string | undefined; preview: string; children: ReactNode }) {
   const base = 'https://thegoldencosmetics.com'
   return <Html lang="de" dir="ltr"><Head /><Preview>{preview}</Preview>
-    <Body style={emailStyles.body} bgcolor="#F8F0EC"><Container style={emailStyles.container}>
+    <Body style={emailStyles.body}><Container style={emailStyles.container}>
       <Section style={emailStyles.card}>
         <Img src={`${base}/android-chrome-192x192.png`} alt="Kolibri von The Golden Cosmetics & Academy" width="72" height="72" style={{ margin: '0 auto' }} />
         <Text style={emailStyles.brand}>{CONTACT.name}</Text>
