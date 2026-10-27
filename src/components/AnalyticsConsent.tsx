@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import birdMark from "@/assets/kolibri-mark.png";
-import { CONSENT_KEY, CONSENT_NOTICE, readConsent, saveConsent, updateAnalytics } from "@/lib/analytics";
+import { ANALYTICS_MEASUREMENT_ID, CONSENT_KEY, CONSENT_NOTICE, readConsent, saveConsent, updateAnalytics } from "@/lib/analytics";
 
 export function AnalyticsConsent() {
   const path = useRouterState({ select: state => state.location.pathname });
   const [open, setOpen] = useState(false);
   const [revision, setRevision] = useState(0);
   const [storageError, setStorageError] = useState(false);
-  const id = import.meta.env['VITE_LOVABLE_CONNECTOR_GOOGLE_ANALYTICS_API_KEY'] ?? "";
+  const id = ANALYTICS_MEASUREMENT_ID;
   const configured = /^G-[A-Z0-9]+$/.test(id);
 
   useEffect(() => {

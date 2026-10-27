@@ -1,11 +1,17 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { analyticsPath, CONSENT_KEY, CONSENT_NOTICE, parseConsent, readConsent, saveConsent, updateAnalytics } from "@/lib/analytics";
+import { ANALYTICS_MEASUREMENT_ID, analyticsPath, CONSENT_KEY, CONSENT_NOTICE, parseConsent, readConsent, saveConsent, updateAnalytics } from "@/lib/analytics";
 
 describe("voluntary Google Analytics", () => {
   beforeEach(() => {
     localStorage.clear();
     document.getElementById("golden-google-analytics")?.remove();
     delete (window as Window & { gtag?: unknown }).gtag;
+  });
+  it("uses the dedicated Golden Cosmetics measurement ID after consent", () => {
+    expect(ANALYTICS_MEASUREMENT_ID).toBe("G-Z3V1JKN1C1");
+    saveConsent(true);
+    updateAnalytics(ANALYTICS_MEASUREMENT_ID, "/");
+    expect(document.getElementById("golden-google-analytics")?.getAttribute("src")).toBe("https://www.googletagmanager.com/gtag/js?id=G-Z3V1JKN1C1");
   });
   it("does not load tracking before consent", () => {
     updateAnalytics("G-TEST123", "/");
