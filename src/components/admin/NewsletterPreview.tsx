@@ -24,11 +24,11 @@ export function NewsletterPreview({ draft }: { draft: PreviewDraft }) {
     setHtml(""); setError(""); setReady(false);
     const prepare = async () => {
       try {
-        const [{ render }, { template }] = await Promise.all([
-          import("@react-email/render"), import("@/lib/email-templates/member-newsletter"),
+        const [{ renderToStaticMarkup }, { template }] = await Promise.all([
+          import("react-dom/server"), import("@/lib/email-templates/member-newsletter"),
         ]);
         const Newsletter = template.component;
-        const markup = await render(<Newsletter origin={window.location.origin} vorname="Vorname"
+        const markup = renderToStaticMarkup(<Newsletter origin={window.location.origin} vorname="Vorname"
           betreff={draft.betreff} vorschau={draft.vorschau} ueberschrift={draft.ueberschrift}
           text={draft.text} buttonText={draft.button_text} buttonUrl={draft.button_url}
           unsubscribeUrl={`${window.location.origin}/member-club/abmelden`} />);
