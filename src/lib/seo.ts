@@ -26,7 +26,7 @@ export const BEAUTY_SALON = {
   founder: { "@type": "Person", name: CONTACT.owner, jobTitle: "Anerkannte Fachkosmetikerin" },
   url: SITE_URL,
   image: abs(OG.behandlungen),
-  logo: abs("/images/logo.png"),
+  logo: abs("/android-chrome-512x512.png"),
   telephone: "+491629709213",
   address: { "@type": "PostalAddress", streetAddress: CONTACT.street, postalCode: "74336", addressLocality: "Brackenheim", addressCountry: "DE" },
   areaServed: ["Brackenheim", "Heilbronn"],
@@ -35,7 +35,7 @@ export const BEAUTY_SALON = {
   potentialAction: { "@type": "ReserveAction", target: CONTACT.beautinda },
 };
 
-export const ACADEMY_ORG = { "@type": "Organization", name: "The Golden Cosmetics Academy", url: `${SITE_URL}/academy`, logo: abs("/images/logo.png") };
+export const ACADEMY_ORG = { "@type": "Organization", name: "The Golden Cosmetics Academy", url: `${SITE_URL}/academy`, logo: abs("/android-chrome-512x512.png") };
 
 export function breadcrumbs(items: [string, string][]) {
   return { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: abs(path) })) };

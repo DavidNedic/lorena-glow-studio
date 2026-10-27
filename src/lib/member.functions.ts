@@ -98,10 +98,10 @@ export const confirmMember = createServerFn({ method: "POST" })
   });
 
 export const notifyAcademyRequest = createServerFn({ method: "POST" })
-  .inputValidator((d: { vorname?: unknown; telefon?: unknown; interesse?: unknown }) => {
+  .inputValidator((d: Record<string, unknown>) => {
     const s = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
-    const r = { vorname: s(d?.vorname, 80), telefon: s(d?.telefon, 30), interesse: s(d?.interesse, 120) };
-    if (!r.vorname || !/^[+0-9() /-]{6,30}$/.test(r.telefon)) throw new Error("Ungültige Eingabe");
+    const r = { vorname: s(d?.["vorname"], 80), nachname: s(d?.["nachname"], 80), telefon: s(d?.["telefon"], 30), email: s(d?.["email"], 200), wuensche: s(d?.["wuensche"], 1000), zeitfenster: s(d?.["zeitfenster"], 30), interesse: s(d?.["interesse"], 120) };
+    if (!r.vorname || !r.nachname || !/^[+0-9() /-]{6,30}$/.test(r.telefon) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email)) throw new Error("Ungültige Eingabe");
     return r;
   })
   .handler(async ({ data }) => {
@@ -113,12 +113,28 @@ export const notifyAcademyRequest = createServerFn({ method: "POST" })
     if ((count ?? 0) >= SIGNUPS_PER_IP_PER_HOUR) return { ok: false as const };
     await db.from("signup_attempts").insert({ ip_hash: ipHash });
     const { sendTemplateEmail } = await import('@/lib/email-templates/send-email');
+    const id = crypto.randomUUID();
     const r = await sendTemplateEmail('owner-notification', 'thegoldencosmetics@web.de', {
       templateData: { origin: origin(), art: 'Academy – Kennenlerngespräch', felder: [
-        { label: 'Vorname', wert: data.vorname }, { label: 'Handynummer', wert: data.telefon }, { label: 'Interesse', wert: data.interesse }] },
-      idempotencyKey: `owner-academy-${crypto.randomUUID()}`,
+        { label: 'Name', wert: `${data.vorname} ${data.nachname}` }, { label: 'Handynummer', wert: data.telefon }, { label: 'E-Mail', wert: data.email },
+        { label: 'Zeitfenster für Anruf', wert: data.zeitfenster }, { label: 'Interesse', wert: data.interesse }, { label: 'Wünsche', wert: data.wuensche }] },
+      idempotencyKey: `owner-academy-${id}`,
     }).catch(() => ({ sent: false }));
+    await sendTemplateEmail('academy-confirm', data.email, { templateData: { origin: origin(), vorname: data.vorname, zeitfenster: data.zeitfenster }, idempotencyKey: `academy-confirm-${id}` }).catch(() => null);
     return { ok: r.sent };
+  });
+
+export const adminUnsubscribeMember = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { email: string }) => {
+    if (typeof d?.email !== "string" || !d.email.includes("@") || d.email.length > 200) throw new Error("Ungültige E-Mail");
+    return { email: normalizeEmail(d.email) };
+  })
+  .handler(async ({ data, context }) => {
+    await requireAdmin(context);
+    const db = await admin();
+    const { data: rows } = await db.from("members").update({ unsubscribed_at: new Date().toISOString() }).ilike("email", data.email).is("unsubscribed_at", null).select("id");
+    return { ok: !!rows?.length };
   });
 
 export const unsubscribeNewsletter = createServerFn({ method: "POST" })
