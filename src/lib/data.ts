@@ -33,7 +33,7 @@ export const LEGAL_TERMS = {
 // Prices come from the Beautinda catalogue and are shown only for directly bookable treatments; free slots live in Beautinda.
 export type TreatmentGroup = "first" | "direct" | "analysis";
 export type Treatment = { slug: string; name: string; group: TreatmentGroup; duration: string; sentence: string; image: string; detail?: boolean; price?: string; beautindaPrice?: number; bookingUrl: string };
-export const DIRECT_BOOKING_PRICE_CAP = 100;
+export const DIRECT_BOOKING_PRICE_CAP = 150;
 export function isDirectBookingEligible(t: Treatment) {
   return t.group === "direct" && t.bookingUrl === CONTACT.beautinda && typeof t.beautindaPrice === "number" && Number.isFinite(t.beautindaPrice) && t.beautindaPrice > 0 && t.beautindaPrice < DIRECT_BOOKING_PRICE_CAP;
 }
@@ -51,6 +51,8 @@ export const TREATMENTS: Treatment[] = [
   treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", beautindaPrice: 20, sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
   treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", beautindaPrice: 15, sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
   treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "99 €", beautindaPrice: 99, sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
+  treatment("wispy", "Wimpernverlängerung Wispy Neu-Set", "direct", "120 Min.", { price: "120 €", beautindaPrice: 120, sentence: "Der federleichte Wispy-Look mit gestuften Längen." }),
+  treatment("volumen", "Wimpernverlängerung Volumen Neu-Set", "direct", "120 Min.", { price: "149 €", beautindaPrice: 149, sentence: "Mehr Dichte mit feinen Volumenfächern." }),
   treatment("refill", "Wimpern auffüllen", "direct", "80 Min.", { price: "ab 65 €", sentence: "Dein Set bleibt voll und gepflegt." }),
   // Nach deiner Hautanalyse
   treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "analysis", "70 Min.", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
@@ -65,8 +67,6 @@ export const TREATMENTS: Treatment[] = [
   treatment("biorepeel", "BioRePeel", "analysis", "", { sentence: "Peeling bei Akne und unreiner Haut." }),
   treatment("akne-body", "Akne Body Behandlung", "analysis", "", { sentence: "Die Anti-Akne-Behandlung für Rücken und Dekolleté." }),
   treatment("carboxy", "Carboxy-Therapie", "analysis", "60 Min.", { sentence: "CO2-Therapie, die die Durchblutung der Haut anregen kann." }),
-  treatment("wispy", "Wimpernverlängerung Wispy Neu-Set", "analysis", "120 Min.", { sentence: "Der federleichte Wispy-Look mit gestuften Längen." }),
-  treatment("volumen", "Wimpernverlängerung Volumen Neu-Set", "analysis", "120 Min.", { sentence: "Mehr Dichte mit feinen Volumenfächern." }),
 ];
 // Aliases resolve to a current offer; everything else is a real slug now.
 // Shop imagery shows studio impressions, not a claimed result of each treatment.
