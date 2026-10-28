@@ -9,13 +9,13 @@ it("Umsatzsteuer-ID entspricht der Inhaberin",()=>expect(CONTACT.vatId).toBe("DE
 it("Berufsbezeichnung ist Fachkosmetikerin",()=>expect(CONTACT.profession).toBe("Fachkosmetikerin"));
 it("keine Teilnahme an Verbraucherschlichtung",()=>expect(CONTACT.disputeResolution).toBe("Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."));
 it("alle Instagram-Links nutzen denselben Account",()=>expect(CONTACT.instagramAcademy).toBe("https://www.instagram.com/thegoldencosmetics"));
-it("Behandlungen: 1 First-Time, 11 direkt buchbar, 14 nach Hautanalyse",()=>{
+it("Behandlungen: 1 First-Time, 13 direkt buchbar, 12 nach Hautanalyse",()=>{
   expect(TREATMENTS.filter(t=>t.group==="first").map(t=>t.slug)).toEqual(["first"]);
-  expect(TREATMENTS.filter(t=>t.group==="direct").map(t=>t.slug)).toEqual(["klassische-ausreinigung","dermaplaning","glow-peel","refresh-peel","pure-peel","lash","brow","brow-color","brow-shape","natural","refill"]);
-  expect(TREATMENTS.filter(t=>t.group==="analysis")).toHaveLength(14);
+  expect(TREATMENTS.filter(t=>t.group==="direct").map(t=>t.slug)).toEqual(["klassische-ausreinigung","dermaplaning","glow-peel","refresh-peel","pure-peel","lash","brow","brow-color","brow-shape","natural","wispy","volumen","refill"]);
+  expect(TREATMENTS.filter(t=>t.group==="analysis")).toHaveLength(12);
   expect(TREATMENTS.find(t=>t.slug==="first")?.duration).toBe("120 Min.");
 });
-it("Preise nur bei direkt buchbaren Behandlungen, aus Beautinda",()=>{for(const t of TREATMENTS){expect(t).not.toHaveProperty("oldPrice");expect(t).not.toHaveProperty("from");expect(t).not.toHaveProperty("priceNote");if(t.group!=="direct")expect(t).not.toHaveProperty("price");}expect(Object.fromEntries(TREATMENTS.filter(t=>t.price).map(t=>[t.slug,t.price]))).toEqual({lash:"79 €",brow:"69 €","brow-color":"20 €","brow-shape":"15 €",natural:"99 €",refill:"ab 65 €"});});
+it("Preise nur bei direkt buchbaren Behandlungen, aus Beautinda",()=>{for(const t of TREATMENTS){expect(t).not.toHaveProperty("oldPrice");expect(t).not.toHaveProperty("from");expect(t).not.toHaveProperty("priceNote");if(t.group!=="direct")expect(t).not.toHaveProperty("price");}expect(Object.fromEntries(TREATMENTS.filter(t=>t.price).map(t=>[t.slug,t.price]))).toEqual({lash:"79 €",brow:"69 €","brow-color":"20 €","brow-shape":"15 €",natural:"99 €",wispy:"120 €",volumen:"149 €",refill:"ab 65 €"});});
 it("Hotspots verweisen auf die gewünschten Behandlungen",()=>expect(ZOOM_AREAS.map(a=>[a.id,TREATMENTS.find(t=>t.slug===a.slug)?.name])).toEqual([["stirn","Microneedling x Salmon DNA"],["augen","Korean Lashlifting inkl. Färben"],["nase","Aquafacial Ausreinigung"],["wangen","Microneedling"],["kinn","BioRePeel"],["augenbrauen","Browlifting inkl. Färben + Formen"],["pickel","Anti-Akne Face Reset"],["glow","First Time: Hautanalyse + erste Behandlung"],["unsicher","First Time: Hautanalyse + erste Behandlung"]]));
 it("neue Foto-Hotspots liegen auf Braue und linker Wange ohne Video",()=>expect(ZOOM_AREAS.filter(a=>a.id==="augenbrauen"||a.id==="pickel").map(a=>[a.id,a.x,a.y,a.video])).toEqual([["augenbrauen",61,33,false],["pickel",30,56,false]]));
 it("BioRePeel steht in der Hautanalyse-Gruppe ohne Preis",()=>expect(TREATMENTS.find(t=>t.slug==="biorepeel")).toMatchObject({group:"analysis",duration:"Dauer nach Absprache",sentence:"Peeling bei Akne und unreiner Haut."}));
