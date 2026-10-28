@@ -7,6 +7,7 @@ import { Arrow, FloatingNav } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { CONTACT } from "@/lib/data";
 import { BEAUTY_SALON, OG, seoHead } from "@/lib/seo";
+import serumAsset from "@/assets/serum-tropfen.webp.asset.json";
 export const Route = createFileRoute("/")({ head: () => seoHead({ path: "/", title: "The Golden Cosmetics & Academy · Kosmetik Brackenheim", description: "Kosmetikstudio und Online-Academy von Lorena Kovacevic in Brackenheim bei Heilbronn: Hautanalyse, Liftings, Wimpern und Masterclasses für Kosmetikerinnen.", image: OG.behandlungen, jsonLd: [BEAUTY_SALON] }), component: Index });
 function ChoiceCard({ to, academy, img, label, title, text }: { to: "/behandlungen" | "/academy"; academy?: boolean; img: string; label: string; title: string; text: string }) {
  const navigate = useNavigate();
