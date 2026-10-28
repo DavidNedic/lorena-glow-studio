@@ -405,3 +405,17 @@
 .club-strip .btn-primary:hover { background: #2A1D19; }
 @media (max-width: 699px) { .club-strip { padding: 24px 20px; } }
 @media (prefers-reduced-motion: reduce) { .member-sticky::after, .club-strip::after { animation: none; display: none; } }
+
+/* Standort-Karte am Seitenende */
+.map-section { background: var(--footer-bg); color: var(--footer-text); --line: var(--footer-line); --muted-foreground: var(--footer-muted); }
+.map-grid { display: grid; gap: 28px; align-items: center; text-align: left; }
+@media (min-width: 768px) { .map-grid { grid-template-columns: 1fr 1.1fr; gap: 52px; } }
+.map-frame { position: relative; overflow: hidden; border-radius: 28px; border: 1px solid #E3C47E; aspect-ratio: 4/3; background: var(--surface-2); box-shadow: 0 30px 70px -40px rgba(0, 0, 0, .9); }
+.map-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: grayscale(.9) sepia(.3) saturate(.6) brightness(.95); transition: filter .9s ease; pointer-events: none; }
+.map-frame.map-active iframe { filter: none; pointer-events: auto; }
+.map-activate { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; display: inline-flex; align-items: center; gap: .55rem; border: 1px solid #E3C47E; border-radius: 999px; padding: .8rem 1.4rem; font-weight: 600; font-size: .95rem; background: color-mix(in oklab, var(--paper) 94%, transparent); color: var(--foreground); cursor: pointer; box-shadow: 0 12px 30px -12px rgba(0, 0, 0, .55); transition: transform .25s; }
+.map-activate svg { color: #B98A2F; }
+.map-activate:hover { transform: translate(-50%, -50%) translateY(-1px); }
+.map-section .btn-ghost { color: var(--footer-text); }
+.map-section .btn-ghost:hover { background: color-mix(in oklab, var(--footer-text) 12%, transparent); }
+@media (prefers-reduced-motion: reduce) { .map-frame iframe, .map-activate { transition: none; } }
