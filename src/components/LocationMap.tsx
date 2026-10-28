@@ -22,7 +22,7 @@ export function LocationMap() {
           <br />
           {CONTACT.hours}
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <ActionLink href={MAP_ROUTE_URL} external className="footer-cta">Route planen</ActionLink>
           <ActionLink href={CONTACT.whatsapp} external secondary>Per WhatsApp fragen</ActionLink>
         </div>

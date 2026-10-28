@@ -408,7 +408,7 @@
 
 /* Standort-Karte am Seitenende */
 .map-section { background: var(--footer-bg); color: var(--footer-text); --line: var(--footer-line); --muted-foreground: var(--footer-muted); }
-.map-copy { text-align: left; }
+.map-copy { text-align: center; }
 .map-frame { position: relative; width: 100%; height: clamp(320px, 46vh, 520px); overflow: hidden; border: 0; border-top: 1px solid #E3C47E; background: var(--surface-2); }
 .map-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: grayscale(.9) sepia(.3) saturate(.6) brightness(.95); transition: filter .9s ease; pointer-events: none; }
 .map-frame.map-active iframe { filter: none; pointer-events: auto; }
