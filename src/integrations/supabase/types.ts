@@ -38,6 +38,51 @@ export type Database = {
         }
         Relationships: []
       }
+      member_feedback: {
+        Row: {
+          created_at: string
+          id: string
+          member_id: string
+          sterne: number
+          text: string
+          veroeffentlichen: boolean
+          voucher_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          member_id: string
+          sterne: number
+          text?: string
+          veroeffentlichen?: boolean
+          voucher_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          member_id?: string
+          sterne?: number
+          text?: string
+          veroeffentlichen?: boolean
+          voucher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_feedback_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_feedback_voucher_id_fkey"
+            columns: ["voucher_id"]
+            isOneToOne: true
+            referencedRelation: "vouchers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       member_offers: {
         Row: {
           active: boolean
@@ -258,6 +303,8 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          feedback_sent_at: string | null
+          feedback_token: string
           id: string
           member_id: string
           rabatt_prozent: number
@@ -267,6 +314,8 @@ export type Database = {
         Insert: {
           code: string
           created_at?: string
+          feedback_sent_at?: string | null
+          feedback_token?: string
           id?: string
           member_id: string
           rabatt_prozent?: number
@@ -276,6 +325,8 @@ export type Database = {
         Update: {
           code?: string
           created_at?: string
+          feedback_sent_at?: string | null
+          feedback_token?: string
           id?: string
           member_id?: string
           rabatt_prozent?: number
