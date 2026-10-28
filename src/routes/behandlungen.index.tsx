@@ -7,6 +7,7 @@ import { ChatAssistant } from "@/components/ChatAssistant";
 import { FaceZoom } from "@/components/FaceZoom";
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { MemberPopup } from "@/components/MemberPopup";
+import { LocationMap } from "@/components/LocationMap";
 import { CONTACT, RESULT_PHOTOS, TREATMENTS, isDirectBookingEligible } from "@/lib/data";
 import { BEAUTY_SALON, OG, breadcrumbs, seoHead } from "@/lib/seo";
 export const FAQ=[{q:"Wie läuft mein erster Termin ab?",a:"Wir starten mit einer Hautanalyse und wählen die passende erste Behandlung. Am einfachsten buchst du First Time: Hautanalyse + erste Behandlung."},{q:"Welche Behandlung passt zu mir?",a:"Tipp oben im Gesicht an, wo du etwas verändern möchtest, oder frag den Assistenten unten rechts. Final entscheiden wir gemeinsam bei deiner Hautanalyse."},{q:"Wie bereite ich mich vor?",a:"Komm am besten ungeschminkt. So kann ich deine Haut direkt beurteilen."},{q:"Kann ich meinen Termin verschieben oder absagen?",a:<>Ja, bis 24 Stunden vor deinem Termin kostenlos. Bei einer späteren Absage oder wenn du nicht erscheinst, werden 50 % des Behandlungspreises fällig, diese sind nicht erstattbar. Alles Weitere steht in den <Link to="/rechtliches" hash="agb" className="underline">AGB</Link>.</>},{q:"Gibt es Gutscheine?",a:"Ja, schreib mir per WhatsApp, dann besprechen wir deinen Gutschein."},{q:"Behandelst du auch Männer?",a:"Ja, auch für Männer starten wir mit First Time: Hautanalyse + erste Behandlung."}];
