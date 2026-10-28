@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { sitemapPaths } from "@/routes/sitemap[.]xml";
 
 const BASE = "http://localhost:8080";
-const ICONS = ["/favicon.ico", "/favicon-16x16.png", "/favicon-32x32.png", "/apple-touch-icon.png", "/android-chrome-192x192.png", "/android-chrome-512x512.png", "/android-chrome-maskable-512x512.png", "/site.webmanifest"];
+const ICONS = ["/kolibri-gold-icon.png", "/favicon.ico", "/favicon-16x16.png", "/favicon-32x32.png", "/apple-touch-icon.png", "/android-chrome-192x192.png", "/android-chrome-512x512.png", "/android-chrome-maskable-512x512.png", "/site.webmanifest"];
 
 describe("icons and manifest", () => {
   it.each(ICONS)("%s is reachable", async (p) => {
