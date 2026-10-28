@@ -9,6 +9,7 @@ import { adminOverview, adminSetRedeemed } from "@/lib/member.functions";
 import { newsletterCsv, normalizeCode, type AdminRow } from "@/lib/member-club";
 import { NewsletterAdmin } from "@/components/admin/NewsletterAdmin";
 import { InvoiceAdmin } from "@/components/admin/InvoiceAdmin";
+import { FeedbackAdmin } from "@/components/admin/FeedbackAdmin";
 import { useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute("/admin")({
@@ -58,7 +59,7 @@ function Admin() {
   const [quick, setQuick] = useState("");
   const [note, setNote] = useState("");
   const [flash, setFlash] = useState("");
-  const [tab, setTab] = useState<"member" | "newsletter" | "rechnungen">("member");
+  const [tab, setTab] = useState<"member" | "newsletter" | "feedback" | "rechnungen">("member");
   const overview = useServerFn(adminOverview);
   const setRedeemed = useServerFn(adminSetRedeemed);
   const signOut = async () => {
@@ -112,12 +113,13 @@ function Admin() {
   return <div className="bg-background">
     <Section className="max-w-4xl !pb-4">
       <div className="no-print flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl md:text-4xl">Verwaltung</h1><div className="flex items-center gap-2"><Link to="/" className="btn btn-ghost">Zurück zur Startseite</Link><Button variant="ghost" className="btn btn-ghost" onClick={signOut}>Abmelden</Button></div></div>
-      <div role="tablist" className="admin-tabs no-print mt-5">{([["member", "Member Club"], ["newsletter", "Newsletter"], ["rechnungen", "Rechnungen"]] as const).map(([k, l]) => <Button key={k} role="tab" aria-selected={tab === k} variant="ghost" className="chip" data-active={tab === k} onClick={() => setTab(k)}>{l}</Button>)}</div>
+      <div role="tablist" className="admin-tabs no-print mt-5">{([["member", "Member Club"], ["newsletter", "Newsletter"], ["feedback", "Feedback"], ["rechnungen", "Rechnungen"]] as const).map(([k, l]) => <Button key={k} role="tab" aria-selected={tab === k} variant="ghost" className="chip" data-active={tab === k} onClick={() => setTab(k)}>{l}</Button>)}</div>
       {tab === "member" && <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         {[["Mitglieder", stats.members], ["Bestätigt", stats.confirmed], ["Gutscheine offen", stats.open], ["Eingelöst", stats.redeemed]].map(([l, n]) => <div key={l} className="card p-4 text-left"><p className="text-xs text-muted-foreground">{l}</p><p className="mt-1 text-2xl font-semibold">{n}</p></div>)}
       </div>}
     </Section>
     {tab === "newsletter" && <Section className="max-w-4xl !pt-4"><NewsletterAdmin /></Section>}
+    {tab === "feedback" && <Section className="max-w-4xl !pt-4"><FeedbackAdmin /></Section>}
     {tab === "rechnungen" && <Section className="max-w-4xl !pt-4"><InvoiceAdmin /></Section>}
     {tab === "member" && <>
     <Section className="max-w-4xl !py-4"><div className="card p-5 text-left">

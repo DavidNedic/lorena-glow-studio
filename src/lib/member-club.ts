@@ -65,3 +65,19 @@ export const newsletterSchema = z.object({
   button_text: z.string().trim().max(60).default(""),
   button_url: z.string().trim().max(500).refine(u => !u || /^https:\/\//.test(u), "Der Button-Link muss mit https:// beginnen.").default(""),
 });
+
+// ---- Feedback nach eingelöstem Member-Gutschein ----
+export const FEEDBACK_DELAY_HOURS = 48;
+/** Ältere Einlösungen bekommen keine verspätete Feedback-Mail mehr. */
+export const FEEDBACK_MAX_AGE_DAYS = 14;
+export function isFeedbackDue(redeemedAt: string | Date, now: Date = new Date()) {
+  const age = now.getTime() - new Date(redeemedAt).getTime();
+  return age >= FEEDBACK_DELAY_HOURS * 3600_000 && age <= FEEDBACK_MAX_AGE_DAYS * 86400_000;
+}
+export const feedbackSchema = z.object({
+  token: z.string().regex(/^[a-f0-9]{48}$/),
+  sterne: z.number().int().min(1, "Bitte wähle 1 bis 5 Sterne.").max(5),
+  text: z.string().trim().max(2000),
+  veroeffentlichen: z.boolean(),
+});
+export type FeedbackRow = { id: string; vorname: string; nachname: string; email: string; sterne: number; text: string; veroeffentlichen: boolean; created_at: string; behandlung: string | null };
