@@ -14,7 +14,7 @@ export const FAQ=[{q:"Wie läuft mein erster Termin ab?",a:"Wir starten mit eine
 export const Route=createFileRoute("/behandlungen/")({head:()=>seoHead({path:"/behandlungen",title:"Kosmetik & Wimpern in Brackenheim · The Golden Cosmetics",description:"Hautanalyse, Lashlifting, Browlifting und Wimpernverlängerung bei Fachkosmetikerin Lorena Kovacevic in Brackenheim bei Heilbronn. Jetzt Termin buchen.",image:OG.behandlungen,jsonLd:[BEAUTY_SALON,{"@context":"https://schema.org","@type":"FAQPage",mainEntity:FAQ.map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:typeof f.a==="string"?f.a:"Ja, bis 24 Stunden vor deinem Termin kostenlos. Bei einer späteren Absage oder wenn du nicht erscheinst, werden 50 % des Behandlungspreises fällig, diese sind nicht erstattbar. Alles Weitere steht in den AGB."}}))},breadcrumbs([["Start","/"],["Behandlungen","/behandlungen"]])]}),component:Behandlungen});
 const BOOK={label:"Termin buchen",href:CONTACT.beautinda,external:true};
 const BOOKING_CATEGORIES = [
- {id:"lashes",name:"Wimpern",slugs:["lash","natural"]},
+ {id:"lashes",name:"Wimpern",slugs:["lash","natural","wispy","volumen"]},
  {id:"brows",name:"Augenbrauen",slugs:["brow","brow-color","brow-shape"]},
 ];
 function Behandlungen(){
