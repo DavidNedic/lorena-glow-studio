@@ -22,6 +22,8 @@ import { Route as BehandlungenSlugRouteImport } from './routes/behandlungen.$slu
 import { Route as MemberClubAdminRouteImport } from './routes/member-club.admin'
 import { Route as MemberClubAbmeldenRouteImport } from './routes/member-club_.abmelden'
 import { Route as MemberClubBestaetigenRouteImport } from './routes/member-club_.bestaetigen'
+import { Route as MemberClubFeedbackRouteImport } from './routes/member-club_.feedback'
+import { Route as ApiPublicJobsFeedbackMailsRouteImport } from './routes/api/public/jobs/feedback-mails'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -89,6 +91,17 @@ const MemberClubBestaetigenRoute = MemberClubBestaetigenRouteImport.update({
   path: '/member-club/bestaetigen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MemberClubFeedbackRoute = MemberClubFeedbackRouteImport.update({
+  id: '/member-club_/feedback',
+  path: '/member-club/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicJobsFeedbackMailsRoute =
+  ApiPublicJobsFeedbackMailsRouteImport.update({
+    id: '/api/public/jobs/feedback-mails',
+    path: '/api/public/jobs/feedback-mails',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
@@ -108,8 +121,10 @@ export interface FileRoutesByFullPath {
   '/member-club/admin': typeof MemberClubAdminRoute
   '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
+  '/member-club/feedback': typeof MemberClubFeedbackRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
+  '/api/public/jobs/feedback-mails': typeof ApiPublicJobsFeedbackMailsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
@@ -124,8 +139,10 @@ export interface FileRoutesByTo {
   '/member-club/admin': typeof MemberClubAdminRoute
   '/member-club/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club/bestaetigen': typeof MemberClubBestaetigenRoute
+  '/member-club/feedback': typeof MemberClubFeedbackRoute
   '/academy': typeof AcademyIndexRoute
   '/behandlungen': typeof BehandlungenIndexRoute
+  '/api/public/jobs/feedback-mails': typeof ApiPublicJobsFeedbackMailsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
@@ -141,8 +158,10 @@ export interface FileRoutesById {
   '/member-club/admin': typeof MemberClubAdminRoute
   '/member-club_/abmelden': typeof MemberClubAbmeldenRoute
   '/member-club_/bestaetigen': typeof MemberClubBestaetigenRoute
+  '/member-club_/feedback': typeof MemberClubFeedbackRoute
   '/academy/': typeof AcademyIndexRoute
   '/behandlungen/': typeof BehandlungenIndexRoute
+  '/api/public/jobs/feedback-mails': typeof ApiPublicJobsFeedbackMailsRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
@@ -159,8 +178,10 @@ export interface FileRouteTypes {
     | '/member-club/admin'
     | '/member-club/abmelden'
     | '/member-club/bestaetigen'
+    | '/member-club/feedback'
     | '/academy/'
     | '/behandlungen/'
+    | '/api/public/jobs/feedback-mails'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -175,8 +196,10 @@ export interface FileRouteTypes {
     | '/member-club/admin'
     | '/member-club/abmelden'
     | '/member-club/bestaetigen'
+    | '/member-club/feedback'
     | '/academy'
     | '/behandlungen'
+    | '/api/public/jobs/feedback-mails'
     | '/lovable/email/transactional/preview'
   id:
     | '__root__'
@@ -191,8 +214,10 @@ export interface FileRouteTypes {
     | '/member-club/admin'
     | '/member-club_/abmelden'
     | '/member-club_/bestaetigen'
+    | '/member-club_/feedback'
     | '/academy/'
     | '/behandlungen/'
+    | '/api/public/jobs/feedback-mails'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
@@ -207,8 +232,10 @@ export interface RootRouteChildren {
   BehandlungenSlugRoute: typeof BehandlungenSlugRoute
   MemberClubAbmeldenRoute: typeof MemberClubAbmeldenRoute
   MemberClubBestaetigenRoute: typeof MemberClubBestaetigenRoute
+  MemberClubFeedbackRoute: typeof MemberClubFeedbackRoute
   AcademyIndexRoute: typeof AcademyIndexRoute
   BehandlungenIndexRoute: typeof BehandlungenIndexRoute
+  ApiPublicJobsFeedbackMailsRoute: typeof ApiPublicJobsFeedbackMailsRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
@@ -305,6 +332,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MemberClubBestaetigenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/member-club_/feedback': {
+      id: '/member-club_/feedback'
+      path: '/member-club/feedback'
+      fullPath: '/member-club/feedback'
+      preLoaderRoute: typeof MemberClubFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/jobs/feedback-mails': {
+      id: '/api/public/jobs/feedback-mails'
+      path: '/api/public/jobs/feedback-mails'
+      fullPath: '/api/public/jobs/feedback-mails'
+      preLoaderRoute: typeof ApiPublicJobsFeedbackMailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -338,8 +379,10 @@ const rootRouteChildren: RootRouteChildren = {
   BehandlungenSlugRoute: BehandlungenSlugRoute,
   MemberClubAbmeldenRoute: MemberClubAbmeldenRoute,
   MemberClubBestaetigenRoute: MemberClubBestaetigenRoute,
+  MemberClubFeedbackRoute: MemberClubFeedbackRoute,
   AcademyIndexRoute: AcademyIndexRoute,
   BehandlungenIndexRoute: BehandlungenIndexRoute,
+  ApiPublicJobsFeedbackMailsRoute: ApiPublicJobsFeedbackMailsRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
