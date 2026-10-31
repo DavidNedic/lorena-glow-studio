@@ -26,6 +26,7 @@
 
 - Bundle all font weights locally through package CSS imports so typography never requires a third-party font request.
 - Use the same letter-free raster hummingbird for the intro, reveal mask, header, footer and app icons; scoped filters set its display color while preserving intro timing.
+- Derive all favicon and app-icon formats, including legacy filenames, from the existing gold hummingbird asset; embed the raster in the SVG and keep ICO sizes 16/32/48 so every icon endpoint has the same identity.
 - Keep unfinished Member Club content explicitly marked as placeholders and excluded from indexing until real content is supplied; confirmed legal business terms live in the shared data module so published terms and rule tests stay consistent.
 
 - Positioned non-video face hotspots use the base photograph for forward and reverse CSS zoom; only video hotspots load close-up assets, preventing requests for nonexistent photos.
