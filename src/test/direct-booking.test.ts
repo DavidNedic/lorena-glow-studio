@@ -19,7 +19,7 @@ describe("Direktbuchungen unter 150 Euro auf Beautinda", () => {
   });
   it("bietet nur die sieben bestätigten Festpreis-Angebote an", () => {
     expect(TREATMENTS.filter(isDirectBookingEligible).map(t => [t.slug, t.beautindaPrice])).toEqual([
-      ["lash", 79], ["brow", 69], ["brow-color", 20], ["brow-shape", 15], ["natural", 99], ["wispy", 120], ["volumen", 149],
+      ["lash", 79], ["brow", 69], ["brow-color", 20], ["brow-shape", 15], ["natural", 109], ["wispy", 120], ["volumen", 149],
     ]);
   });
 });

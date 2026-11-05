@@ -50,10 +50,10 @@ export const TREATMENTS: Treatment[] = [
   treatment("brow", "Browlifting inkl. Färben + Formen", "direct", "80 Min.", { price: "69 €", beautindaPrice: 69, sentence: "Konstant schöne Augenbrauen, jeden Tag, ganz ohne Nachzeichnen." }),
   treatment("brow-color", "Augenbrauen färben", "direct", "30 Min.", { price: "20 €", beautindaPrice: 20, sentence: "Mehr Dichte und Ausdruck für deine Brauen." }),
   treatment("brow-shape", "Augenbrauen formen", "direct", "30 Min.", { price: "15 €", beautindaPrice: 15, sentence: "Die passende Form für dein Gesicht, sauber gezupft und korrigiert." }),
-  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "99 €", beautindaPrice: 99, sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
+  treatment("natural", "Wimpernverlängerung Natural 1:1 Neu-Set", "direct", "120 Min.", { price: "109 €", beautindaPrice: 109, sentence: "Dezente Verlängerung, eine Extension pro Naturwimper." }),
   treatment("wispy", "Wimpernverlängerung Wispy Neu-Set", "direct", "120 Min.", { price: "120 €", beautindaPrice: 120, sentence: "Der federleichte Wispy-Look mit gestuften Längen." }),
   treatment("volumen", "Wimpernverlängerung Volumen Neu-Set", "direct", "120 Min.", { price: "149 €", beautindaPrice: 149, sentence: "Mehr Dichte mit feinen Volumenfächern." }),
-  treatment("refill", "Wimpern auffüllen", "direct", "80 Min.", { price: "ab 65 €", sentence: "Dein Set bleibt voll und gepflegt." }),
+  treatment("refill", "Wimpern auffüllen", "direct", "80 Min.", { price: "ab 70 €", sentence: "Dein Set bleibt voll und gepflegt." }),
   // Nach deiner Hautanalyse
   treatment("aquafacial-ausreinigung", "Aquafacial Ausreinigung", "analysis", "70 Min.", { sentence: "Tiefenausreinigung der Poren mit viel Feuchtigkeit." }),
   treatment("microneedling", "Microneedling", "analysis", "60 Min.", { sentence: "Microneedling bei Aknenarben. Kann die Erneuerung der Haut anregen und das Hautbild glätten." }),
